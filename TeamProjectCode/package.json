@@ -1,5 +1,5 @@
 {
-    "name": "melodie",
+    "name": "group7project",
     "main": "index.js",
     "dependencies": {
         "axios": "^1.1.3",
