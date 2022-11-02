@@ -1,4 +1,4 @@
-<header>
+<!-- <header>
     <nav class="navbar navbar-expand-sm border-bottom">
       <div class="container">
         <button
@@ -14,33 +14,67 @@
         <div class="collapse navbar-collapse" id="navbar-collapse">
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <!-- TO-DO: For Discover, add a <a> tag with an attribute href to call the '/discover' API -->
                 <a class="nav-link active" href="/profile">Profile</a>
             </li>
           </ul>
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <!-- TO-DO: For Discover, add a <a> tag with an attribute href to call the '/discover' API -->
                 <a class="nav-link active" href="/friends">Friends</a>
             </li>
           </ul>
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <!-- TO-DO: For Discover, add a <a> tag with an attribute href to call the '/discover' API -->
                 <a class="nav-link active" href="/statistics">Statistics</a>
             </li>
           </ul>
           <ul class="navbar-nav me-auto">
             <li class="nav-item">
-              <!-- TO-DO: For Discover, add a <a> tag with an attribute href to call the '/discover' API -->
+
                 <a class="nav-link active" href="/rankings">Rankings</a>
             </li>
           </ul>
           <div class="nav-item me-1">
-            <!-- TO-DO: For Logout, add a <a> tag with an attribute href to call the '/logout API -->
               <a class = "nav-link active" href= "/logout">Logout</a>
           </div>
         </div>
       </div>
     </nav>
-   </header>
+   </header> -->
+
+   <!-- statistics, rankings I think should be within friends and profile. 
+    When you look on your profile you want to see your statistics. When you see your friend's profile you want
+    to see their statistics. Having a general statistics page I guess could work but we would need to implement
+    search functions given input on who you want to see statisticss for. -->
+
+<header>
+  <nav class="navbar navbar-expand-sm border-bottom">
+    <div class="container">
+      <button
+        class="navbar-toggler ms-auto"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbar-collapse"
+        aria-controls="navbar"
+        aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbar-collapse">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+              <a class="nav-link active" href="/Profile">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/Music">Music</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/Friends">Friends</a>
+          </li>
+        </ul>
+        <div class="nav-item me-1">
+              <a class="nav-link active" href="/logout">Log Out</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
