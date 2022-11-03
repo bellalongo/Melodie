@@ -65,6 +65,7 @@ app.get('/register', (req, res) => {
   // Register submission
 app.post('/register', async (req, res) => {
     //the logic goes here
+    if(req.body.password.length >= 8 && req.body.password.length <= 60){ //checks that password satifies length requirement
     const hash = await bcrypt.hash(req.body.password, 10);
     const query = 'insert into users (username, password) values ($1,$2);';
     db.none(query, [
@@ -75,9 +76,22 @@ app.post('/register', async (req, res) => {
             res.redirect('/login');
          })
         .catch(function(err) {
-            res.redirect('/register');
+          res.render('pages/register', {
+            user: [],
+            error: true,
+            message: `Error Registering Account. Try again.`,
+          });
             return console.log(err);
         });
+  }
+  else{
+    //gives error if password too short/long
+    res.render('pages/register', {
+      user: [],
+      error: true,
+      message: `Make sure your password is the correct length`,
+    });
+  }
 });
 
   
@@ -104,12 +118,20 @@ app.post('/login', async (req, res) => {
       else
       {
           console.log("Incorrect username or password");
-          res.redirect('pages/login');
+          res.render('pages/login', {
+            user: [],
+            error: true,
+            message: `Incorrect Password`,
+          });
       }
     })
     .catch(function(err) {
       console.log(err);
-      res.redirect('/register');
+      res.render('pages/login', {
+        user: [],
+        error: true,
+        message: `Incorrect Username`,
+      });
     });
 });
 
