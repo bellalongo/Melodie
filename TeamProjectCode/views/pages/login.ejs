@@ -1,10 +1,12 @@
+<!-- 
+    1. Login though Spotify
+ -->
+
 <%- include ('../partials/header') %>
 <%- include ('../partials/menu') %>
-<%- include ('../partials/message') %>
 
 <main>
   <div class="container">
-    <!-- THE REST OF YOUR HTML CODE GOES HERE -->
     <h1>Login</h1>
     <form id = "login form" action = "/login" method = "post">
       <div class="mb-3" id = "username">
@@ -24,9 +26,35 @@
       <div>
         <small>Don't have an account?</small>
         <a href="/register"><small> Register!</small> </a>
+        <!-- <small>Log in with Spotify</small> 
+        <a href="/???">Login Through Spotify</a> -->
       </div>
-  </form>
-  </div>
-</main> 
+    </form>
+  
 
+    <div id="my-signin2"></div>
+    <script>
+      function onSuccess(spotifyUser) {
+        console.log('Logged in as: ' + spotifyUser.getBasicProfile().getName());
+      }
+      function onFailure(error) {
+        console.log(error);
+      }
+      function renderButton() {
+        gapi.signin2.render('my-signin2', {
+          'scope': 'profile email',
+          'width': 240,
+          'height': 50,
+          'longtitle': true,
+          'theme': 'dark',
+          'onsuccess': onSuccess,
+          'onfailure': onFailure
+        });
+      }
+    </script>
+
+    <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+  </div>
+</body>
+</main> 
 <%- include ('../partials/footer') %>
