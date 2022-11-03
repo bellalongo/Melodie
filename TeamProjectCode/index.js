@@ -104,12 +104,20 @@ app.post('/login', async (req, res) => {
       else
       {
           console.log("Incorrect username or password");
-          res.redirect('pages/login');
+          res.render('pages/login', {
+            user: [],
+            error: true,
+            message: `Incorrect Password`,
+          });
       }
     })
     .catch(function(err) {
       console.log(err);
-      res.redirect('/register');
+      res.render('pages/login', {
+        user: [],
+        error: true,
+        message: `Incorrect Username`,
+      });
     });
 });
 
