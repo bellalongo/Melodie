@@ -112,7 +112,7 @@ app.post('/login', async (req, res) => {
             api_key: process.env.API_KEY,
           };
           req.session.save();
-          res.redirect('/discover');
+          res.redirect('/home');
         
       }
       else
@@ -144,8 +144,14 @@ const auth = (req, res, next) => {
     next();
   };
 
-app.use(auth);
 
+app.use(auth);
+app.get('/home', (req, res) => {
+  res.render('pages/home');
+});
+app.get('/profile', (req, res) => {
+  res.render('pages/profile');
+});
 /*
 -
 -
