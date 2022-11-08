@@ -28,6 +28,9 @@ const user = {
   name: undefined
 };
   
+const images = {
+  image_url : undefined
+};
 // test your database
 db.connect()
   .then(obj => {
