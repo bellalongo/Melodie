@@ -281,15 +281,15 @@ app.get('/refresh_token', function(req, res) {
 
 
 // Authentication Middleware.
-const auth = (req, res, next) => {
-    if (!req.session.user) {
-      // Default to register page.
-      return res.redirect('/register');
-    }
-    next();
-  };
+// const auth = (req, res, next) => {
+//     if (!req.session.user) {
+//       // Default to register page.
+//       return res.redirect('/register');
+//     }
+//     next();
+//   };
 
-app.use(auth);
+// app.use(auth);
 
 /*
 -
