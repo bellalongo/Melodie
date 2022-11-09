@@ -54,9 +54,9 @@ app.get('/', (req, res) =>{
   res.redirect('/login'); //this will call the /anotherRoute route in the API
 });
 
-app.get('/home', (req, res) =>{
-  res.redirect('/login'); //this will call the /anotherRoute route in the API
-});
+// app.get('/home', (req, res) =>{
+//   res.redirect('/login'); //this will call the /anotherRoute route in the API
+// });
 
 app.get('/register', (req, res) => {
   res.render('pages/register');
@@ -146,11 +146,14 @@ const auth = (req, res, next) => {
 
 
 app.use(auth);
+
 app.get('/home', (req, res) => {
   res.render('pages/home');
 });
 app.get('/profile', (req, res) => {
-  res.render('pages/profile');
+  res.render('pages/profile',{
+    username: req.session.username,
+  });
 });
 /*
 -
