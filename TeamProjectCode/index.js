@@ -21,7 +21,8 @@ const db = pgp(dbConfig);
 
 const user = {
   username:undefined,
-  password:undefined
+  password:undefined,
+  display_name: "hello",
 };
   
 // test your database
@@ -95,45 +96,45 @@ app.post('/register', async (req, res) => {
 });
 
   
-// app.get('/login', (req, res) => {
-//   res.render('pages/login');
-// });
+app.get('/login', (req, res) => {
+  res.render('pages/login');
+});
 
-// app.post('/login', async (req, res) => {
-//   const query = "select * from users where username = $1";
-//   db.one(query, [
-//     req.body.username
-//   ])
-//     .then(async(user) => {
-//       const match = await bcrypt.compare(req.body.password, user.password); 
-//       if(match)
-//       {
-//           req.session.user = {
-//             api_key: process.env.API_KEY,
-//           };
-//           req.session.save();
-//           res.redirect('/discover');
+app.post('/login', async (req, res) => {
+  const query = "select * from users where username = $1";
+  db.one(query, [
+    req.body.username
+  ])
+    .then(async(user) => {
+      const match = await bcrypt.compare(req.body.password, user.password); 
+      if(match)
+      {
+          req.session.user = {
+            api_key: process.env.API_KEY,
+          };
+          req.session.save();
+          res.redirect('/discover');
         
-//       }
-//       else
-//       {
-//           console.log("Incorrect username or password");
-//           res.render('pages/login', {
-//             user: [],
-//             error: true,
-//             message: `Incorrect Password`,
-//           });
-//       }
-//     })
-//     .catch(function(err) {
-//       console.log(err);
-//       res.render('pages/login', {
-//         user: [],
-//         error: true,
-//         message: `Incorrect Username`,
-//       });
-//     });
-// });
+      }
+      else
+      {
+          console.log("Incorrect username or password");
+          res.render('pages/login', {
+            user: [],
+            error: true,
+            message: `Incorrect Password`,
+          });
+      }
+    })
+    .catch(function(err) {
+      console.log(err);
+      res.render('pages/login', {
+        user: [],
+        error: true,
+        message: `Incorrect Username`,
+      });
+    });
+});
 
 
 
@@ -170,7 +171,7 @@ app.use(express.static(__dirname + '/public'))
    .use(cors())
    .use(cookieParser());
 
-app.get('/login', function(req, res) {
+app.get('/login_spotify', function(req, res) {
 
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
@@ -211,7 +212,7 @@ app.get('/callback', function(req, res) {
         grant_type: 'authorization_code'
       },
       headers: {
-        'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+        'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64'))
       },
       json: true
     };
@@ -230,6 +231,7 @@ app.get('/callback', function(req, res) {
 
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
+          user.display_name = body.display_name;
           console.log(body);
         });
 
@@ -249,29 +251,29 @@ app.get('/callback', function(req, res) {
   }
 });
 
-app.get('/refresh_token', function(req, res) {
+// app.get('/refresh_token', function(req, res) {
 
-  // requesting access token from refresh token
-  var refresh_token = req.query.refresh_token;
-  var authOptions = {
-    url: 'https://accounts.spotify.com/api/token',
-    headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
-    form: {
-      grant_type: 'refresh_token',
-      refresh_token: refresh_token
-    },
-    json: true
-  };
+//   // requesting access token from refresh token
+//   var refresh_token = req.query.refresh_token;
+//   var authOptions = {
+//     url: 'https://accounts.spotify.com/api/token',
+//     headers: { 'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64')) },
+//     form: {
+//       grant_type: 'refresh_token',
+//       refresh_token: refresh_token
+//     },
+//     json: true
+//   };
 
-  request.post(authOptions, function(error, response, body) {
-    if (!error && response.statusCode === 200) {
-      var access_token = body.access_token;
-      res.send({
-        'access_token': access_token
-      });
-    }
-  });
-});
+//   request.post(authOptions, function(error, response, body) {
+//     if (!error && response.statusCode === 200) {
+//       var access_token = body.access_token;
+//       res.send({
+//         'access_token': access_token
+//       });
+//     }
+//   });
+// });
 
 
 // Authentication Middleware.
