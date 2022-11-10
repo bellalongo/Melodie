@@ -25,7 +25,6 @@ const db = pgp(dbConfig);
 const user = {
   username:undefined,
   password:undefined,
-  name: undefined
 };
   
 const images = {
