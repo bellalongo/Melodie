@@ -233,6 +233,7 @@ app.get('/callback', function(req, res) {
         request.get(options, function(error, response, body) {
           user.display_name = body.display_name;
           console.log(body);
+          console.log(user.display_name);
         });
 
         // we can also pass the token to the browser to make requests from there
@@ -253,6 +254,10 @@ app.get('/callback', function(req, res) {
       }
     });
   }
+});
+
+app.get('/', (req, res) => {
+  res.render('pages/profile', {user});
 });
 
 app.get('/refresh_token', function(req, res) {
@@ -278,6 +283,7 @@ app.get('/refresh_token', function(req, res) {
     }
   });
 });
+
 
 
 // Authentication Middleware.
