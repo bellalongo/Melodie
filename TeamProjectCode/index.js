@@ -21,7 +21,7 @@ const db = pgp(dbConfig);
 
 const user = {
   username:undefined,
-  password:undefined
+  password:undefined,
 };
   
 // test your database
@@ -112,7 +112,7 @@ app.post('/login', async (req, res) => {
             api_key: process.env.API_KEY,
           };
           req.session.save();
-          res.redirect('/home');
+          res.redirect('/profile');
         
       }
       else
@@ -152,7 +152,7 @@ app.get('/home', (req, res) => {
 });
 app.get('/profile', (req, res) => {
   res.render('pages/profile',{
-    username: req.session.username,
+    user
   });
 });
 /*
