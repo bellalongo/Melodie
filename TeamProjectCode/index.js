@@ -22,7 +22,6 @@ const db = pgp(dbConfig);
 const user = {
   username:undefined,
   password:undefined,
-  display_name: "hello",
 };
   
 // test your database
