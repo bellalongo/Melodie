@@ -55,7 +55,8 @@ app.get('/', (req, res) =>{
 });
 
 app.get('/home', (req, res) =>{
-  res.redirect('/login'); //this will call the /anotherRoute route in the API
+  // Check if the user is authorized
+  res.render('pages/home');
 });
 
 app.get('/register', (req, res) => {
@@ -112,7 +113,7 @@ app.post('/login', async (req, res) => {
             api_key: process.env.API_KEY,
           };
           req.session.save();
-          res.redirect('/discover');
+          res.redirect('/home');
         
       }
       else
