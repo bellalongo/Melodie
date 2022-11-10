@@ -4,33 +4,36 @@
 
 <%- include ('../partials/header') %>
 <%- include ('../partials/menu') %>
-
-<main>
-  <!-- <div class="container">
+<%- include ('../partials/message') %>
+<body>
+  <div class="page">
     <h1>Login</h1>
     <form id = "login form" action = "/login" method = "post">
-      <div class="mb-3" id = "username">
+      
+      <div class="login_div" id = "username">
           <label for="username" class="form-label">Username</label>
-          <input type="text" class="form-control" name = "username" id="username" placeholder = "Enter username">
+          <input type="text" class="form-control" name = "username" id="username" placeholder = "Enter username" 
+          style="background-color:rgb(30, 30, 30); color:rgb(255, 255, 255); border-color: rgb(255, 255, 255);">
       </div>
 
-      <div class="mb-3" id = "password">
+      <div class="login_div" id = "password">
         <label for="password" class="form-label">Password</label>
-        <input type="text" class="form-control" id= "password" name = "password" placeholder="Enter password">
+        <input type="password" class="form-control" id= "password" name = "password" placeholder="Enter password" 
+         style="background-color:rgb(30, 30, 30); color:rgb(255, 255, 255); border-color: rgb(255, 255, 255);">
       </div>
 
-      <div class="submit">
-          <button type="submit"  class="btn btn-primary" id = "submit-button" >Login</button>
+      <div class="submit_btn">
+          <button type="submit"  class="btn btn-primary" id = "submit-button" 
+          style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);">
+          Login</button>
       </div>
-      <hr>
       <div>
         <small>Don't have an account?</small>
-        <a href="/register"><small> Register!</small> </a>
-        <!~~ <small>Log in with Spotify</small>  ~~>
-        <!~~ <a href="/???">Login Through Spotify</a> ~~>
-      </div> -->
-      
-      <div id="login_spotify"> 
+        <a href="/register" style="text-decoration-color:rgb(79, 124, 172);"><small class = "register"> Register!</small> </a>
+      </div>
+  </form>
+  
+    <div id="login_spotify"> 
         <h1>This is an example of the Authorization Code flow</h1> 
         <a href="/login_spotify" class="btn btn-primary">Log in with Spotify</a>
       </div>
@@ -39,9 +42,7 @@
         </div>
         <div id="oauth">
         </div>
-    </form>
-      <h1>Logged in as  <%= locals.display_name %> </h1>
   </div>
 </body>
-</main> 
+
 <%- include ('../partials/footer') %>
