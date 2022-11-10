@@ -219,6 +219,24 @@ app.post('/editprofile', (req,res) =>
 
 })
 
+app.post('/addfriend')
+{
+  query = 'insert into friends where username = $1;'
+  db.any(query, [req.body.username])
+  
+    .then(function (data) {
+      res.status(201).json({
+        status: 'success',
+        data: data,
+        message: 'friend added successfully',
+      });
+    })
+    .catch(function (err) {
+      return console.log(err);
+    });
+  
+}
+
 app.delete('/delete_user/:user_id')
 {
   const user_id = parseInt(req.params.user_id);

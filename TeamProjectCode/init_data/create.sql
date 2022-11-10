@@ -10,12 +10,14 @@ CREATE TABLE snippets (
     song_name TEXT,
     start_time TIME(fsp)
 )
-/*
+
 CREATE TABLE friends (
     friend_id SERIAL PRIMARY KEY,
-    username VARCHAR(60)
+    username VARCHAR(50) NOT NULL,
+    password CHAR(60) NOT NULL,
+    name VARCHAR(50)
 )
-*/
+
 
 CREATE TABLE users_to_snippets (
   user_id INT NOT NULL,
