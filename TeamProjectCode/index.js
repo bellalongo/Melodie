@@ -24,6 +24,11 @@ const user = {
   password:undefined,
   display_name: "hello",
 };
+
+const tokens = {
+  access:undefined,
+  refresh:undefined
+}
   
 // test your database
 db.connect()
@@ -223,6 +228,9 @@ app.get('/callback', function(req, res) {
 
         var access_token = body.access_token,
             refresh_token = body.refresh_token;
+        
+          tokens.access = access_token;
+          tokens.refresh = refresh_token;
 
         var options = {
           url: 'https://api.spotify.com/v1/me',
@@ -278,6 +286,7 @@ app.get('/refresh_token', function(req, res) {
   request.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       var access_token = body.access_token;
+      tokens.access = access_token;
       res.send({
         'access_token': access_token
       });
@@ -308,6 +317,54 @@ JS Code for the Feed, Profile, Friends, and Rankings goes here
 -
 
 */
+
+app.get('/music', (req, res) => {
+  res.render('pages/music', {
+    results : 'undefined'
+  });
+})
+
+app.post('/music', (req, res) => {
+  const song = req.body.songName;
+  //console.log(song);
+  const access_token = tokens.access;
+  const token = "Bearer " + access_token;
+  var searchUrl = "https://api.spotify.com/v1/search?q=" + song + "&type=track&limit=4";
+
+  axios.get(searchUrl, {
+    headers: {
+      'Authorization': token,
+    }
+  })
+  .then((resAxios) => {
+    //console.log(resAxios.data)
+    //spotifyResult = resAxios.data;
+
+    //console.log(resAxios.data.tracks.items);
+    
+    res.render('pages/music', {
+      results : resAxios.data.tracks.items
+    });
+
+    // //Extracting required data from 'result'. The following "items[0].id.videoId" is the address of the data that we need from the JSON 'ytResult'.
+    // let spotifyTrackIdAppJs00 = spotifyResult.tracks.items[0].id;
+    // let spotifyAlbumIdAppJs00 = spotifyResult.tracks.items[0].album.id;
+    // let spotifyArtistIdAppJs00 = spotifyResult.tracks.items[0].artists[0].id;
+    // console.log("Fetched values: " + spotifyTrackIdAppJs00 + ", " + spotifyAlbumIdAppJs00 + ", " + spotifyArtistIdAppJs00);
+
+    // // The 'results' named EJS file is rendered and fed in response. The 'required' data is passed into it using the following letiable(s).
+    // // A folder named 'views' has to be in the same directory as "app.js". That folder contains 'results.ejs'.
+    // res.render("results", {
+    //   spotifyTrackIdEjs00: spotifyTrackIdAppJs00,
+    //   spotifyAlbumIdEjs00: spotifyAlbumIdAppJs00,
+    //   spotifyArtistIdEjs00: spotifyArtistIdAppJs00
+    // });
+    // console.log("Values to be used in rendered file: " + spotifyTrackIdAppJs00 + ", " + spotifyAlbumIdAppJs00 + ", " + spotifyArtistIdAppJs00);
+  })
+  .catch((error) => {
+    console.error(error)
+  })
+});
 
 app.get('/logout', (req, res) => {
   req.session.destroy();

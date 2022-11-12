@@ -3,3 +3,103 @@
     2. Favorite
     3. capture snippets
  -->
+
+ 
+
+ <%- include ('../partials/header') %>
+<%- include ('../partials/menu') %>
+
+<main>
+    <link rel="stylesheet" href="../css/music.css">
+
+    <script type="text/JavaScript" src="http://code.jquery.com/jquery-1.11.2.js"></script>
+    <script type="text/JavaScript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js"></script>
+
+    <div class="container">
+        <h1>Make a Snippet!</h1>
+        <form action="/music" method="post">
+            <div class="form-group row">
+                <label for="song name" class="col-sm-2 col-form-label">Enter a song title</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="songName" name="songName">
+                </div>
+            </div>
+
+            <div class="submit_btn">
+                <button type="submit"  class="btn btn-primary" id = "submit-button" 
+                style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);">
+                Search</button>
+            </div>
+        </form>
+    
+        <% if(results !== 'undefined'){ %> 
+            <% results.forEach(el => { %>
+            <div class="row">
+                <div class="col">  
+                        <!-- <%console.log(results) %> -->
+                            
+                                <div class="card mb-3" style="max-width: 540px;">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                        <%console.log(el) %>
+                                            <img src="<%= el.album.images[0].url %>" class="img-thumbnail rounded-start" style="width: auto; height: 195px;" alt="...">
+                                        </div>
+
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title"> Title: <%= el.name %>  </h5>
+                                                <h6 class="card-text"> Artist: <%= el.artists[0].name %>  </h6>
+                                                <button type="submit"  class="btn btn-primary" id = "submit-button" data-toggle="modal" data-target="#myModal" 
+                                                    style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);">
+                                                    Use this song </button>
+                                            </div>
+                                        </div>   
+                                    </div>
+                                </div>   
+                </div>
+
+                <div class="col" style="display: none;"> 
+                <!-- <div class="container d-flex justify-content-center my-4 mb-5"> -->
+
+                    <div id="mobile-box">
+
+                        <!-- Card -->
+                        <div class="card">
+                            <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                                <img class="card-img-top" src="<%= el.album.images[0].url %>"
+                                    alt="Card image cap">
+                                <a href="#!">
+                                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                                </a>
+                            </div>
+
+                            <div class="card-body text-center">
+
+                                <h5 class="h5 font-weight-bold"> <%= el.artists[0].name %> </h5>
+                                <p class="mb-0"> <%= el.name %> </p>
+
+                                <audio id="music" preload="true">
+                                    <source src="#">
+                                </audio>
+
+                                <div id="audioplayer">
+                                    <i id="pButton" class="fas fa-play"></i>
+                                    <div id="timeline">
+                                    <div id="playhead"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- Card -->
+                    </div>
+                </div>
+            <!-- Content -->
+            </div>
+            <% }); %>
+        <% } %> 
+    </div>
+</main>
+
+
+<%- include ('../partials/footer') %>
