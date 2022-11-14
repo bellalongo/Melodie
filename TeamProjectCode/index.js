@@ -56,6 +56,7 @@ app.use(
   })
 );
 
+app.use(express.static(__dirname + '/public'));
 // app.get('/', (req, res) =>{
 //   res.redirect('/login'); //this will call the /anotherRoute route in the API
 // });
