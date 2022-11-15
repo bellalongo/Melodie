@@ -8,7 +8,7 @@ const axios = require('axios');
 const { use } = require('bcrypt/promises');
 const { query } = require('express');
 const { minify } = require('pg-promise');
-const fileUpload = requre('express-fileUpload');
+//const fileUpload = require('express-fileUpload');
 
 //app.use(fileUpload()); 
 // database configuration
@@ -104,7 +104,7 @@ app.post('/register', async (req, res) => {
 
   
 app.get('/login', (req, res) => {
-  res.render('pages/login');
+  res.render('pages/login.ejs');
 });
 
 app.post('/login', async (req, res) => {
@@ -263,8 +263,8 @@ app.get('/callback', function(req, res) {
   }
 });
 
-app.get('/', (req, res) => {
-  res.render('pages/profile', {user});
+app.get('/home', (req, res) => {
+  res.render('pages/home.ejs', {user});
 });
 
 app.get('/refresh_token', function(req, res) {
@@ -370,11 +370,10 @@ app.post('/editprofile', (req,res) =>
 
 })
 
-app.post('/addfriend')
+app.post('/addfriend', (res,req) => 
 {
-  query = 'insert into friends where username = $1;'
+  const query = 'insert into friends where username = $1;'
   db.any(query, [req.body.username])
-  
     .then(function (data) {
       res.status(201).json({
         status: 'success',
@@ -386,9 +385,9 @@ app.post('/addfriend')
       return console.log(err);
     });
   
-}
+})
 
-app.delete('/delete_user/:user_id')
+app.delete('/delete_user/:user_id', (res,req) => 
 {
   const user_id = parseInt(req.params.user_id);
   const query = 'delete from reviews where review_id = $1;';
@@ -406,7 +405,7 @@ app.delete('/delete_user/:user_id')
       .catch(function (err) {
         return console.log(err);
       });
-}
+})
 /*
 const knex = require('knex')(
 {
