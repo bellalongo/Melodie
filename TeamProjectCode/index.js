@@ -7,7 +7,10 @@ const bcrypt = require('bcrypt');
 const axios = require('axios');
 const { use } = require('bcrypt/promises');
 const { query } = require('express');
+const { minify } = require('pg-promise');
+const fileUpload = requre('express-fileUpload');
 
+//app.use(fileUpload()); 
 // database configuration
 const dbConfig = {
     host: 'db',
@@ -22,9 +25,12 @@ const db = pgp(dbConfig);
 const user = {
   username:undefined,
   password:undefined,
-  display_name: "hello",
+  name: undefined,
 };
   
+const images = {
+  image_url : undefined
+};
 // test your database
 db.connect()
   .then(obj => {
@@ -308,7 +314,119 @@ JS Code for the Feed, Profile, Friends, and Rankings goes here
 -
 
 */
+app.get('/editprofile', (req,res) =>
+{
+  res.render('pages/editprofile');
+})
+app.post('/editprofile', (req,res) => 
+{
+    if(req.body.image_id !== null && req.body.user_id !== null)
+    {
+      query  = 'update users set name = $1 where user_id = $2;';
+      query2 = 'update images set image_url = $1, where image_id = $2;';
+      db.any(query, [req.body.name, req.body.user_id])
+      db.any(query2, [req.body.image_url, req.body.image_id])
+      .then(function (data) {
+        res.status(201).json({
+          status: 'success',
+          data: data,
+          message: 'name and image added successfully',
+        });
+      })
+      .catch(function (err) {
+        return console.log(err);
+      });
+    }
+    else if(req.body.image_id !== null)
+    {
+      query2 = 'update images set image_url = $1 where image_id = $2;';
+      db.any(query2, [req.body.image_url, req.body.image_id])
+      .then(function (data) {
+        res.status(201).json({
+          status: 'success',
+          data: data,
+          message: 'image added successfully',
+        });
+      })
+      .catch(function (err) {
+        return console.log(err);
+      });
+    }
+    else
+    {
+      query = 'update users set name = $1 where user_id = $2;';
+      db.any(query, [req.body.review ,req.body.review_id])
+      .then(function (data) {
+        res.status(201).json({
+          status: 'success',
+          data: data,
+          message: 'review added successfully',
+        });
+      })
+      .catch(function (err) {
+        return console.log(err);
+      });
+    }
 
+})
+
+app.post('/addfriend')
+{
+  query = 'insert into friends where username = $1;'
+  db.any(query, [req.body.username])
+  
+    .then(function (data) {
+      res.status(201).json({
+        status: 'success',
+        data: data,
+        message: 'friend added successfully',
+      });
+    })
+    .catch(function (err) {
+      return console.log(err);
+    });
+  
+}
+
+app.delete('/delete_user/:user_id')
+{
+  const user_id = parseInt(req.params.user_id);
+  const query = 'delete from reviews where review_id = $1;';
+    const query2 = 'delete from trails_to_reviews where review_id = $1;'
+    console.log(query);
+    db.any(query, [user_id])
+      .then(function (data) {
+        db.any(query2,[user_id])
+        res.status(200).json({
+          status: success,
+          data: data,
+          message: 'data deleted successfully',
+        });
+      })
+      .catch(function (err) {
+        return console.log(err);
+      });
+}
+/*
+const knex = require('knex')(
+{
+  client: 'splite3',
+  connection: {
+    filename: "./img.db"
+  },
+  useNullAsDefault: true
+});
+app.post('/upload', async (req,res) =>)
+{
+  const (name,data) = req.files.pic;
+  if( name && data)
+  {
+    
+  }
+  await knex.insert({name: name, omg: data}).into('img');
+
+}
+*/
 app.get('/logout', (req, res) => {
   req.session.destroy();
   res.render('pages/login', {
