@@ -7,7 +7,7 @@ CREATE TABLE users (
 
 CREATE TABLE snippets (
     snippet_id SERIAL PRIMARY KEY,
-    song_name TEXT,
+    track_id TEXT,
     start_time TIME(fsp)
 )
 
@@ -40,3 +40,10 @@ CREATE TABLE users_to_images (
   FOREIGN KEY (image_id) REFERENCES images (image_id),
   FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
+
+CREATE TABLE users_to_friends (
+  user_id INT NOT NULL,
+  friend_id INT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users (user_id),
+  FOREIGN KEY (friend_id) REFERENCES friends (friends_id)
+)

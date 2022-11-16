@@ -406,6 +406,28 @@ app.delete('/delete_user/:user_id', (res,req) =>
         return console.log(err);
       });
 })
+
+app.get('/friends', (res,req) =>
+
+  axios.get(
+    'https://api.spotify.com/v1/me/',
+    {
+      headers: {
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + newAccessToken,
+        'Content-Type': 'application/json',
+    },
+    })
+    .then(results => {
+      {
+        console.log(results.data);
+      }
+    })
+    .catch(error => 
+      {
+        console.log(error);
+      })
+)
 /*
 const knex = require('knex')(
 {
