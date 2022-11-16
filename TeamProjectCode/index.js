@@ -31,6 +31,12 @@ const user = {
 const images = {
   image_url : undefined
 };
+
+const tokens = {
+  access:undefined,
+  refresh:undefined
+}
+  
 // test your database
 db.connect()
   .then(obj => {
@@ -414,13 +420,16 @@ app.get('/friends', (res,req) =>
     {
       headers: {
         Accept: 'application/json',
-        Authorization: 'Bearer ' + newAccessToken,
+        Authorization: 'Bearer ' + tokens.access,
         'Content-Type': 'application/json',
     },
     })
     .then(results => {
       {
         console.log(results.data);
+        res.render('pages/friends', {
+          songs: results.body
+         });
       }
     })
     .catch(error => 
