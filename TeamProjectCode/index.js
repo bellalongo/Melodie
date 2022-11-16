@@ -8,9 +8,8 @@ const axios = require('axios');
 const { use } = require('bcrypt/promises');
 const { query } = require('express');
 const { minify } = require('pg-promise');
-const fileUpload = requre('express-fileUpload');
-
-//app.use(fileUpload()); 
+ 
+//app.use(fileUpload());
 // database configuration
 const dbConfig = {
     host: 'db',
@@ -19,15 +18,16 @@ const dbConfig = {
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
   };
-  
+ 
 const db = pgp(dbConfig);
-
+ 
 const user = {
   username:undefined,
   password:undefined,
   name: undefined,
+  picture: undefined,
 };
-  
+ 
 const images = {
   image_url : undefined
 };
@@ -40,7 +40,7 @@ db.connect()
   .catch(error => {
     console.log('ERROR:', error.message || error);
   });
-
+ 
 app.set('view engine', 'ejs');
 app.use(bodyParser.json());
 app.use(
@@ -50,26 +50,26 @@ app.use(
       resave: false,
     })
   );
-  
+ 
 app.use(
   bodyParser.urlencoded({
     extended: true,
   })
 );
-
+ 
 // app.get('/', (req, res) =>{
 //   res.redirect('/login'); //this will call the /anotherRoute route in the API
 // });
-
-
+ 
+ 
 // app.get('/home', (req, res) =>{
 //   res.redirect('/login'); //this will call the /anotherRoute route in the API
 // });
-
+ 
 app.get('/register', (req, res) => {
   res.render('pages/register');
 });
-
+ 
   // Register submission
 app.post('/register', async (req, res) => {
     //the logic goes here
@@ -101,19 +101,19 @@ app.post('/register', async (req, res) => {
     });
   }
 });
-
-  
+ 
+ 
 app.get('/login', (req, res) => {
   res.render('pages/login');
 });
-
+ 
 app.post('/login', async (req, res) => {
   const query = "select * from users where username = $1";
   db.one(query, [
     req.body.username
   ])
     .then(async(user) => {
-      const match = await bcrypt.compare(req.body.password, user.password); 
+      const match = await bcrypt.compare(req.body.password, user.password);
       if(match)
       {
           req.session.user = {
@@ -121,7 +121,7 @@ app.post('/login', async (req, res) => {
           };
           req.session.save();
           res.redirect('/home');
-        
+       
       }
       else
       {
@@ -142,19 +142,19 @@ app.post('/login', async (req, res) => {
       });
     });
 });
-
-
-
+ 
+ 
+ 
 // var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
-
+ 
 var client_id = '82b7d3fec1294fda85370024ea2e0c8b'; // Your client id
 var client_secret = '79d59ba1373f4536bb01a2c8a34a9931'; // Your secret
 var redirect_uri = 'http://localhost:3000/callback'; // Your redirect uri
-
+ 
 /**
  * Generates a random string containing numbers and letters
  * @param  {number} length The length of the string
@@ -163,26 +163,26 @@ var redirect_uri = 'http://localhost:3000/callback'; // Your redirect uri
 var generateRandomString = function(length) {
   var text = '';
   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
+ 
   for (var i = 0; i < length; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
   return text;
 };
-
+ 
 var stateKey = 'spotify_auth_state';
-
+ 
 // var app = express();
-
+ 
 app.use(express.static(__dirname + '/public'))
    .use(cors())
    .use(cookieParser());
-
+ 
 app.get('/login_spotify', function(req, res) {
-
+ 
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
-
+ 
   // your application requests authorization
   var scope = 'user-read-private user-read-email';
   res.redirect('https://accounts.spotify.com/authorize?' +
@@ -194,16 +194,16 @@ app.get('/login_spotify', function(req, res) {
       state: state
     }));
 });
-
+ 
 app.get('/callback', function(req, res) {
-
+ 
   // your application requests refresh and access tokens
   // after checking the state parameter
-
+ 
   var code = req.query.code || null;
   var state = req.query.state || null;
   var storedState = req.cookies ? req.cookies[stateKey] : null;
-
+ 
   if (state === null || state !== storedState) {
     res.redirect('/#' +
       querystring.stringify({
@@ -223,26 +223,29 @@ app.get('/callback', function(req, res) {
       },
       json: true
     };
-
+ 
     request.post(authOptions, function(error, response, body) {
       if (!error && response.statusCode === 200) {
-
+ 
         var access_token = body.access_token,
             refresh_token = body.refresh_token;
-
+ 
         var options = {
           url: 'https://api.spotify.com/v1/me',
           headers: { 'Authorization': 'Bearer ' + access_token },
           json: true
         };
-
+ 
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
           user.display_name = body.display_name;
+          user.picture=body.images[0].url;
           console.log(body);
           console.log(user.display_name);
+          console.log(user.picture);
+          console.log(body.images[0].url);
         });
-
+ 
         // we can also pass the token to the browser to make requests from there
         res.redirect('/#' +
           querystring.stringify({
@@ -262,13 +265,13 @@ app.get('/callback', function(req, res) {
     });
   }
 });
-
+ 
 app.get('/', (req, res) => {
   res.render('pages/profile', {user});
 });
-
+ 
 app.get('/refresh_token', function(req, res) {
-
+ 
   // requesting access token from refresh token
   var refresh_token = req.query.refresh_token;
   var authOptions = {
@@ -280,7 +283,7 @@ app.get('/refresh_token', function(req, res) {
     },
     json: true
   };
-
+ 
   request.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       var access_token = body.access_token;
@@ -290,9 +293,9 @@ app.get('/refresh_token', function(req, res) {
     }
   });
 });
-
-
-
+ 
+ 
+ 
 // Authentication Middleware.
 // const auth = (req, res, next) => {
 //     if (!req.session.user) {
@@ -301,9 +304,9 @@ app.get('/refresh_token', function(req, res) {
 //     }
 //     next();
 //   };
-
+ 
 // app.use(auth);
-
+ 
 /*
 -
 -
@@ -312,13 +315,13 @@ JS Code for the Feed, Profile, Friends, and Rankings goes here
 -
 -
 -
-
+ 
 */
 app.get('/editprofile', (req,res) =>
 {
   res.render('pages/editprofile');
 })
-app.post('/editprofile', (req,res) => 
+app.post('/editprofile', (req,res) =>
 {
     if(req.body.image_id !== null && req.body.user_id !== null)
     {
@@ -367,14 +370,14 @@ app.post('/editprofile', (req,res) =>
         return console.log(err);
       });
     }
-
+ 
 })
-
-app.post('/addfriend')
+ 
+app.post('/addfriend', (req,res)=>
 {
-  query = 'insert into friends where username = $1;'
+  const query = 'insert into friends where username = $1;'
   db.any(query, [req.body.username])
-  
+ 
     .then(function (data) {
       res.status(201).json({
         status: 'success',
@@ -385,9 +388,9 @@ app.post('/addfriend')
     .catch(function (err) {
       return console.log(err);
     });
-  
-}
-
+ 
+})
+/*
 app.delete('/delete_user/:user_id')
 {
   const user_id = parseInt(req.params.user_id);
@@ -407,6 +410,7 @@ app.delete('/delete_user/:user_id')
         return console.log(err);
       });
 }
+*\
 /*
 const knex = require('knex')(
 {
@@ -421,10 +425,10 @@ app.post('/upload', async (req,res) =>)
   const (name,data) = req.files.pic;
   if( name && data)
   {
-    
+   
   }
   await knex.insert({name: name, omg: data}).into('img');
-
+ 
 }
 */
 app.get('/logout', (req, res) => {
@@ -433,7 +437,9 @@ app.get('/logout', (req, res) => {
     message : 'Logged out successfully',
 });
 });
-
-
+ 
+ 
 app.listen(3000);
 console.log('Server is listening on port 3000');
+ 
+
