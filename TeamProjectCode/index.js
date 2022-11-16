@@ -24,7 +24,7 @@ const db = pgp(dbConfig);
 const user = {
   username:undefined,
   password:undefined,
-  name: undefined,
+  display_name: undefined,
   picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
 };
  
@@ -69,7 +69,13 @@ app.get('/home', (req, res) =>{
 app.get('/register', (req, res) => {
   res.render('pages/register');
 });
- 
+
+app.get('/profile', (req, res) => {
+  res.render('pages/profile', {
+    user,
+  });
+}); 
+
   // Register submission
 app.post('/register', async (req, res) => {
     //the logic goes here
