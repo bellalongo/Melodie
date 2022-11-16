@@ -25,7 +25,7 @@ const user = {
   username:undefined,
   password:undefined,
   name: undefined,
-  picture: undefined,
+  picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
 };
  
 const images = {
@@ -62,9 +62,9 @@ app.use(
 // });
  
  
-// app.get('/home', (req, res) =>{
-//   res.redirect('/login'); //this will call the /anotherRoute route in the API
-// });
+app.get('/home', (req, res) =>{
+  res.render('pages/home'); //this will call the /anotherRoute route in the API
+});
  
 app.get('/register', (req, res) => {
   res.render('pages/register');
