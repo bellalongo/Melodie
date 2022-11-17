@@ -295,7 +295,6 @@ app.get('/refresh_token', function(req, res) {
   });
 });
 
-
 app.get('/home', (req, res) => {
   const access_token = tokens.access;
   const token = "Bearer " + access_token;
@@ -315,8 +314,6 @@ app.get('/home', (req, res) => {
     console.error(error)
   })
 });
-
-
 
 app.get('/logout', (req, res) => {
   req.session.destroy();
