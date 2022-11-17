@@ -24,6 +24,11 @@ const user = {
   password:undefined,
   display_name: "hello",
 };
+
+const tokens = {
+  access:undefined,
+  refresh:undefined
+}
   
 // test your database
 db.connect()
@@ -51,6 +56,7 @@ app.use(
   })
 );
 
+app.use(express.static(__dirname + '/public'));
 // app.get('/', (req, res) =>{
 //   res.redirect('/login'); //this will call the /anotherRoute route in the API
 // });
@@ -137,8 +143,6 @@ app.post('/login', async (req, res) => {
     });
 });
 
-
-
 // var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var cors = require('cors');
@@ -223,6 +227,9 @@ app.get('/callback', function(req, res) {
 
         var access_token = body.access_token,
             refresh_token = body.refresh_token;
+        
+          tokens.access = access_token;
+          tokens.refresh = refresh_token;
 
         var options = {
           url: 'https://api.spotify.com/v1/me',
@@ -257,9 +264,6 @@ app.get('/callback', function(req, res) {
   }
 });
 
-app.get('/', (req, res) => {
-  res.render('pages/profile', {user});
-});
 
 app.get('/refresh_token', function(req, res) {
 
@@ -278,6 +282,7 @@ app.get('/refresh_token', function(req, res) {
   request.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       var access_token = body.access_token;
+      tokens.access = access_token;
       res.send({
         'access_token': access_token
       });
@@ -285,37 +290,36 @@ app.get('/refresh_token', function(req, res) {
   });
 });
 
+app.get('/home', (req, res) => {
+  const access_token = tokens.access;
+  const token = "Bearer " + access_token;
+  var playlistURL = 'https://api.spotify.com/v1/playlists/37i9dQZEVXbLRQDuF5jeBp/tracks?limit=5';
+  axios.get(playlistURL, {
+    headers: {
+      'Authorization': token,
+    }
+  })
+  .then((resAxios) => {
+    console.log(resAxios.data.items[0].track.album)
+    //spotifyResult = resAxios.data;
 
-
-// Authentication Middleware.
-// const auth = (req, res, next) => {
-//     if (!req.session.user) {
-//       // Default to register page.
-//       return res.redirect('/register');
-//     }
-//     next();
-//   };
-
-// app.use(auth);
-
-/*
--
--
--
-JS Code for the Feed, Profile, Friends, and Rankings goes here
--
--
--
-
-*/
+    //console.log(resAxios.data.tracks.items);
+    
+    res.render('pages/home', {
+      results : resAxios.data.items
+    });
+  })
+  .catch((error) => {
+    console.error(error)
+  })
+});
 
 app.get('/logout', (req, res) => {
-  req.session.destroy();
   res.render('pages/login', {
     message : 'Logged out successfully',
+  });
+  req.session.destroy();
 });
-});
-
 
 app.listen(3000);
 console.log('Server is listening on port 3000');
