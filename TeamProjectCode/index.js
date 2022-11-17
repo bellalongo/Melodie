@@ -377,7 +377,6 @@ app.post('/editprofile', (req,res) =>
         return console.log(err);
       });
     }
-
 })
 
 app.post('/addfriend')
@@ -417,6 +416,27 @@ app.delete('/delete_user/:user_id')
         return console.log(err);
       });
 }
+
+app.get('/home', (req, res) => {
+  const access_token = tokens.access;
+  const token = "Bearer " + access_token;
+  var playlistURL = 'https://api.spotify.com/v1/playlists/37i9dQZEVXbLRQDuF5jeBp/tracks?limit=5';
+  axios.get(playlistURL, {
+    headers: {
+      'Authorization': token,
+    }
+  })
+  .then((resAxios) => {
+    console.log(resAxios.data.items[0].track.album)  
+    res.render('pages/home', {
+      results : resAxios.data.items
+    });
+  })
+  .catch((error) => {
+    console.error(error)
+  })
+});
+
 /*
 const knex = require('knex')(
 {
