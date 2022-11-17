@@ -9,6 +9,7 @@ const { use } = require('bcrypt/promises');
 const { query } = require('express');
 const { minify } = require('pg-promise');
 
+
 // database configuration
 const dbConfig = {
     host: 'db',
@@ -34,6 +35,12 @@ const tokens = {
 const images = {
   image_url : undefined
 };
+
+const tokens = {
+  access:undefined,
+  refresh:undefined
+}
+  
 // test your database
 db.connect()
   .then(obj => {
@@ -110,7 +117,7 @@ app.post('/register', async (req, res) => {
  
  
 app.get('/login', (req, res) => {
-  res.render('pages/login');
+  res.render('pages/login.ejs');
 });
  
 app.post('/login', async (req, res) => {
@@ -275,9 +282,10 @@ app.get('/callback', function(req, res) {
     });
   }
 });
- 
+
 app.get('/', (req, res) => {
   res.render('pages/profile', {user});
+
 });
  
 app.get('/refresh_token', function(req, res) {
@@ -386,7 +394,6 @@ app.post('/editprofile', (req,res) =>
 app.post('/addfriend', async (req, res) => {
   const query = 'insert into friends where username = $1;'
   db.any(query, [req.body.username])
- 
     .then(function (data) {
       res.status(201).json({
         status: 'success',
@@ -397,8 +404,6 @@ app.post('/addfriend', async (req, res) => {
     .catch(function (err) {
       return console.log(err);
     });
-
-  
 });
 
 app.delete('/delete_user/:user_id', async (req, res) => {
@@ -450,27 +455,33 @@ app.get('/home', (req, res) => {
     console.error(error)
   })
 });
+})
 
-/*
-const knex = require('knex')(
-{
-  client: 'splite3',
-  connection: {
-    filename: "./img.db"
-  },
-  useNullAsDefault: true
-});
-app.post('/upload', async (req,res) =>)
-{
-  const (name,data) = req.files.pic;
-  if( name && data)
-  {
-   
-  }
-  await knex.insert({name: name, omg: data}).into('img');
- 
-}
-*/
+app.get('/friends', (res,req) =>
+  axios.get(
+    'https://api.spotify.com/v1/me/',
+    {
+      headers: {
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + tokens.access,
+        'Content-Type': 'application/json',
+    },
+    })
+    .then(results => {
+      {
+        console.log(results.data);
+        res.render('pages/friends', {
+          songs: results.body
+         });
+      }
+    })
+    .catch(error => 
+      {
+        console.log(error);
+      })
+)
+
+
 app.get('/logout', (req, res) => {
   req.session.destroy();
   res.render('pages/login', {
