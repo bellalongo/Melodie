@@ -8,7 +8,6 @@ const axios = require('axios');
 const { use } = require('bcrypt/promises');
 const { query } = require('express');
 const { minify } = require('pg-promise');
-const fileUpload = requre('express-fileUpload');
 
 //app.use(fileUpload()); 
 // database configuration
@@ -379,9 +378,8 @@ app.post('/editprofile', (req,res) =>
     }
 })
 
-app.post('/addfriend')
-{
-  query = 'insert into friends where username = $1;'
+app.post('/addfriend', async (req, res) => {
+  const query = 'insert into friends where username = $1;'
   db.any(query, [req.body.username])
   
     .then(function (data) {
@@ -395,10 +393,9 @@ app.post('/addfriend')
       return console.log(err);
     });
   
-}
+});
 
-app.delete('/delete_user/:user_id')
-{
+app.delete('/delete_user/:user_id', async (req, res) => {
   const user_id = parseInt(req.params.user_id);
   const query = 'delete from reviews where review_id = $1;';
     const query2 = 'delete from trails_to_reviews where review_id = $1;'
@@ -415,7 +412,7 @@ app.delete('/delete_user/:user_id')
       .catch(function (err) {
         return console.log(err);
       });
-}
+});
 
 app.get('/home', (req, res) => {
   const access_token = tokens.access;
