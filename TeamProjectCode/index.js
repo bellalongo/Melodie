@@ -27,6 +27,11 @@ const user = {
   password:undefined,
   name: undefined,
 };
+
+const tokens = {
+  access:undefined,
+  refresh:undefined
+}
   
 const images = {
   image_url : undefined
@@ -57,6 +62,7 @@ app.use(
   })
 );
 
+app.use(express.static(__dirname + '/public'));
 // app.get('/', (req, res) =>{
 //   res.redirect('/login'); //this will call the /anotherRoute route in the API
 // });
@@ -229,6 +235,9 @@ app.get('/callback', function(req, res) {
 
         var access_token = body.access_token,
             refresh_token = body.refresh_token;
+        
+          tokens.access = access_token;
+          tokens.refresh = refresh_token;
 
         var options = {
           url: 'https://api.spotify.com/v1/me',
@@ -284,6 +293,7 @@ app.get('/refresh_token', function(req, res) {
   request.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       var access_token = body.access_token;
+      tokens.access = access_token;
       res.send({
         'access_token': access_token
       });
@@ -367,7 +377,6 @@ app.post('/editprofile', (req,res) =>
         return console.log(err);
       });
     }
-
 })
 
 app.post('/addfriend')
@@ -407,6 +416,27 @@ app.delete('/delete_user/:user_id')
         return console.log(err);
       });
 }
+
+app.get('/home', (req, res) => {
+  const access_token = tokens.access;
+  const token = "Bearer " + access_token;
+  var playlistURL = 'https://api.spotify.com/v1/playlists/37i9dQZEVXbLRQDuF5jeBp/tracks?limit=5';
+  axios.get(playlistURL, {
+    headers: {
+      'Authorization': token,
+    }
+  })
+  .then((resAxios) => {
+    console.log(resAxios.data.items[0].track.album)  
+    res.render('pages/home', {
+      results : resAxios.data.items
+    });
+  })
+  .catch((error) => {
+    console.error(error)
+  })
+});
+
 /*
 const knex = require('knex')(
 {
@@ -431,9 +461,8 @@ app.get('/logout', (req, res) => {
   req.session.destroy();
   res.render('pages/login', {
     message : 'Logged out successfully',
+  });
 });
-});
-
 
 app.listen(3000);
 console.log('Server is listening on port 3000');
