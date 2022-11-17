@@ -418,18 +418,28 @@ app.get('/home', (req, res) => {
   const access_token = tokens.access;
   const token = "Bearer " + access_token;
   var playlistURL = 'https://api.spotify.com/v1/playlists/37i9dQZEVXbLRQDuF5jeBp/tracks?limit=5';
-  axios.get(playlistURL, {
-    headers: {
-      'Authorization': token,
-    }
-  })
-  .then((resAxios) => {
-    console.log(resAxios.data.items[0].track.album)  
-    console.log(resAxios.data.items[0].track);
+  var newSongsURL = 'https://api.spotify.com/v1/playlists/37i9dQZF1DX4JAvHpjipBk/tracks?limit=5';
+  axios.all([
+    axios.get(playlistURL, {
+      headers: {
+        'Authorization': token,
+      }
+    }),
+    axios.get(newSongsURL, {
+      headers: {
+        'Authorization': token,
+      }
+    })
+  ])
+  .then(axios.spread((topsongs, newsongs) => {
+    console.log(topsongs.data.items);
+    console.log(newsongs.data.items);
     res.render('pages/home', {
-      results : resAxios.data.items
+      results : topsongs.data.items,
+      newsongs: newsongs.data.items
     });
   })
+  )
   .catch((error) => {
     console.error(error)
   })
