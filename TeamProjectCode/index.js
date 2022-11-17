@@ -425,6 +425,7 @@ app.get('/home', (req, res) => {
   })
   .then((resAxios) => {
     console.log(resAxios.data.items[0].track.album)  
+    console.log(resAxios.data.items[0].track);
     res.render('pages/home', {
       results : resAxios.data.items
     });
