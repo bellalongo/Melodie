@@ -143,6 +143,8 @@ app.post('/login', async (req, res) => {
     });
 });
 
+
+
 // var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var cors = require('cors');
@@ -264,6 +266,9 @@ app.get('/callback', function(req, res) {
   }
 });
 
+app.get('/', (req, res) => {
+  res.render('pages/profile', {user});
+});
 
 app.get('/refresh_token', function(req, res) {
 
@@ -290,6 +295,7 @@ app.get('/refresh_token', function(req, res) {
   });
 });
 
+
 app.get('/home', (req, res) => {
   const access_token = tokens.access;
   const token = "Bearer " + access_token;
@@ -300,11 +306,7 @@ app.get('/home', (req, res) => {
     }
   })
   .then((resAxios) => {
-    console.log(resAxios.data.items[0].track.album)
-    //spotifyResult = resAxios.data;
-
-    //console.log(resAxios.data.tracks.items);
-    
+    console.log(resAxios.data.items[0].track.album)  
     res.render('pages/home', {
       results : resAxios.data.items
     });
@@ -314,11 +316,13 @@ app.get('/home', (req, res) => {
   })
 });
 
+
+
 app.get('/logout', (req, res) => {
+  req.session.destroy();
   res.render('pages/login', {
     message : 'Logged out successfully',
   });
-  req.session.destroy();
 });
 
 app.listen(3000);
