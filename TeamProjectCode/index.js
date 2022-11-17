@@ -8,7 +8,7 @@ const axios = require('axios');
 const { use } = require('bcrypt/promises');
 const { query } = require('express');
 const { minify } = require('pg-promise');
-const fileUpload = requre('express-fileUpload');
+const fileUpload = require('express-fileUpload');
 
 //app.use(fileUpload()); 
 // database configuration
