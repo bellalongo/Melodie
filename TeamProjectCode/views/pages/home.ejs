@@ -6,198 +6,41 @@
 
 <%- include ('../partials/header') %>
 <%- include ('../partials/menu') %>
-<%- include ('../partials/message') %>
-
-<head>
-  <!-- jQuery library -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <!-- Popper JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <!-- Latest compiled JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</head>
 
 <body>
-  <style>   
-  .square {
-    height: 150px;
-    width: 150px;
-    background-color: rgb(30, 30, 30);
-    background-image:url(https://cdn.shopify.com/s/files/1/0011/4651/9637/products/vinyl-disc-1_800x.png?v=1665148915);
-    background-size:contain;
-  }
-  .column {
-    float: left;
-    width: 33%;
-    padding: 10px;
-    height: 0px; /* Should be removed. Only for demonstration */
-  }
-  .carousel-item{
-      height:40rem;
-      background: #777;
-      color:white;
-      position: relative;
-      background-position: center;
-      object-fit: fill;
-      background-size: cover ;
-      
-  }
-  .container_home{
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding-bottom: 50px;
-      opacity: 0.8;
-  }
-  input {
-    width: 400px;
-    height: 50px;
-    position:relative; top:0px;
-    background-image: url();
-    display: inline-block;
-  }
-  form action{
-    background-color:red;
-    width: 100px;
-  }
-  </style>
-
-  <div id = "myCarousel" class="carousel slide" data-ride="carousel">
-      <ol class = "carousel-indicators">
-          <li data-target = "#myCarousel"
-          data-slide-to="0" class = active></li>
-          <li data-target="#myCarousel"
-          data-slide-to="1"></li>
-          <li data-target="#myCarousel"
-          data-slide-to="2"></li>
-          <li data-target="#myCarousel"
-          data-slide-to="3"></li>
-      </ol>
-      <div class="carousel-inner">
-      <div class = "carousel-item active" style="background-image:url(https://lh4.googleusercontent.com/snFOB2JzvrTc02DT6uFk3aS0WfSNRIXziz9HfE9b9QVN__dqvpflh9GpNcO1BFfsJ3c=w2400)">
-        <div class= "container_home" style="padding-inline: 100px;">
-          <h1>2022 XXL Freshman Class </h1>
-          <p>The 2022 XXL Freshman Class has been announced. This year's lineup includes Nardo Wick, Doechii, SoFaygo, Babyface Ray, Kali, KayCyy, Cochise, Big30, KenTheMan, Big Scarr, Saucy Santana, and BabyTron (who got the most fan votes, earning him the 10th spot on the list). See the cover, and watch the official lineup announcement video below.</p>
-        </div>
+  <div class = "home_div">
+    <div class = "row">
+      <div class = "home_column_small">
+        <h4>Trending Now</h4>
+          <% results.forEach(result => { %>
+            <div class = "row" style="background-color:rgb(30,30,30)">
+              <div class = "home_trendingNow_image">
+                <img src = <%=result.track.album.images[0].url %> width="50px">
+              </div>
+              <div class = "home_trendingNow_text">
+                <p class = "home_trendingNow_song"><%= result.track.name %></p>
+                <p class = "home_trendingNow_artist"><%= result.track.artists[0].name %></p> 
+              </div>
+            </div>
+          <% }) %> 
       </div>
-      <div class = "carousel-item" style="background-image:url(https://lh5.googleusercontent.com/69_6fw2bYZRiBNXMecJD-H11--CCyUPtKZiJyE_PyZcaGCBScIVHZIHgeatKnc6OoD8=w2400)">
-          <div class= "container_home" style="padding-inline: 100px;">
-              <h1>Drake</h1>
-              <p> Canadian rapper and vocalist Drake sustained a high-level commercial presence shortly after he hit the scene in 2006, whether with his own chart-topping releases or a long string of guest appearances on hits by the likes of Lil Wayne, Rihanna, and A$AP Rocky. Thanks to his introspective rap style, his sensitive R&B crooning, and his golden touch with songwriting, each one of his albums -- from 2011's Take Care to 2018's trap-influenced Scorpion -- topped charts worldwide, and singles like the Grammy-winning "Hotline Bling" and many of his mixtapes did too.
-              </p>
+      <div class = "home_column_big">
+        <h4>Home</h4>
+      </div>
+      <div class = "home_column_small">
+        <h4>New Music</h4>
+        <% newsongs.forEach(result => { %>
+          <div class = "row" style="background-color:rgb(30,30,30)">
+            <div class = "home_trendingNow_image">
+              <img src = <%=result.track.album.images[0].url %> width="50px">
+            </div>
+            <div class = "home_trendingNow_text">
+              <p class = "home_trendingNow_song"><%= result.track.name %></p>
+              <p class = "home_trendingNow_artist"><%= result.track.artists[0].name %></p> 
             </div>
           </div>
-          <div class = "carousel-item" style="background-image:url(https://lh3.googleusercontent.com/ElRibRrjt06Umy9_ezHffLi75SfsxdeUZ7HClcnCzFEwgJOHAUsXScu99T_JUCZ3xXo=w2400)">
-          <div class= "container_home" style="padding-inline: 100px;">
-              <h1>Lil Uzi</h1>
-              <p> A rapper who grew up on the beats of Marilyn Manson and Kanye's 808s & Heartbreak, Lil Uzi Vert emerged from North Philadelphia with a relaxed style that connected the dots between Young Thug, Chief Keef, and the A$AP Mob. After contributing a featured verse to Migos' number one hit "Bad & Boujee," they broke through on their own with two consecutive chart-topping LPs, 2017's Luv Is Rage 2 (capped by the groundbreaking trap-pop anthem "XO Tour Llif3") and 2020's Eternal Atake. While fans waited patiently for third studio album, The Pink Tape, to arrive, Uzi sated them in with 2022 EP Red & White.
-              </p>
-            </div>
-          </div>
-      <div class = "carousel-item" style="background-image:url(https://lh3.googleusercontent.com/ZoT3KyB1YPIcB_mslBH_n944b21963oMEJ9cqF0-hqibcDhZSdssypIHKK3iNUY14c0=w2400)">
-          <div class= "container_home" >
-              <h1>Ariana Grande</h1>
-              <p> Ariana Grande is perhaps the quintessential pop star of the last half of the 2010s, capturing the era's spirit and style. Emerging in 2013 with the hit single "The Way," Grande initially appeared to be the heir to the throne of Mariah Carey, due in part to her powerhouse vocals. With its Babyface production, her debut Yours Truly underscored her debt to '90s R&B, but Grande quickly incorporated hip-hop and EDM into her music. "Problem," a 2014 smash duet with Iggy Azalea, was the first indication of her development, an evolution reinforced by the hits "Bang Bang" and "Love Me Harder," which featured Jessie J & Nicki Minaj and the Weeknd, respectively.</p>
-            </div>
+        <% }) %> 
       </div>
-  </div>
-  <a href = "#myCarousel" class = "carousel-control-prev" role="button" data-slide="prev">
-      <span class="sr-only">Previous</span>
-      <span class = "carousel-control-prev-icon"
-      aria-hidden="true"></span>
-  </a>
-  <a href = "#myCarousel" class = "carousel-control-next" role="button" data-slide="next">
-      <span class="sr-only">Previous</span>
-      <span class = "carousel-control-next-icon"
-      aria-hidden="true"></span>
-  </a>
-  </div>
-  <div class="card" style = "border-color: rgb(30, 30, 30);">
-  <div class="card-body">
-    <center><h5 class="card-title" style = "color:rgb(192, 224, 222); font-weight: bold;">Discover yourself</h5></center>
-  <center><p class="text"><input name="searchbox" type="text" size="40" placeholder="Search your favorite artist and music" style = "border-radius: 15px;"/><a href="#" class="btn btn-primary" style = "background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255);">Or Upload</a></p></center>
-  </div> 
-  </div>
-  <div class="row" style = "padding-inline:20px;">
-    <div class="column";>
-    <!-- start sw-rss-feed code --> 
-    <script type="text/javascript"> 
-      rssfeed_url = new Array(); 
-      rssfeed_url[0]="https://rss.app/feeds/MQzV6yfQ7gCZS3cF.xml";  
-      rssfeed_frame_width="1000"; 
-      rssfeed_frame_height="800"; 
-      rssfeed_scroll="on"; 
-      rssfeed_scroll_step="6"; 
-      rssfeed_scroll_bar="off"; 
-      rssfeed_target="_blank"; 
-      rssfeed_font_size="12"; 
-      rssfeed_font_face=""; 
-      rssfeed_border="on"; 
-      rssfeed_css_url="https://feed.surfing-waves.com/css/style5.css"; 
-      rssfeed_title="on"; 
-      rssfeed_title_name=""; 
-      rssfeed_title_bgcolor="#3366ff"; 
-      rssfeed_title_color="#fff"; 
-      rssfeed_title_bgimage=""; 
-      rssfeed_footer="off"; 
-      rssfeed_footer_name="rss feed"; 
-      rssfeed_footer_bgcolor="#fff"; 
-      rssfeed_footer_color="#333"; 
-      rssfeed_footer_bgimage=""; 
-      rssfeed_item_title_length="50"; 
-      rssfeed_item_title_color="#666"; 
-      rssfeed_item_bgcolor="#fff"; 
-      rssfeed_item_bgimage=""; 
-      rssfeed_item_border_bottom="on"; 
-      rssfeed_item_source_icon="off"; 
-      rssfeed_item_date="off"; 
-      rssfeed_item_description="on"; 
-      rssfeed_item_description_length="120"; 
-      rssfeed_item_description_color="#666"; 
-      rssfeed_item_description_link_color="#333"; 
-      rssfeed_item_description_tag="off"; 
-      rssfeed_no_items="0"; 
-      rssfeed_cache = "c566be8ab2286d6ffc5fb8be09d28401"; 
-      //--> 
-      </script> 
-      <script type="text/javascript" src="//feed.surfing-waves.com/js/rss-feed.js"></script> 
-      <!-- The link below helps keep this service FREE, and helps other people find the SW widget. Please be cool and keep it! Thanks. --> 
-      <div style="color:#ccc;font-size:10px; text-align:right; width:700px;">powered by <a href="https://surfing-waves.com" rel="noopener" target="_blank" style="color:#ccc;">Surfing Waves</a></div> 
-      <!-- end sw-rss-feed code -->
-      </div>
-  <div class="column" style="padding: inline 20px;">
-  </div>
-    <div class="column" style="padding-inline: 40px;">
-      <h2>Featured tracks</h2>
-      <table>
-  <tr>
-      <td>
-      <table>
-          <tr>
-          <td><div class="square"></div></td>
-          <td>DaBaby - Going crazy</td>
-          </tr>
-          <tr>
-          <td><div class="square"></div></td>
-          <td>Shawn Mendes</td>
-          </tr>
-          <tr>
-          <td><div class="square"></div></td>
-          <td>DaBaby - Going crazy</td>
-          </tr>
-          <tr>
-          <td><div class="square"></div></td>
-          <td>Shawn Mendes</td>
-          </tr>
-          <tr>
-          <td><div class="square"></div></td>
-          <td>DaBaby - Going crazy</td>
-          </tr>
-      </table>
-      </td>
-  </tr>
-  </table>
     </div>
   </div>
 </body>
