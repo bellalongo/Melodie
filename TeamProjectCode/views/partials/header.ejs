@@ -11,20 +11,21 @@
         <link href="../../resources/css/login.css" rel = "stylesheet" type="text/css">
     
     <title>Melodie</title>
-    <!-- TO-DO: Add the <link> tag to include bootstrap stylesheet -->
-    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </head>
   
 <style >
   body
   {
-    background-color: rgb(30, 30, 30);
+    background-color: rgb(0, 0, 0);
     color:rgb(255, 255, 255);
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font: 'Helvetica, sans-serif';
   }
   div
   {
-    background-color:  rgb(30, 30, 30);
+    background-color:  rgb(0, 0, 0);
   }
   .login_div
   {
@@ -47,6 +48,50 @@
   {
     background-color: rgb(30, 30, 30);
   }
+  .home_div
+  {
+    text-align:center;
+    margin:auto;
+    padding: 35px;
+  }
+  .home_row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  .home_column_small
+  {
+    color:white;
+    text-align: left;
+    background-color: rgb(30, 30, 30);
+    border-radius: 10px;
+    width:20%;
+    padding:10px;
+  }
+  .home_column_big
+  {
+    color:white;
+    text-align:left;
+    width:60%;
+    padding:10px;
+    padding-left:20px;
+    padding-right:20px;
+  }
+  .home_trendingNow_image
+  {
+    color:white;
+    width:70px;
+    text-align:left;
+    padding:10px;
+    background-color: rgb(30, 30, 30);
+  }
+  .home_trendingNow_text
+  {
+    color:white;
+    width:200px;
+    text-align:left;
+    background-color: rgb(30, 30, 30);
+  }
   form
   {
     text-align: center;
@@ -62,5 +107,20 @@
   .register
   {
     color: rgb(79, 124, 172);
+  }
+  p
+  {
+    color:white;
+  }
+  .home_trendingNow_song
+  {
+    color:white;
+    font-size: 20px;
+    height:20px;
+  }
+  .home_trendingNow_artist
+  {
+    color:grey;
+    font-size:15px;
   }
 </style>
