@@ -1,0 +1,14 @@
+# .github/release.yml
+
+changelog:
+  exclude:
+    labels:
+      - ignore-for-release
+    authors:
+  categories:
+    - title: New Changes
+      labels:
+    - title: Exciting New Features 🎉
+      labels:
+    - title: Other Changes
+      labels:
