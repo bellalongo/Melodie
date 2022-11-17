@@ -4,15 +4,15 @@
 
 <main>
     <div class="container">
-        <table class="table">
+        <table class="table table-dark">
             <tr>
-                <th>Welcome, <%= user.username %> </th>
+                <th>Welcome, <%= user.display_name %> </th>
                 <th>Favorite Snippets</th>
                 <th>Top Tracks</th>
             </tr>
             <tr>
                 <td>
-                <img src="https://www.business2community.com/wp-content/uploads/2019/03/best-practices-stock-photos.jpg" alt="This is the profile image." width="200 px">
+                <img src=<%= user.picture %> width="250 px">
                 </td>
                 <td><audio controls>
                         <source src="sample-3s.mp3" type="audio/mpeg">
