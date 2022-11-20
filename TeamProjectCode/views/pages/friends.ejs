@@ -84,8 +84,21 @@ body,
 
 <body>
   <h1>Friends</h1>
+
+<!-- Search for friends to Add-->
+<div class="search-bar">
+  <form action= "/search">
+      <input type="text" placeholder="Search Username" name="search" >
+      <button type="submit">Submit</button>
+  </form>
+</div>
+
+
 <!-- Music from friends  -->
 <div class="container d-flex justify-content-center my-4 mb-5">
+  <% if (songs == undefined) { %>
+    <p>Find Friends!</p>
+  <% } else { %> 
     <% songs.forEach(song => { %>
     <div id="mobile-box">
   
@@ -115,7 +128,7 @@ body,
       </div>
       <!-- Card -->
     </div>
-    <% }) %>
+    <% })} %>
   </div>
   <!-- Content -->
 </body>

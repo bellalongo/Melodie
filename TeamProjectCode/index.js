@@ -27,11 +27,7 @@ const user = {
   display_name: undefined,
   picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
 };
-const tokens = {
-  access:undefined,
-  refresh:undefined
-}
-  
+
 const images = {
   image_url : undefined
 };
@@ -391,6 +387,21 @@ app.post('/editprofile', (req,res) =>
     }
 })
 
+app.get('/search', (req,res))
+{
+  const query = 'select from users where username = $1;'
+  db.any(query, [req.body.username])
+  .then(function(data) {
+    console.log(data);
+    res.render('pages/friends', 
+    {
+      results: data
+    })
+  })
+  .catch(function (err) {
+    return console.log(err);
+  });
+}
 app.post('/addfriend', async (req, res) => {
   const query = 'insert into friends where username = $1;'
   db.any(query, [req.body.username])
@@ -405,7 +416,7 @@ app.post('/addfriend', async (req, res) => {
       return console.log(err);
     });
 });
-
+/*
 app.delete('/delete_user/:user_id', async (req, res) => {
   const user_id = parseInt(req.params.user_id);
   const query = 'delete from reviews where review_id = $1;';
@@ -424,7 +435,7 @@ app.delete('/delete_user/:user_id', async (req, res) => {
         return console.log(err);
       });
 });
-
+*/
 app.get('/home', (req, res) => {
   const access_token = tokens.access;
   const token = "Bearer " + access_token;
@@ -455,9 +466,9 @@ app.get('/home', (req, res) => {
     console.error(error)
   })
 });
-})
 
-app.get('/friends', (res,req) =>
+
+app.get('/friends', (req,res) =>
   axios.get(
     'https://api.spotify.com/v1/me/',
     {
