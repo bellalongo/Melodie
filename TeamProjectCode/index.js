@@ -395,7 +395,7 @@ app.get('/search', (req,res))
     console.log(data);
     res.render('pages/friends', 
     {
-      results: data
+      addFriend: data
     })
   })
   .catch(function (err) {
