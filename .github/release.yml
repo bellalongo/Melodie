@@ -1,0 +1,13 @@
+# .github/release.yml
+
+changelog:
+  categories:
+    - title: New Changes
+      labels:
+        - "*"
+    - title: Exciting New Features 🎉
+      labels:
+        - "*"
+    - title: Other Changes
+      labels:
+        - "*"

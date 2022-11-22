@@ -1,29 +1,37 @@
+<!-- 
+    1. Register, creating a new spotify account if they don't have one.
+ -->
+
 <%- include ('../partials/header') %>
 <%- include ('../partials/menu') %>
-<%- include ('../partials/message') %>
 
 <main>
-  <div class="container">
+  <div class="page">
     <!-- THE REST OF YOUR HTML CODE GOES HERE -->
     <h1>Register</h1>
     <form id = "Register form" action = "/register" method = "post">
-      <div class="mb-3" id = "username">
-          <label for="username" class="form-label">Username</label>
-          <input type="text" class="form-control" name = "username" id="username" placeholder = "Enter username">
-      </div>
+      
+      <div class="login_div" id = "username">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" name = "username" id="username" placeholder = "Enter username" 
+        style="background-color:rgb(30, 30, 30); color:rgb(255, 255, 255); border-color: rgb(255, 255, 255);">
+    </div>
 
-      <div class="mb-3" id = "password">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id= "password" name = "password" placeholder="Enter password (between 8 and 60 characters)">
-      </div>
+    <div class="login_div" id = "password">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control" id= "password" name = "password" 
+      placeholder="Enter password(8-60 characters)" 
+       style="background-color:rgb(30, 30, 30); color:rgb(255, 255, 255); border-color: rgb(255, 255, 255);;">
+    </div>
 
-      <div class="submit">
-          <button type="submit"  class="btn btn-primary" id = "submit-button" >Register</button>
-      </div>
-      <hr>
+    <div class="submit_btn">
+      <button type="submit"  class="btn btn-primary" id = "submit-button" 
+      style ="background-color:rgb(79, 124, 172);; border-color: rgb(79, 124, 172); color:rgb(30, 30, 30);">
+      Register</button>
+  </div>
       <div>
         <small>Already have an account?</small>
-        <a href="/login"> <small> Login!</small></a>
+        <a href="/login" style="text-decoration-color:rgb(79, 124, 172);"><small class = "register"> Login!</small> </a>
       </div>
   </div>
 </main>

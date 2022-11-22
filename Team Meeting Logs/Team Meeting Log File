@@ -12,3 +12,46 @@ iii. Follow-up items
 Try to finish up data schema by the next meeting.
 Research spotify API information for particular use case 
 Distribute responsibilities for the week
+
+Meeting 2:
+i. Decisions Made
+
+1. Home page - Current Music News
+  Big Spotlight in the middle
+  Search Bar Underneath
+  
+2. Friends page - Friends Snippets 
+
+ii. Alternative actions/options discussed
+
+1. Backseat the edit profile api
+2. Bootstrap HTML for Music - Only need to work on the backend
+
+iii. Follow up items
+
+1. Jaden - Work on the add friends function
+2. Alex and Daniil UI - Music Snippets 
+3. Gabo - Continue implementing feed page - HTML Home Page
+4. Gabo and Spotify API coordinate on home page data
+5. Casey - Display Username/Snippets/Top Tracks
+
+
+Meeting 3:
+i. Decisions Made
+  1. Home page - Feed of people's favorite snippets, trending songs, new music from artists
+  2. Frends page - cards of friend's profiles
+  3. Music page - find their favorite song, and can add it as a snippet
+  4. Profile page -  favorite snippets, top tracks, profile pic, bio
+
+ii.  Action needed to take
+  1. Have everyone merge to main
+  2. Book a presentation slot
+  3. Have UI sync up
+
+iii. Follow up Items
+  1. Gabo:
+  2. Alex and Daniil: music page
+  3. Jaden: friends page
+  4. Casey: profile page
+  5. Bella: home page
+  
