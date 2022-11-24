@@ -256,12 +256,16 @@ app.get('/callback', function(req, res) {
  
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
-          user.display_name = body.display_name;
-          user.picture=body.images[0].url;
           console.log(body);
+          user.display_name = body.display_name;
+
+          if(body.images[0]){
+            user.picture=body.images[0].url;
+          }
+          
           console.log(user.display_name);
           console.log(user.picture);
-          console.log(body.images[0].url);
+          //console.log(body.images[0].url);
         });
  
         // we can also pass the token to the browser to make requests from there
@@ -542,6 +546,24 @@ app.post('/music', (req, res) => {
     })
   });
 
+  // THIS DOES NOTHING
+  // app.put('/music', (req, res) => {
+  //   console.log(req.body.device)
+  //   const access_token = tokens.access;
+  //   const token = "Bearer " + access_token;
+  //   const device_id = req.body.device;
+  //   var searchUrl = "https://api.spotify.com/v1/me/player/play?device_id=" + device_id;
+
+  //   //"{\"context_uri\":\"spotify:album:5ht7ItJgpBH7W6vJ5BqpPr\",\"offset\":{\"position\":5},\"position_ms\":0}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer BQAcfgh96EGQF_HZ0o6hVhn_CoKP81zV_O17Y6EKKUCU1tYLZfkb9MS5hW7RJLePLX994muribDjcGBtenncuc59PTouhll09zXcRt8ckmOkmsXcZAehftF46W6QJ9Ppw8IQKELLHA5vhhO5fZhh8iZqdBaAw6vJOm-CEErpEaatRlvJMKP5rIKR5hc-SL23UOBBxC4"
+
+  //   axios.put(searchUrl, {
+  //     context_uri: req.body.song,
+  //     //position_ms: req.body.position,
+  //     headers:{
+  //       'Authorization': token,
+  //     }
+  //   })
+  // });
 
 // const express = require('express')
 // const request = require('request');
