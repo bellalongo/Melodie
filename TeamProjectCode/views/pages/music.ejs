@@ -496,8 +496,9 @@
     </script>
 
     <script>
-        function PlayMusic(){
-
+        function PlayMusic(song){
+            let nostring_song = song.replace(/"/g,"");
+            console.log("song.uri", nostring_song);
             let start_pos = {min: 0,
             sec: 0,
             total: 0}
@@ -510,12 +511,12 @@
             var searchUrl = "https://api.spotify.com/v1/me/player/play?device_id=" + device_id;
 
             let info = {
-                uris: [document.getElementById('song').value],
+                uris: [nostring_song],
                 position_ms: start_pos.total
             };
             //info.uris[0] = document.getElementById('song').value;
             let body = JSON.stringify(info);
-            console.log(body)
+            console.log("body", body);
 
             let xhr = new XMLHttpRequest();
             xhr.open("PUT", searchUrl, true);
@@ -643,7 +644,7 @@
                                         <input type="text" id="minutes" name="minutes" maxlength="2" placeholder="mm" size="4">
                                         <label for="seconds">Sec</label>
                                         <input type="text" id="seconds" name="seconds" placeholder="ss" maxlength="2" size="4" >
-                                        <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PlayMusic()"
+                                        <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PlayMusic('<%= el.uri %>')"
                                             style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Play</button>
 
                                     <!-- </form> -->
