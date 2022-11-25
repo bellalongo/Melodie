@@ -385,9 +385,9 @@ app.post('/editprofile', (req,res) =>
         return console.log(err);
       });
     }
-})
+});
 
-app.get('/search', (req,res))
+app.get('/search', async (req,res) =>
 {
   const query = 'select from users where username = $1;'
   db.any(query, [req.body.username])
@@ -401,7 +401,7 @@ app.get('/search', (req,res))
   .catch(function (err) {
     return console.log(err);
   });
-}
+});
 app.post('/addfriend', async (req, res) => {
   const query = 'insert into friends where username = $1;'
   db.any(query, [req.body.username])
@@ -419,8 +419,8 @@ app.post('/addfriend', async (req, res) => {
 /*
 app.delete('/delete_user/:user_id', async (req, res) => {
   const user_id = parseInt(req.params.user_id);
-  const query = 'delete from reviews where review_id = $1;';
-    const query2 = 'delete from trails_to_reviews where review_id = $1;'
+  const query = 'delete from users where user_id = $1;';
+    const query2 = 'delete from users_to_snippets where users_id = $1;'
     console.log(query);
     db.any(query, [user_id])
       .then(function (data) {
@@ -478,11 +478,12 @@ app.get('/friends', (req,res) =>
         'Content-Type': 'application/json',
     },
     })
-    .then(results => {
+    .then(friends => {
       {
-        console.log(results.data);
+        console.log(friends.data);
         res.render('pages/friends', {
-          songs: results.body
+          songs: friends.body,
+          friends,
          });
       }
     })
