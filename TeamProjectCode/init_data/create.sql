@@ -9,6 +9,7 @@ CREATE TABLE users (
 DROP TABLE IF EXISTS snippets CASCADE;
 CREATE TABLE snippets (
     snippet_id SERIAL PRIMARY KEY,
+    song_id TEXT,
     song_name TEXT,
     start_time TIME
 );
@@ -24,9 +25,12 @@ CREATE TABLE friends (
 DROP TABLE IF EXISTS posts CASCADE;
 CREATE TABLE posts (
   post_id SERIAL PRIMARY KEY,
+  username VARCHAR(50) NOT NULL,
   user_action TEXT,
-  song_id TEXT,
-  username VARCHAR(50) NOT NULL
+  user_comment TEXT,
+  song_name TEXT,
+  song_artist TEXT,
+  song_image TEXT
 );
 
 DROP TABLE IF EXISTS images CASCADE;

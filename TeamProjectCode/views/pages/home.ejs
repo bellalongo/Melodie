@@ -8,6 +8,16 @@
 <%- include ('../partials/menu') %>
 <%- include ('../partials/message') %>
 
+<script>
+  $(function () {
+    $(document).one("click", ".like-review", function (e) {
+      $(this).html(
+        '<i class="fa fa-heart" aria-hidden="true" style = "color:pink;"></i> '
+      );
+    });
+  });
+</script>
+
 <body>
   <div class = "home_div">
     <div class = "row">
@@ -19,24 +29,49 @@
                 <img src = <%=result.track.album.images[0].url %> width="50px">
               </div>
               <div class = "home_trendingNow_text">
-                <p class = "home_trendingNow_song"><%= result.track.name %></p>
+                <p class = "home_trendingNow_song" style = "inline-size:1000px"><%= result.track.name %></p>
                 <p class = "home_trendingNow_artist"><%= result.track.artists[0].name %></p> 
               </div>
             </div>
           <% }) %> 
       </div>
       <div class = "home_column_big">
-        <h4>Home</h4>
+        <div class = "home_title">
+          <h4>Home</h4>
+        </div>
+        <% posts.forEach(post => { %>
+          <div class = "row">
+            <div class = "home_posts">
+              <div id="embed-iframe"></div>
+              <p class = "home_post_username">
+                <%= post.username %> <%= post.user_action %>
+              </p>
+              <div class = "home_posts_songImage">
+                <img src = <%=post.song_image %> width="250px">
+                <div class = "home_post_songName"><%=post.song_name%></div>
+                <div class = "home_post_songArtist"><%=post.song_artist%></div>
+              </div>
+              <div class = "home_post_userComment">
+                <p>"<%=post.user_comment %>"</p>
+              </div>
+              <div class = "like-content">
+                <button class="btn-secondary like-review">
+                  <i class="fa fa-heart" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        <% }) %>
       </div>
       <div class = "home_column_small">
         <h4>New Music</h4>
         <% newsongs.forEach(result => { %>
-          <div class = "row" style="background-color:rgb(30,30,30)">
+          <div class = "row" style="background-color:rgb(30,30,30);">
             <div class = "home_trendingNow_image">
               <img src = <%=result.track.album.images[0].url %> width="50px">
             </div>
             <div class = "home_trendingNow_text">
-              <p class = "home_trendingNow_song"><%= result.track.name %></p>
+              <p class = "home_trendingNow_song" style = "overflow: hidden; height:25px;"><%= result.track.name %></p>
               <p class = "home_trendingNow_artist"><%= result.track.artists[0].name %></p> 
             </div>
           </div>

@@ -16,10 +16,37 @@ const dbConfig = {
     database: process.env.POSTGRES_DB,
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
-  };
+};
  
 const db = pgp(dbConfig);
+
+// test your database
+db.connect()
+  .then(obj => {
+    console.log('Database connection successful'); // you can view this message in the docker compose logs
+    obj.done(); // success, release the connection;
+  })
+  .catch(error => {
+    console.log('ERROR:', error.message || error);
+  });
  
+app.set('view engine', 'ejs');
+app.use(bodyParser.json());
+
+app.use(
+    session({
+      secret: process.env.SESSION_SECRET,
+      saveUninitialized: false,
+      resave: false,
+    })
+  );
+ 
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+
 const user = {
   username:undefined,
   password:undefined,
@@ -34,32 +61,6 @@ const tokens = {
 const images = {
   image_url : undefined
 };
-// test your database
-db.connect()
-  .then(obj => {
-    console.log('Database connection successful'); // you can view this message in the docker compose logs
-    obj.done(); // success, release the connection;
-  })
-  .catch(error => {
-    console.log('ERROR:', error.message || error);
-  });
- 
-app.set('view engine', 'ejs');
-app.use(bodyParser.json());
-app.use(
-    session({
-      secret: process.env.SESSION_SECRET,
-      saveUninitialized: false,
-      resave: false,
-    })
-  );
- 
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-);
-app.use(express.static(__dirname + '/public'));
 
 // app.get('/', (req, res) =>{
 //   res.redirect('/login'); //this will call the /anotherRoute route in the API
@@ -425,6 +426,7 @@ app.get('/home', (req, res) => {
   const token = "Bearer " + access_token;
   var playlistURL = 'https://api.spotify.com/v1/playlists/37i9dQZEVXbLRQDuF5jeBp/tracks?limit=5';
   var newSongsURL = 'https://api.spotify.com/v1/playlists/37i9dQZF1DX4JAvHpjipBk/tracks?limit=5';
+  const query = "SELECT * FROM posts WHERE username IN (SELECT username FROM friends JOIN users_to_friends ON users_to_friends.friend_id = friends.friend_id WHERE users_to_friends.user_id = 1);";
   axios.all([
     axios.get(playlistURL, {
       headers: {
@@ -435,14 +437,15 @@ app.get('/home', (req, res) => {
       headers: {
         'Authorization': token,
       }
-    })
+    }),
+    db.query(query)
   ])
-  .then(axios.spread((topsongs, newsongs) => {
-    console.log(topsongs.data.items);
-    console.log(newsongs.data.items);
+  .then(axios.spread((topsongs, newsongs, allposts) => {
+    console.log(allposts);
     res.render('pages/home', {
       results : topsongs.data.items,
-      newsongs: newsongs.data.items
+      newsongs: newsongs.data.items,
+      posts : allposts
     });
   })
   )
