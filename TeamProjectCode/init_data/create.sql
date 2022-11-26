@@ -9,9 +9,9 @@ CREATE TABLE users (
 DROP TABLE IF EXISTS snippets CASCADE;
 CREATE TABLE snippets (
     snippet_id SERIAL PRIMARY KEY,
-    song_id TEXT,
+    track_id TEXT,
     song_name TEXT,
-    start_time TIME
+    start_time TIME,
 );
 
 DROP TABLE IF EXISTS friends CASCADE;
