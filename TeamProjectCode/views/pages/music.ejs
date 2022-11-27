@@ -588,33 +588,28 @@
 
             <div class="row">
                 <div class="col">  
-                        
+                    <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row">
+                            <div class="col-md-4">
                             
-                                <div class="card mb-3" style="max-width: 540px;">
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                        
-                                            <img src="<%= el.album.images[0].url %>" class="img-thumbnail rounded-start" style="width: auto; height: 195px;" alt="...">
-                                        </div>
+                                <img src="<%= el.album.images[0].url %>" class="img-thumbnail rounded-start" style="width: auto; height: 195px;" alt="...">
+                            </div>
 
-                                        <div class="col-md-8">
-                                            <div class="card-body"> 
-                                                <h5 class="card-title"> Title: <%= el.name %>  </h5>
-                                                <h6 class="card-text"> Artist: <%= el.artists[0].name %>  </h6>
-                                                <button type="submit"  class="btn btn-primary" onclick="ShowSong(<%= count %>)" id = "submit-button" data-toggle="modal" data-target="#myModal" 
-                                                    style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);">
-                                                    Use this song </button>
-                                            </div>
-                                        </div>   
-                                    </div>
-                                </div>   
+                            <div class="col-md-8">
+                                <div class="card-body"> 
+                                    <h5 class="card-title"> Title: <%= el.name %>  </h5>
+                                    <h6 class="card-text"> Artist: <%= el.artists[0].name %>  </h6>
+                                    <button type="submit"  class="btn btn-primary" onclick="ShowSong(<%= count %>)" id = "submit-button" data-toggle="modal" data-target="#myModal" 
+                                        style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);">
+                                        Use this song </button>
+                                </div>
+                            </div>   
+                        </div>
+                    </div>   
                 </div>
-
                 <div class="col" style="display: none;" id="ShowSong<%= count %>"> 
                 <!-- <div class="container d-flex justify-content-center my-4 mb-5"> -->
-
                     <div id="mobile-box">
-
                         <!-- Card -->
                         <div class="card">
                             <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
@@ -624,37 +619,36 @@
                                     <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                                 </a>
                             </div>
-
                             <div class="card-body text-center">
-
-                                <h5 class="h5 font-weight-bold"> <%= el.artists[0].name %> </h5>
-                                <p class="mb-0"> <%= el.name %> </p>
-
-                                <div class="holder">
-                                    <!-- <audio controls>
-                                        <source src="sample-3s.mp3" type="audio/mpeg">
-                                      Your browser does not support the audio element.
-                                      </audio> -->
-                                    <!-- <form action="/music" method="PUT"> -->
-                                        
+                                <form action="/addsnippet" method="post">
+                                    <h5 class="h5 font-weight-bold"> 
+                                        <%= el.artists[0].name %> </h5>
+                                    <p class="mb-0"> <%= el.name %> </p>
+                                    <div class="holder">
+                                        <input type = "hidden" name = "chosenArtist" id = "chosenArtist" 
+                                            value = "<%= el.artists[0].name %>">
+                                        <input type = "hidden" name = "chosenSong" id = "chosenSong" value = "<%= el.name %>">
+                                        <input type = "hidden" name = "chosenImage" id = "chosenImage" 
+                                            value = "<%= el.album.images[0].url %>">
                                         <input type="hidden" name="song" id="song" value="<%= el.uri %>">
                                         <input type="hidden" name="device" id="device">
-                                        <H5>Snippet Start Position:</H4>
+                                        <H5>Snippet Start Position:</H5>
                                         <label for="minutes">Min</label>
-                                        <input type="text" id="minutes" name="minutes" maxlength="2" placeholder="mm" size="4">
+                                        <input type="text" id="songMin" name="songMin" maxlength="2" placeholder="mm" size="4">
                                         <label for="seconds">Sec</label>
-                                        <input type="text" id="seconds" name="seconds" placeholder="ss" maxlength="2" size="4" >
-                                        <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PlayMusic('<%= el.uri %>')"
-                                            style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Play</button>
-
-                                    <!-- </form> -->
-
+                                        <input type="text" id="songSec" name="songSec" placeholder="ss" maxlength="2" size="4">
+                                        <input type = "text" id = "userComment" name = "userComment" placeholder = "song thoughts?">
+                                        <button type="submit"  class="btn btn-primary" onclick="" id = "submit-button"
+                                            style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); 
+                                            color:rgb(255, 255, 255); color:rgb(30, 30, 30);">Confirm Snippet
+                                        </button>
+                                    </form>
+                                    <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PlayMusic('<%= el.uri %>')"
+                                        style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Play</button>
                                 </div>
-
                             <div class="card-footer text-center">
-                                <button type="submit"  class="btn btn-primary" onclick="" id = "submit-button"
-                                style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);">Confirm Snippet</button>
-                                <button type="submit"  class="btn btn-primary" onclick="CloseSong( <%= count %> )" id = "submit-button" 
+                            </form>
+                                <button type="submit"  class="btn btn-primary" onclick="CloseSong( '<%= count %>' )" id = "submit-button" 
                                 style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Close Song</button>
                             </div>
                         </div>

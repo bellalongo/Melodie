@@ -258,6 +258,7 @@ app.get('/callback', function(req, res) {
         request.get(options, function(error, response, body) {
           console.log(body);
           user.display_name = body.display_name;
+          user.username = body.id;
 
           if(body.images[0]){
             user.picture=body.images[0].url;
@@ -544,6 +545,35 @@ app.post('/music', (req, res) => {
     .catch((error) => {
       console.error(error)
     })
+  });
+
+  app.post('/addsnippet', (req, res) => {
+    const song_minutes = req.body.songMin;
+    const song_seconds = req.body.songSec;
+    const song_totalTime = song_minutes * 60000 + song_seconds * 1000;
+    const song_name = req.body.chosenSong;
+    const song_artist = req.body.chosenArtist;
+    const song_image = req.body.chosenImage;
+    const song_id = req.body.song;
+    const user_comment = req.body.userComment;
+    const user_username = user.username;
+
+    const snippetsquery = "INSERT INTO snippets(track_id, song_name, start_time) VALUES ($1, $2, $3) RETURNING *;";
+    const postquery = "INSERT INTO posts(username, user_action, user_comment, song_name, song_artist, song_image) VALUES ($1,'updated a snippet!',$2,$3,$4,$5) RETURNING *;";
+
+    axios.all([
+      db.one(snippetsquery, [song_id, song_name, song_totalTime]),
+      db.one(postquery, [user_username, user_comment, song_name, song_artist, song_image])
+    ])
+    .then(axios.spread((snippets, posts) => {
+      console.log(snippets);
+      console.log(posts);
+      res.redirect('/music');
+    })
+    )
+    .catch((error) => {
+      console.error(error)
+    });
   });
 
   // THIS DOES NOTHING
