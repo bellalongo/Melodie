@@ -109,12 +109,14 @@
                 track_window: { current_track }
             }) => {
                 console.log('Currently Playing', current_track.name);
-                // console.log('Position in Song', position);
-                // console.log('Duration of Song', duration);
+                console.log('Position in Song', position);
+                console.log('Duration of Song', duration);
                 // console.log(current_track.album.images[0].url);
-                document.querySelector('now-playing__cover').src = current_track.album.images[0].url;
-                document.querySelector('now-playing__name').innerText = current_track.name;
-                document.querySelector('now-playing__artist').innerText = current_track.artists[0].name;
+                // document.querySelector('now-playing__cover').src = current_track.album.images[0].url;
+                // document.querySelector('now-playing__name').innerText = current_track.name;
+                // document.querySelector('now-playing__artist').innerText = current_track.artists[0].name;
+                // document.querySelector('progress').innerText = position;
+                document.getElementById('duration13').innerText = duration;
             });
 
             player.resume().then(() => {
@@ -540,6 +542,12 @@
         }
     </script>
 
+    <script>
+        function ChangeProgress(){
+
+        }
+    </script>
+
     <div class="container">
         <h1>Make a Snippet!</h1>
         <form action="/music" method="post">
@@ -643,6 +651,19 @@
                                             color:rgb(255, 255, 255); color:rgb(30, 30, 30);">Confirm Snippet
                                         </button>
                                     </form>
+                                    <!-- <div class="seekcontrols"> -->
+                                    <!-- <p class="mb-0"> <%= el.progress_ms %> </p> -->
+                                    <!-- <h5> <% el.progress_ms %> </h5> -->
+                                    <h5 id="duration13"> Duration: <% el.duration_ms %> </h5>
+                                    <!-- https://github.com/possan/webapi-player-example has a very good example of a progress bar -->
+                                    <!-- https://lab.possan.se/thirtify/ when the git hub repo runs it loks like this -->
+                                    <!-- when we use https://developer.spotify.com/documentation/web-api/reference/#/operations/seek-to-position-in-currently-playing-track -->
+                                    <!-- we can then start the song at a certain position which is what we want for the snippets  -->
+                                    <!-- why do you not work!???!! -->
+                                    <!-- <div class="slider">
+                                        <input type="range" ng-model="progress" ng-change="ChangeProgress()" min="0" max="<% el.duration %>" />
+                                    </div> -->
+                                    <!-- </div> -->
                                     <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PlayMusic('<%= el.uri %>')"
                                         style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Play</button>
                                 </div>
@@ -650,6 +671,8 @@
                             </form>
                                 <button type="submit"  class="btn btn-primary" onclick="CloseSong( '<%= count %>' )" id = "submit-button" 
                                 style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Close Song</button>
+
+
                             </div>
                         </div>
                         <!-- Card -->
