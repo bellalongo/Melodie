@@ -496,8 +496,8 @@
     </script>
 
     <script>
-        function PlayMusic(){
-
+        function PlayMusic(song){
+            let nostring_song = song.replace(/['"]+/g, '')
             let start_pos = {min: 0,
             sec: 0,
             total: 0}
@@ -510,7 +510,7 @@
             var searchUrl = "https://api.spotify.com/v1/me/player/play?device_id=" + device_id;
 
             let info = {
-                uris: [document.getElementById('song').value],
+                uris: [nostring_song],
                 position_ms: start_pos.total
             };
             //info.uris[0] = document.getElementById('song').value;
@@ -657,7 +657,7 @@
                                     </form>
                                     <button type="submit"  class="btn btn-primary" onclick="" id = "submit-button" form = "addsnippetform"
                                     style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);">Confirm Snippet</button>
-                                        <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PlayMusic()"
+                                        <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PlayMusic('<%= el.uri %>')"
                                             style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Play</button>
 
                                     <!-- </form> -->
