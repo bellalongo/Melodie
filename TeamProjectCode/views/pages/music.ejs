@@ -109,14 +109,12 @@
                 track_window: { current_track }
             }) => {
                 console.log('Currently Playing', current_track.name);
-                console.log('Position in Song', position);
-                console.log('Duration of Song', duration);
+                // console.log('Position in Song', position);
+                // console.log('Duration of Song', duration);
                 // console.log(current_track.album.images[0].url);
-                // document.querySelector('now-playing__cover').src = current_track.album.images[0].url;
-                // document.querySelector('now-playing__name').innerText = current_track.name;
-                // document.querySelector('now-playing__artist').innerText = current_track.artists[0].name;
-                // document.querySelector('progress').innerText = position;
-                document.getElementById('duration13').innerText = duration;
+                document.querySelector('now-playing__cover').src = current_track.album.images[0].url;
+                document.querySelector('now-playing__name').innerText = current_track.name;
+                document.querySelector('now-playing__artist').innerText = current_track.artists[0].name;
             });
 
             player.resume().then(() => {
@@ -498,9 +496,8 @@
     </script>
 
     <script>
-        function PlayMusic(song){
-            let nostring_song = song.replace(/"/g,"");
-            console.log("song.uri", nostring_song);
+        function PlayMusic(){
+
             let start_pos = {min: 0,
             sec: 0,
             total: 0}
@@ -513,12 +510,12 @@
             var searchUrl = "https://api.spotify.com/v1/me/player/play?device_id=" + device_id;
 
             let info = {
-                uris: [nostring_song],
+                uris: [document.getElementById('song').value],
                 position_ms: start_pos.total
             };
             //info.uris[0] = document.getElementById('song').value;
             let body = JSON.stringify(info);
-            console.log("body", body);
+            console.log(body)
 
             let xhr = new XMLHttpRequest();
             xhr.open("PUT", searchUrl, true);
@@ -541,11 +538,9 @@
             }
         }
     </script>
-
     <script>
-        function ChangeProgress(){
-
-        }
+        var songSec = document.getElementById('minutes').value;
+        var songMin = document.getElementById('seconds').value;
     </script>
 
     <div class="container">
@@ -596,28 +591,33 @@
 
             <div class="row">
                 <div class="col">  
-                    <div class="card mb-3" style="max-width: 540px;">
-                        <div class="row">
-                            <div class="col-md-4">
+                        
                             
-                                <img src="<%= el.album.images[0].url %>" class="img-thumbnail rounded-start" style="width: auto; height: 195px;" alt="...">
-                            </div>
+                                <div class="card mb-3" style="max-width: 540px;">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                        
+                                            <img src="<%= el.album.images[0].url %>" class="img-thumbnail rounded-start" style="width: auto; height: 195px;" alt="...">
+                                        </div>
 
-                            <div class="col-md-8">
-                                <div class="card-body"> 
-                                    <h5 class="card-title"> Title: <%= el.name %>  </h5>
-                                    <h6 class="card-text"> Artist: <%= el.artists[0].name %>  </h6>
-                                    <button type="submit"  class="btn btn-primary" onclick="ShowSong(<%= count %>)" id = "submit-button" data-toggle="modal" data-target="#myModal" 
-                                        style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);">
-                                        Use this song </button>
-                                </div>
-                            </div>   
-                        </div>
-                    </div>   
+                                        <div class="col-md-8">
+                                            <div class="card-body"> 
+                                                <h5 class="card-title"> Title: <%= el.name %>  </h5>
+                                                <h6 class="card-text"> Artist: <%= el.artists[0].name %>  </h6>
+                                                <button type="submit"  class="btn btn-primary" onclick="ShowSong(<%= count %>)" id = "submit-button" data-toggle="modal" data-target="#myModal" 
+                                                    style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);">
+                                                    Use this song </button>
+                                            </div>
+                                        </div>   
+                                    </div>
+                                </div>   
                 </div>
+
                 <div class="col" style="display: none;" id="ShowSong<%= count %>"> 
                 <!-- <div class="container d-flex justify-content-center my-4 mb-5"> -->
+
                     <div id="mobile-box">
+
                         <!-- Card -->
                         <div class="card">
                             <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
@@ -627,52 +627,64 @@
                                     <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                                 </a>
                             </div>
+
                             <div class="card-body text-center">
-                                <form action="/addsnippet" method="post">
-                                    <h5 class="h5 font-weight-bold"> 
-                                        <%= el.artists[0].name %> </h5>
-                                    <p class="mb-0"> <%= el.name %> </p>
-                                    <div class="holder">
-                                        <input type = "hidden" name = "chosenArtist" id = "chosenArtist" 
-                                            value = "<%= el.artists[0].name %>">
-                                        <input type = "hidden" name = "chosenSong" id = "chosenSong" value = "<%= el.name %>">
-                                        <input type = "hidden" name = "chosenImage" id = "chosenImage" 
-                                            value = "<%= el.album.images[0].url %>">
+
+                                <h5 class="h5 font-weight-bold"> <%= el.artists[0].name %> </h5>
+                                <p class="mb-0"> <%= el.name %> </p>
+
+                                <div class="holder">
+                                    <!-- <audio controls>
+                                        <source src="sample-3s.mp3" type="audio/mpeg">
+                                      Your browser does not support the audio element.
+                                      </audio> -->
+                                    <!-- <form action="/music" method="PUT"> -->
+                                        
                                         <input type="hidden" name="song" id="song" value="<%= el.uri %>">
                                         <input type="hidden" name="device" id="device">
-                                        <H5>Snippet Start Position:</H5>
+                                        <H5>Snippet Start Position:</H4>
                                         <label for="minutes">Min</label>
-                                        <input type="text" id="songMin" name="songMin" maxlength="2" placeholder="mm" size="4">
+                                        <input type="text" id="minutes" name="minutes" maxlength="2" placeholder="mm" size="4" form = "addsnippetform">
                                         <label for="seconds">Sec</label>
-                                        <input type="text" id="songSec" name="songSec" placeholder="ss" maxlength="2" size="4">
-                                        <input type = "text" id = "userComment" name = "userComment" placeholder = "song thoughts?">
-                                        <button type="submit"  class="btn btn-primary" onclick="" id = "submit-button"
-                                            style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); 
-                                            color:rgb(255, 255, 255); color:rgb(30, 30, 30);">Confirm Snippet
-                                        </button>
-                                    </form>
-                                    <!-- <div class="seekcontrols"> -->
-                                    <!-- <p class="mb-0"> <%= el.progress_ms %> </p> -->
-                                    <!-- <h5> <% el.progress_ms %> </h5> -->
-                                    <h5 id="duration13"> Duration: <% el.duration_ms %> </h5>
-                                    <!-- https://github.com/possan/webapi-player-example has a very good example of a progress bar -->
-                                    <!-- https://lab.possan.se/thirtify/ when the git hub repo runs it loks like this -->
-                                    <!-- when we use https://developer.spotify.com/documentation/web-api/reference/#/operations/seek-to-position-in-currently-playing-track -->
-                                    <!-- we can then start the song at a certain position which is what we want for the snippets  -->
-                                    <!-- why do you not work!???!! -->
-                                    <!-- <div class="slider">
-                                        <input type="range" ng-model="progress" ng-change="ChangeProgress()" min="0" max="<% el.duration %>" />
-                                    </div> -->
-                                    <!-- </div> -->
-                                    <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PlayMusic('<%= el.uri %>')"
-                                        style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Play</button>
+                                        <input type="text" id="seconds" name="seconds" placeholder="ss" maxlength="2" size="4" form = "addsnippetform">
+                                        <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PlayMusic()"
+                                            style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Play</button>
+
+                                    <!-- </form> -->
                                 </div>
+
                             <div class="card-footer text-center">
-                            </form>
-                                <button type="submit"  class="btn btn-primary" onclick="CloseSong( '<%= count %>' )" id = "submit-button" 
+                                <form action = "/addsnippet"  method = "post" id = "addsnippetform" name = "addsnippetform">
+                                    <input type = "hidden" name = "chosenArtist" id = "chosenArtist" 
+                                    value = "<%= el.artists[0].name %>">
+                                    <input type = "hidden" name = "chosenSong" id = "chosenSong" value = "<%= el.name %>">
+                                    <input type = "hidden" name = "chosenImage" id = "chosenImage" 
+                                            value = "<%= el.album.images[0].url %>">
+                                    <input type = "text" id = "userComment" name = "userComment" placeholder = "song thoughts?">
+                                    <input type="hidden" name="song" id="song" value="<%= el.uri %>">
+                                    <!-- <script>
+                                        const songSec = document.getElementById("seconds");
+                                        const songMin = document.getElementById("minutes");
+                                        // Seconds
+                                        const secondsElement = createElement("input");
+                                        secondsElement.setAttribute("type", "hidden");
+                                        secondsElement.setAttribute("value", songSec);
+                                        secondsElement.setAttribute("id", "songSec");
+                                        secondsElement.setAttribute("name", "songSec");
+                                        document.getElementById("addsnippetform").appendChild(secondsElement);
+                                        // Minutes
+                                        const minutesElement = createElement("input");
+                                        minutesElement.setAttribute("type", "hidden");
+                                        minutesElement.setAttribute("value", songMin);
+                                        minutesElement.setAttribute("id", "songMin");
+                                        minutes.setAttribute("name", "songMin");
+                                        document.getElementById("addsnippetform").append(minutesElement);
+                                    </script> -->
+                                    <button type="submit"  class="btn btn-primary" onclick="" id = "submit-button"
+                                    style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);">Confirm Snippet</button>
+                                </form>
+                                <button type="submit"  class="btn btn-primary" onclick="CloseSong( <%= count %> )" id = "submit-button" 
                                 style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Close Song</button>
-
-
                             </div>
                         </div>
                         <!-- Card -->

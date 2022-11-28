@@ -8,8 +8,10 @@
     <meta name="description" content="" />
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-        <link href="../../resources/css/login.css" rel = "stylesheet" type="text/css">
 
+    <link href="../../resources/css/login.css" rel = "stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="../../resources/css/login.css" rel = "stylesheet" type="text/css">
     <base href="/">
       
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
@@ -19,7 +21,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </head>
   
-<style >
+<style>
   body
   {
     background-color: rgb(0, 0, 0);
@@ -67,18 +69,19 @@
     color:white;
     text-align: left;
     background-color: rgb(30, 30, 30);
+    height: 435px;
     border-radius: 10px;
-    width:20%;
+    width:25%;
     padding:10px;
   }
   .home_column_big
   {
     color:white;
     text-align:left;
-    width:60%;
+    width:50%;
     padding:10px;
-    padding-left:20px;
-    padding-right:20px;
+    padding-left:50px;
+    padding-right:50px;
   }
   .home_trendingNow_image
   {
@@ -91,9 +94,83 @@
   .home_trendingNow_text
   {
     color:white;
-    width:200px;
+    width:300px;
     text-align:left;
     background-color: rgb(30, 30, 30);
+  }
+  .home_title
+  {
+    color: white;
+    padding-bottom: 10px;
+  }
+  .home_posts
+  {
+    border: 0.5px solid;
+    border-color: rgb(51, 51, 51);
+    padding:10px;
+    padding-left:10px;
+    padding-right: 10px;
+  }
+  .home_posts_songImage
+  {
+    padding:10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+    position: relative;
+  }
+  .like-content {
+    font-size: 10px;
+  }
+  .like-content .btn-secondary {
+      text-align: center;
+      border-radius: 3px;
+      padding: 10px 17px;
+      font-size: 18px;
+      color: #ffffff;
+      background:none;
+      text-decoration: none;
+      -webkit-transition: 0.3s ease;
+      transition: 0.3s ease;
+  }
+  .like-content .btn-secondary:hover {
+      transform: translateY(-3px);
+      color:pink;
+  }
+  .like-content .btn-secondary .fa {
+      margin-right: 5px;
+  }
+  .home_post_songName
+  {
+    bottom: 34px;
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+    position: absolute;
+    background-color: black;
+    opacity: 0.8;
+    text-align:center;
+  }
+  .home_post_songArtist
+  {
+    bottom: 10px;
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+    position: absolute;
+    background-color: black;
+    opacity: 0.8;
+    text-align:center;
+  }
+  .home_post_userComment
+  {
+    font-style:italic;
+    text-align:center;
+  }
+  .home_post_commentSection
+  {
+    
   }
   form
   {
@@ -125,5 +202,10 @@
   {
     color:grey;
     font-size:15px;
+  }
+  .home_post_username
+  {
+    font-size:16px;
+    font-weight: bold;
   }
 </style>
