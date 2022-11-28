@@ -523,19 +523,19 @@
             xhr.setRequestHeader('Authorization', 'Bearer <%= tokens %>');
             xhr.send(body);
             xhr.onload = handleApiResponse;
+
+            setTimeout(PauseMusic(), 10000);
         }
 
-        function handleApiResponse(){
-            if ( this.status == 200){
-                console.log(this.responseText);
-                setTimeout(currentlyPlaying, 2000);
-            }
-            else if ( this.status == 204 ){
-                setTimeout(currentlyPlaying, 2000);
-            }
-            else if ( this.status == 401 ){
-                refreshAccessToken()
-            }
+        function PauseMusic(){
+            const device_id = document.getElementById('device').value
+            var searchUrl = "https://api.spotify.com/v1/me/player/pause?device_id=" + device_id;
+            let xhr = new XMLHttpRequest();
+            xhr.open("PUT", searchUrl, true)
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('Authorization', 'Bearer <%= tokens %>');
+            xhr.send()
+            //xhr.onload = handleApiResponse;
         }
     </script>
 
@@ -645,14 +645,18 @@
                                         <input type="text" id="seconds" name="seconds" placeholder="ss" maxlength="2" size="4" >
                                         <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PlayMusic()"
                                             style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Play</button>
+                                        <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PauseMusic()"
+                                        style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Pause</button>
 
                                     <!-- </form> -->
 
                                 </div>
 
                             <div class="card-footer text-center">
-                                <button type="submit"  class="btn btn-primary" onclick="" id = "submit-button"
-                                style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);">Confirm Snippet</button>
+                                <form action="/music/saveSnippet" method="POST">
+                                    <button type="submit"  class="btn btn-primary" onclick="" id = "submit-button"
+                                    style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);">Confirm Snippet</button>
+                                </form>
                                 <button type="submit"  class="btn btn-primary" onclick="CloseSong( <%= count %> )" id = "submit-button" 
                                 style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Close Song</button>
                             </div>
