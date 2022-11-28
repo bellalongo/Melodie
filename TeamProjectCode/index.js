@@ -548,8 +548,8 @@ app.post('/music', (req, res) => {
   });
 
   app.post('/addsnippet', (req, res) => {
-    const song_minutes = req.body.songMin;
-    const song_seconds = req.body.songSec;
+    const song_minutes = req.body.minutes;
+    const song_seconds = req.body.seconds;
     const song_totalTime = song_minutes * 60000 + song_seconds * 1000;
     const song_name = req.body.chosenSong;
     const song_artist = req.body.chosenArtist;

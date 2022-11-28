@@ -639,14 +639,24 @@
                                       Your browser does not support the audio element.
                                       </audio> -->
                                     <!-- <form action="/music" method="PUT"> -->
-                                        
+                                    <form action = "/addsnippet"  method = "post" id = "addsnippetform" name = "addsnippetform">
                                         <input type="hidden" name="song" id="song" value="<%= el.uri %>">
                                         <input type="hidden" name="device" id="device">
-                                        <H5>Snippet Start Position:</H4>
+                                        <H5>Snippet Start Position:</H5>
                                         <label for="minutes">Min</label>
-                                        <input type="text" id="minutes" name="minutes" maxlength="2" placeholder="mm" size="4" form = "addsnippetform">
+                                        <input type="text" id="minutes" name="minutes" maxlength="2" placeholder="mm" size="4">
                                         <label for="seconds">Sec</label>
-                                        <input type="text" id="seconds" name="seconds" placeholder="ss" maxlength="2" size="4" form = "addsnippetform">
+                                        <input type="text" id="seconds" name="seconds" placeholder="ss" maxlength="2" size="4">
+                                        <input type = "hidden" name = "chosenArtist" id = "chosenArtist" 
+                                            value = "<%= el.artists[0].name %>">
+                                        <input type = "hidden" name = "chosenSong" id = "chosenSong" value = "<%= el.name %>">
+                                        <input type = "hidden" name = "chosenImage" id = "chosenImage" 
+                                                value = "<%= el.album.images[0].url %>">
+                                        <input type = "text" id = "userComment" name = "userComment" placeholder = "song thoughts?">
+                                        <input type="hidden" name="song" id="song" value="<%= el.uri %>">
+                                    </form>
+                                    <button type="submit"  class="btn btn-primary" onclick="" id = "submit-button" form = "addsnippetform"
+                                    style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);">Confirm Snippet</button>
                                         <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PlayMusic()"
                                             style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Play</button>
 
@@ -654,34 +664,6 @@
                                 </div>
 
                             <div class="card-footer text-center">
-                                <form action = "/addsnippet"  method = "post" id = "addsnippetform" name = "addsnippetform">
-                                    <input type = "hidden" name = "chosenArtist" id = "chosenArtist" 
-                                    value = "<%= el.artists[0].name %>">
-                                    <input type = "hidden" name = "chosenSong" id = "chosenSong" value = "<%= el.name %>">
-                                    <input type = "hidden" name = "chosenImage" id = "chosenImage" 
-                                            value = "<%= el.album.images[0].url %>">
-                                    <input type = "text" id = "userComment" name = "userComment" placeholder = "song thoughts?">
-                                    <input type="hidden" name="song" id="song" value="<%= el.uri %>">
-                                    <!-- <script>
-                                        const songSec = document.getElementById("seconds");
-                                        const songMin = document.getElementById("minutes");
-                                        // Seconds
-                                        const secondsElement = createElement("input");
-                                        secondsElement.setAttribute("type", "hidden");
-                                        secondsElement.setAttribute("value", songSec);
-                                        secondsElement.setAttribute("id", "songSec");
-                                        secondsElement.setAttribute("name", "songSec");
-                                        document.getElementById("addsnippetform").appendChild(secondsElement);
-                                        // Minutes
-                                        const minutesElement = createElement("input");
-                                        minutesElement.setAttribute("type", "hidden");
-                                        minutesElement.setAttribute("value", songMin);
-                                        minutesElement.setAttribute("id", "songMin");
-                                        minutes.setAttribute("name", "songMin");
-                                        document.getElementById("addsnippetform").append(minutesElement);
-                                    </script> -->
-                                    <button type="submit"  class="btn btn-primary" onclick="" id = "submit-button"
-                                    style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);">Confirm Snippet</button>
                                 </form>
                                 <button type="submit"  class="btn btn-primary" onclick="CloseSong( <%= count %> )" id = "submit-button" 
                                 style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Close Song</button>
