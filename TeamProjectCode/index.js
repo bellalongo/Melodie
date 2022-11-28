@@ -78,10 +78,9 @@ app.get('/register', (req, res) => {
 app.get('/profile', (req, res) => {
   const access_token = tokens.access;
   const token = "Bearer " + access_token;
-  var topsongsURL = 'https://api.spotify.com/v1/me/top/tracks?limit=5';
- 
+  var newSongsURL = 'https://api.spotify.com/v1/me/tracks?offset=0&limit=5&locale=en-US,en;q=0.9';
   axios.all([
-    axios.get(topsongsURL, {
+    axios.get(newSongsURL, {
       headers: {
         'Authorization': token,
       }
@@ -91,7 +90,7 @@ app.get('/profile', (req, res) => {
     console.log(topsongs.data.items);
     res.render('pages/profile', {
       results : topsongs.data.items,
-      user,
+      user
     });
   })
   )
@@ -99,6 +98,8 @@ app.get('/profile', (req, res) => {
     console.error(error)
   })
 });
+
+
  
   // Register submission
 app.post('/register', async (req, res) => {

@@ -36,14 +36,14 @@
                       </audio> <br>
                 </td>
                 <td>
-                  <% results.forEach(result => { %>
+                  <% results.forEach(results => { %>
                     <div class = "row" style="background-color:rgb(30,30,30)">
                       <div class = "home_trendingNow_image">
-                        <img src = <%=result.track.album.images[0].url %> width="50px">
+                        <img src = <%=results.track.album.images[0].url %> width="50px">
                       </div>
                       <div class = "home_trendingNow_text">
-                        <p class = "home_trendingNow_song"><%= result.track.name %></p>
-                        <p class = "home_trendingNow_artist"><%= result.track.artists[0].name %></p> 
+                        <p class = "home_trendingNow_song"><%= results.track.name %></p>
+                        <p class = "home_trendingNow_artist"><%= results.track.artists[0].name %></p> 
                       </div>
                     </div>
                   <% }) %> 
