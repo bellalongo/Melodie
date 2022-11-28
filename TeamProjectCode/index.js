@@ -387,6 +387,28 @@ app.post('/editprofile', (req,res) =>
     }
 });
 
+/*app.get('/friends, (req,res) =>
+{
+  const query = 'select * from users LIMIT 20';
+  db.any(query)
+  {
+    .then(data =>{
+    
+      console.log(data);
+      res.render('pages/friends',
+      {
+        data
+      });
+    })
+    .catch(error=> {
+      res.render('pages/friends', {
+        data: [],
+        error: true
+      })
+    }
+  }
+}
+*/
 app.get('/search', async (req,res) =>
 {
   const query = 'select from users where username = $1;'
@@ -395,7 +417,7 @@ app.get('/search', async (req,res) =>
     console.log(data);
     res.render('pages/friends', 
     {
-      addFriend: data
+      data
     })
   })
   .catch(function (err) {
@@ -403,8 +425,13 @@ app.get('/search', async (req,res) =>
   });
 });
 app.post('/addfriend', async (req, res) => {
-  const query = 'insert into friends where username = $1;'
-  db.any(query, [req.body.username])
+  const query = 'insert into friends (username,name,display_image) where username = $1, name = $2, display_image = $3;'
+  db.any(query, 
+    [
+      req.body.username,
+      req.body.name,
+      req.bodyy.display_image
+    ])
     .then(function (data) {
       res.status(201).json({
         status: 'success',
@@ -416,7 +443,7 @@ app.post('/addfriend', async (req, res) => {
       return console.log(err);
     });
 });
-/*
+
 app.delete('/delete_user/:user_id', async (req, res) => {
   const user_id = parseInt(req.params.user_id);
   const query = 'delete from users where user_id = $1;';
@@ -435,7 +462,7 @@ app.delete('/delete_user/:user_id', async (req, res) => {
         return console.log(err);
       });
 });
-*/
+
 app.get('/home', (req, res) => {
   const access_token = tokens.access;
   const token = "Bearer " + access_token;
@@ -469,6 +496,8 @@ app.get('/home', (req, res) => {
 
 
 app.get('/friends', (req,res) =>
+{
+/*
   axios.get(
     'https://api.spotify.com/v1/me/',
     {
@@ -478,21 +507,43 @@ app.get('/friends', (req,res) =>
         'Content-Type': 'application/json',
     },
     })
-    .then(friends => {
-      {
-        console.log(friends.data);
+  */
+/*
+ db.task('get-users-and-friends',async t =>{
+    const users = await t.any('select * from users');
+    const friends = await t.any('select * from friends');
+    return {users,friends};
+ })
+    .then(users,friends => {
         res.render('pages/friends', {
-          songs: friends.body,
           friends,
+          users
          });
-      }
+    };
+*/const query = 'select * from friends';
+    const query2 = 'select * from users';
+  db.any(query)
+    .then(friends =>{
+      db.any(query2)
+        .then(users=>
+          {
+            res.render('pages/friends',
+            {
+              friends,
+              users
+            })
+          })
     })
     .catch(error => 
       {
-        console.log(error);
-      })
-)
-
+        console.log(error)
+        res.render('pages/friends',{
+        friends : [],
+        users : [],
+        error: true
+      });
+    });
+  });
 
 app.get('/logout', (req, res) => {
   req.session.destroy();

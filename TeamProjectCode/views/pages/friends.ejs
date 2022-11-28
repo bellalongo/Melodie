@@ -94,59 +94,46 @@ body,
 </div>
 
 <!--List of Current Friends-->
-<div class = "home_column_small">
-  Friends
-  <% friends.forEach(friend => { %>
-    <div class = "row" style="background-color:rgb(30,30,30)">
-      <p class = "friendName"> <%=friend.display_name%></p>
-      <p class = "friendName"> <%=friend.profile_picture%></p>
-    </div>
-  <% }) %>
-</div>
 
-<!-- Music from friends  -->
-<div class="container d-flex justify-content-center my-4 mb-5">
-  <% if (songs == undefined) { %>
-    <p>Find Friends!</p>
-  <% } else { %> 
-    <% songs.forEach(song => { %>
-    <div id="mobile-box">
-  
-      <!-- Card -->
-      <div class="card">
-        <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-            <img src = "<%= song.images && song.images.length ? song.images[0].url : '/blank.jpg' %>" class = "card-img-top"> 
-          <a href="#!">
-            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-          </a>
-        </div>
-        <div class="card-body text-center">
-  
-          <h5 class="h5 font-weight-bold"><a href="#" target="_blank"><%= song.display_name %></a></h5>
-          <p class="mb-0"><%= song.email %></p>
-          <audio id="music" preload="true">
-            <source src="#">
-          </audio>
-          <div id="audioplayer">
-            <i id="pButton" class="fas fa-play"></i>
-            <div id="timeline">
-              <div id="playhead"></div>
+    <div class = "row">
+      <div class = "home_column_small">
+        <center>Friends</center>
+        <% friends.forEach(friend => { %>
+          <div class = "row" style="background-color:rgb(30,30,30)">
+            <div class = "home_friends_image">
+              <img src = <%=friend.display_image%> width = "50px">
+            </div>
+
+            <div class = "home_friends_info">
+              <p style = "inline-size:1000px"> <%=friend.name%></p>
+              <p><%=friend.username%></p>
             </div>
           </div>
-  
-        </div>
+        <% }) %>
       </div>
-      <!-- Card -->
+
+      <!--List of Artists to follow-->
+      <div class = "home_column_small">
+        <center>Artists</center>
+        <form method = 'get' action = '/addfriend'>
+          <% users.forEach(user => { %>
+            <% if(!user.non_artist) {%>
+              <div class = "row" style="background-color:rgb(30,30,30)">
+                <div class = "home_artists_image">
+                  <img src = <%=user.display_image%> width = "50px">
+                </div>
+
+                <div class = "home_artist_info">
+                  <p style = "inline-size:1000px"> <%=user.name%></p>
+                  <p><%=user.username%></p>
+                </div>
+                <button type="submit" class="btn-close" data-bs-dismiss="follow" name = 'follow' >Follow</button>
+              </div>
+            
+          <% } %>
+          <% }) %>
+        
+        </form>
+      </div>    
     </div>
-    <% })} %>
-  </div>
-  <!-- Adding Friend Functionality -->
-  <div class = "add Friend">
-    <p class = "friendName"> <%=friend.display_name%></p>
-    <p class = "friendName"> <%=friend.profile_picture%></p>
-    <form action = '/addfriend'>
-      <button type="submit">Add Friend</button>
-    </form>
-  </div>
 </body>
-  
