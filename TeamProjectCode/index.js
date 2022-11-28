@@ -287,7 +287,7 @@ app.get('/callback', function(req, res) {
 });
 
 app.get('/', (req, res) => {
-  res.redirect('/home');
+  res.render('pages/profile', {user});
 
 });
  
@@ -546,8 +546,23 @@ app.post('/music', (req, res) => {
     })
   });
 
-  // app.post('/music/saveSnippet', (req, res) => {
-  //   const query
+  // THIS DOES NOTHING
+  // app.put('/music', (req, res) => {
+  //   console.log(req.body.device)
+  //   const access_token = tokens.access;
+  //   const token = "Bearer " + access_token;
+  //   const device_id = req.body.device;
+  //   var searchUrl = "https://api.spotify.com/v1/me/player/play?device_id=" + device_id;
+
+  //   //"{\"context_uri\":\"spotify:album:5ht7ItJgpBH7W6vJ5BqpPr\",\"offset\":{\"position\":5},\"position_ms\":0}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer BQAcfgh96EGQF_HZ0o6hVhn_CoKP81zV_O17Y6EKKUCU1tYLZfkb9MS5hW7RJLePLX994muribDjcGBtenncuc59PTouhll09zXcRt8ckmOkmsXcZAehftF46W6QJ9Ppw8IQKELLHA5vhhO5fZhh8iZqdBaAw6vJOm-CEErpEaatRlvJMKP5rIKR5hc-SL23UOBBxC4"
+
+  //   axios.put(searchUrl, {
+  //     context_uri: req.body.song,
+  //     //position_ms: req.body.position,
+  //     headers:{
+  //       'Authorization': token,
+  //     }
+  //   })
   // });
 
 // const express = require('express')
