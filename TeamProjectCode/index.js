@@ -415,15 +415,15 @@ app.post('/editprofile', (req,res) =>
   }
 }
 */
-app.get('/search', async (req,res) =>
+app.get('/search', (req,res) =>
 {
-  const query = 'select from users where username = $1;'
+  const query = 'select * from users where username = $1;'
   db.any(query, [req.body.username])
-  .then(function(data) {
-    console.log(data);
+  .then(users=> {
+    console.log(users);
     res.render('pages/friends', 
     {
-      data
+      users
     })
   })
   .catch(function (err) {
@@ -434,9 +434,9 @@ app.post('/addfriend', async (req, res) => {
   const query = 'insert into friends (username,name,display_image) where username = $1, name = $2, display_image = $3;'
   db.any(query, 
     [
-      req.body.username,
-      req.body.name,
-      req.bodyy.display_image
+      req.session.username,
+      req.session.name,
+      req.session.display_image
     ])
     .then(function (data) {
       res.status(201).json({

@@ -11,63 +11,38 @@
 <%- include ('../partials/menu') %>
 
 <body>
-  <h1>Friends</h1>
+  <h1>Add Friends!</h1>
 
 <!-- Search for friends to Add-->
 <div class="search-bar">
-  <form action= "/search">
+  <form action= "/search" method = "/get">
       <input type="text" placeholder="Search Username" name="search" >
       <button type="submit">Submit</button>
   </form>
 </div>
 
 <!--List of Current Friends-->
-
-    <div class = "row">
-      <div class = "home_column_small">
-        <h4>Friends</h4>
-          <% friends.forEach(friend => { %>
-            <div class = "row" style="background-color:rgb(30,30,30)">
-              <div class = "home_friends_image">
-                <img src = <%=friend.display_image%> width = "50px">
-              </div>
-
-              <div class = "home_friends_info">
-                <p class = "friendName" style = "inline-size:1000px"> <%=friend.name%></p>
-                <p class = "friendUsername"><%=friend.username%></p>
-              </div>
-            </div>
-        <% }) %>
-      </div>
-
-      <div class = "home_column_big">
-        <div class = "home_title">
-          <h4>Home</h4>
-      </div>
       
       <!--List of Artists to follow-->
-      <div class = "home_column_small">
-        <h4><center>Artists</center></h4>
+      <div class = "home_column_big">
         <form method = 'get' action = '/addfriend'>
-          <% users.forEach(user => { %>
-            <% if(user.artist) {%>
-              <div class = "row" style="background-color:rgb(30,30,30)">
-                <div class = "home_artists_image">
-                  <img src = <%=user.display_image%> width = "50px">
-                </div>
+          <div class = "row row-cols-1 row -cols-md-2 g-4">
+            <% users.forEach(user => { %>
+                <div class = "col" style="background-color:rgb(30,30,30)">
+                  <div class="card" >
+                      <img src = <%=user.display_image%> class = "card-img-top">
 
-                <div class = "home_artist_info">
-                  <p class = "artistName" style = "overflow:hidden; height:25px;"> <%=user.name%></p>
+                    <div class = "card-body">
+                      <p class = "artist_name" style = "overflow:hidden; height:25px;"> <%=user.name%></p>
+                      <p class = "home_trendingNow_artist"><%=user.username%></p>
+                    </div>
+                    <div>
+                      <button type="submit" width = "100px" height = "60px" style ="background-color: blue;" data-bs-dismiss="follow" name = 'follow' ><span style = "color: white">Add Friend</span></button>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <button type="submit" class = "follow_button" data-bs-dismiss="follow" name = 'follow' ><span style = "color: white">Follow</span></button>
-                </div>
-              </div>
-            
-          <% } %>
-          <% }) %>
-        
+            <% }) %>
+          </div>
         </form>
       </div>    
-    </div>
-</body>
+ </body>
