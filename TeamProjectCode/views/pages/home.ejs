@@ -77,6 +77,49 @@
         <% }) %> 
       </div>
     </div>
+    <br><br>
+    <div class = "row">
+      <div class = "home_column_small">
+        <h4>Friends</h4>
+          <% friends.forEach(friend => { %>
+            <div class = "row" style="background-color:rgb(30,30,30)">
+              <div class = "home_trendingNow_image">
+                <img src = <%=friend.display_image%> width = "50px">
+              </div>
+
+              <div class = "home_trendingNow_text">
+                <p class = "home_trendingNow_song" style = "inline-size:1000px"> <%=friend.name%></p>
+                <p class = "home_trendingNow_artist"><%=friend.username%></p>
+              </div>
+            </div>
+        <% }) %>
+      </div>
+      <div class = "home_column_big"></div>
+      <div class = "home_column_small">
+        <h4>Artists</h4>
+        <form method = 'get' action = '/addfriend'>
+          <% users.forEach(user => { %>
+            <% if(user.artist) {%>
+              <div class = "row" style="background-color:rgb(30,30,30)">
+                <div class = "home_trendingNow_image">
+                  <img src = <%=user.display_image%> width = "50px">
+                </div>
+
+                <div class = "home_trendingNow_text">
+                  <p class = "artist_name" style = "overflow:hidden; height:25px;"> <%=user.name%></p>
+                  <p class = "home_trendingNow_artist"><%=user.username%></p>
+                </div>
+    
+                <div class = "home_trendingNow_text">
+                  <button type="submit" class = "follow_button" data-bs-dismiss="follow" name = 'follow' >Follow</button>
+                </div>
+              </div>
+            
+          <% } %>
+          <% }) %>
+        </form>
+      </div>
+    </div>  
   </div>
 </body>
 

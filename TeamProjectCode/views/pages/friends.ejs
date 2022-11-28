@@ -10,78 +10,6 @@
 <%- include ('../partials/header') %>
 <%- include ('../partials/menu') %>
 
-<head>
-  <!-- jQuery library -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <!-- Popper JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <!-- Latest compiled JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</head>
-
-<body>
-  <style>   
-  html,
-body,
-.view {
-  height: 100%;
-}
-
-#mobile-box {
-  width: 360px;
-}
-
-.card {
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
-}
-
-.card .view {
-  -webkit-border-top-left-radius: 10px;
-  border-top-left-radius: 10px;
-  -webkit-border-top-right-radius: 10px;
-  border-top-right-radius: 10px;
-}
-
-.card h5 a {
-  color: #0d47a1;
-}
-
-.card h5 a:hover {
-  color: #072f6b;
-}
-
-#pButton {
-  float: left;
-}
-
-#timeline {
-  width: 90%;
-  height: 2px;
-  margin-top: 20px;
-  margin-left: 10px;
-  float: left;
-  -webkit-border-radius: 15px;
-  border-radius: 15px;
-  background: rgba(0, 0, 0, 0.3);
-}
-
-#pButton {
-  margin-top: 12px;
-  cursor: pointer;
-}
-
-#playhead {
-  width: 8px;
-  height: 8px;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
-  margin-top: -3px;
-  background: black;
-  cursor: pointer;
-}
-</style>
-
 <body>
   <h1>Friends</h1>
 
@@ -97,37 +25,43 @@ body,
 
     <div class = "row">
       <div class = "home_column_small">
-        <center>Friends</center>
-        <% friends.forEach(friend => { %>
-          <div class = "row" style="background-color:rgb(30,30,30)">
-            <div class = "home_friends_image">
-              <img src = <%=friend.display_image%> width = "50px">
-            </div>
+        <h4>Friends</h4>
+          <% friends.forEach(friend => { %>
+            <div class = "row" style="background-color:rgb(30,30,30)">
+              <div class = "home_friends_image">
+                <img src = <%=friend.display_image%> width = "50px">
+              </div>
 
-            <div class = "home_friends_info">
-              <p style = "inline-size:1000px"> <%=friend.name%></p>
-              <p><%=friend.username%></p>
+              <div class = "home_friends_info">
+                <p class = "friendName" style = "inline-size:1000px"> <%=friend.name%></p>
+                <p class = "friendUsername"><%=friend.username%></p>
+              </div>
             </div>
-          </div>
         <% }) %>
       </div>
 
+      <div class = "home_column_big">
+        <div class = "home_title">
+          <h4>Home</h4>
+      </div>
+      
       <!--List of Artists to follow-->
       <div class = "home_column_small">
-        <center>Artists</center>
+        <h4><center>Artists</center></h4>
         <form method = 'get' action = '/addfriend'>
           <% users.forEach(user => { %>
-            <% if(!user.non_artist) {%>
+            <% if(user.artist) {%>
               <div class = "row" style="background-color:rgb(30,30,30)">
                 <div class = "home_artists_image">
                   <img src = <%=user.display_image%> width = "50px">
                 </div>
 
                 <div class = "home_artist_info">
-                  <p style = "inline-size:1000px"> <%=user.name%></p>
-                  <p><%=user.username%></p>
+                  <p class = "artistName" style = "overflow:hidden; height:25px;"> <%=user.name%></p>
                 </div>
-                <button type="submit" class="btn-close" data-bs-dismiss="follow" name = 'follow' >Follow</button>
+                <div>
+                  <button type="submit" class = "follow_button" data-bs-dismiss="follow" name = 'follow' ><span style = "color: white">Follow</span></button>
+                </div>
               </div>
             
           <% } %>

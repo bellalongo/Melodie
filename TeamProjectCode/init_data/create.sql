@@ -5,7 +5,7 @@ CREATE TABLE users (
     password CHAR(60) NOT NULL,
     name VARCHAR(50), 
     display_image TEXT ,
-    non_artist boolean 
+    artist boolean 
 );
 
 DROP TABLE IF EXISTS snippets CASCADE;

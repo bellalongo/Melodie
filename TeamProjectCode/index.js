@@ -475,6 +475,8 @@ app.get('/home', (req, res) => {
   var playlistURL = 'https://api.spotify.com/v1/playlists/37i9dQZEVXbLRQDuF5jeBp/tracks?limit=5';
   var newSongsURL = 'https://api.spotify.com/v1/playlists/37i9dQZF1DX4JAvHpjipBk/tracks?limit=5';
   const query = "SELECT * FROM posts WHERE username IN (SELECT username FROM friends JOIN users_to_friends ON users_to_friends.friend_id = friends.friend_id WHERE users_to_friends.user_id = 1);";
+  const query3 = 'select * from friends LIMIT 5';
+  const query2 = 'select * from users LIMIT 5';
   axios.all([
     axios.get(playlistURL, {
       headers: {
@@ -486,14 +488,19 @@ app.get('/home', (req, res) => {
         'Authorization': token,
       }
     }),
-    db.query(query)
+    db.query(query),
+    db.query(query2),
+    db.query(query3)
   ])
-  .then(axios.spread((topsongs, newsongs, allposts) => {
+  .then(axios.spread((topsongs, newsongs, allposts,cycleusers,cyclefriends) => {
     console.log(allposts);
+    console.log(cycleusers);
     res.render('pages/home', {
       results : topsongs.data.items,
       newsongs: newsongs.data.items,
-      posts : allposts
+      posts : allposts,
+      users: cycleusers,
+      friends: cyclefriends
     });
   })
   )
