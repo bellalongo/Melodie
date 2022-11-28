@@ -17,27 +17,10 @@ const dbConfig = {
     database: process.env.POSTGRES_DB,
     user: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
-  };
+};
  
 const db = pgp(dbConfig);
- 
-const user = {
-  username:undefined,
-  password:undefined,
-  display_name: undefined,
-  picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-};
 
-  
-const images = {
-  image_url : undefined
-};
-
-const tokens = {
-  access:undefined,
-  refresh:undefined
-}
-  
 // test your database
 db.connect()
   .then(obj => {
@@ -50,6 +33,7 @@ db.connect()
  
 app.set('view engine', 'ejs');
 app.use(bodyParser.json());
+
 app.use(
     session({
       secret: process.env.SESSION_SECRET,
@@ -63,7 +47,21 @@ app.use(
     extended: true,
   })
 );
-app.use(express.static(__dirname + '/public'));
+
+const user = {
+  username:undefined,
+  password:undefined,
+  display_name: undefined,
+  picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+};
+const tokens = {
+  access:undefined,
+  refresh:undefined
+}
+  
+const images = {
+  image_url : undefined
+};
 
 app.use(express.static(__dirname + '/public'));
 // app.get('/', (req, res) =>{
@@ -435,6 +433,7 @@ app.get('/home', (req, res) => {
   const token = "Bearer " + access_token;
   var playlistURL = 'https://api.spotify.com/v1/playlists/37i9dQZEVXbLRQDuF5jeBp/tracks?limit=5';
   var newSongsURL = 'https://api.spotify.com/v1/playlists/37i9dQZF1DX4JAvHpjipBk/tracks?limit=5';
+  const query = "SELECT * FROM posts WHERE username IN (SELECT username FROM friends JOIN users_to_friends ON users_to_friends.friend_id = friends.friend_id WHERE users_to_friends.user_id = 1);";
   axios.all([
     axios.get(playlistURL, {
       headers: {
@@ -445,14 +444,15 @@ app.get('/home', (req, res) => {
       headers: {
         'Authorization': token,
       }
-    })
+    }),
+    db.query(query)
   ])
-  .then(axios.spread((topsongs, newsongs) => {
-    console.log(topsongs.data.items);
-    console.log(newsongs.data.items);
+  .then(axios.spread((topsongs, newsongs, allposts) => {
+    console.log(allposts);
     res.render('pages/home', {
       results : topsongs.data.items,
-      newsongs: newsongs.data.items
+      newsongs: newsongs.data.items,
+      posts : allposts
     });
   })
   )
