@@ -12,8 +12,10 @@ INSERT INTO friends (username, password) VALUES ('bella', 'eokfoekf'); /* fi: 1 
 INSERT INTO friends (username, password) VALUES ('amy', 'eokfoekf'); /* fi: 2 */
 INSERT INTO friends (username, password) VALUES ('frankIsCool', 'eokfoekf'); /* fi: 3 */
 
-INSERT INTO users_to_posts(user_id, post_id) VALUES ('2', '1');
-INSERT INTO users_to_posts(user_id, post_id) VALUES ('2', '2');
+INSERT INTO users_to_posts(user_id) VALUES ('2');
+INSERT INTO users_to_posts(user_id) VALUES ('2');
+INSERT INTO users_to_posts(user_id) VALUES ('2');
+INSERT INTO users_to_posts(user_id) VALUES ('2');
 
 INSERT INTO users_to_friends(user_id, friend_id) VALUES ('1', '1'); 
 INSERT INTO users_to_friends(user_id, friend_id) VALUES ('1', '2');

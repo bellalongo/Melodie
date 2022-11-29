@@ -175,6 +175,17 @@
             xhr.onload = handleApiResponse;
         }
 
+        function PauseMusic(){
+            const device_id = document.getElementById('device').value
+            var searchUrl = "https://api.spotify.com/v1/me/player/pause?device_id=" + device_id;
+            let xhr = new XMLHttpRequest();
+            xhr.open("PUT", searchUrl, true)
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('Authorization', 'Bearer <%= tokens %>');
+            xhr.send()
+            //xhr.onload = handleApiResponse;
+        }
+
         function handleApiResponse(){
             if ( this.status == 200){
                 console.log(this.responseText);
@@ -306,6 +317,9 @@
                                     style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);">Confirm Snippet</button>
                                         <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PlayMusic('<%= el.uri %>', '<%= count %>')"
                                             style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Play</button>
+                                        
+                                        <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PauseMusic()"
+                                            style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Pause</button>
 
                                     <!-- </form> -->
                                 </div>

@@ -63,6 +63,13 @@ const images = {
   image_url : undefined
 };
 
+var page;
+
+const add_user = 
+`INSERT INTO users(username) VALUES ($1)
+ ON CONFLICT (username) DO NOTHING;`;
+const find_user = `SELECT username FROM users WHERE users.username = $1`;
+
 app.use(express.static(__dirname + '/public'));
 // app.get('/', (req, res) =>{
 //   res.redirect('/login'); //this will call the /anotherRoute route in the API
@@ -118,34 +125,34 @@ app.get('/profile', (req, res) => {
 
   // Register submission
 app.post('/register', async (req, res) => {
-    //the logic goes here
-    if(req.body.password.length >= 8 && req.body.password.length <= 60){ //checks that password satifies length requirement
-    const hash = await bcrypt.hash(req.body.password, 10);
-    const query = 'insert into users (username, password) values ($1,$2);';
-    db.none(query, [
-        req.body.username,
-        hash
-      ])
-        .then(function(data) {
-            res.redirect('/login');
-         })
-        .catch(function(err) {
-          res.render('pages/register', {
-            user: [],
-            error: true,
-            message: `Error Registering Account. Try again.`,
-          });
-            return console.log(err);
-        });
-  }
-  else{
-    //gives error if password too short/long
-    res.render('pages/register', {
-      user: [],
-      error: true,
-      message: `Make sure your password is the correct length`,
-    });
-  }
+  //   //the logic goes here
+  //   if(req.body.password.length >= 8 && req.body.password.length <= 60){ //checks that password satifies length requirement
+  //   const hash = await bcrypt.hash(req.body.password, 10);
+  //   const query = 'insert into users (username, password) values ($1,$2);';
+  //   db.none(query, [
+  //       req.body.username,
+  //       hash
+  //     ])
+  //       .then(function(data) {
+  //           res.redirect('/login');
+  //        })
+  //       .catch(function(err) {
+  //         res.render('pages/register', {
+  //           user: [],
+  //           error: true,
+  //           message: `Error Registering Account. Try again.`,
+  //         });
+  //           return console.log(err);
+  //       });
+  // }
+  // else{
+  //   //gives error if password too short/long
+  //   res.render('pages/register', {
+  //     user: [],
+  //     error: true,
+  //     message: `Make sure your password is the correct length`,
+  //   });
+  // }
 });
  
  
@@ -226,6 +233,8 @@ app.use(express.static(__dirname + '/public'))
  
 app.get('/login_spotify', function(req, res) {
  
+  // page = req.body.page;
+  // console.log(req.body.page);
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
  
@@ -294,13 +303,17 @@ app.get('/callback', function(req, res) {
           console.log(body);
           user.display_name = body.display_name;
           user.username = body.id;
-
           if(body.images[0]){
             user.picture=body.images[0].url;
           }
+
+          db.any(add_user, [body.display_name, body.id])
+          .then(
+            console.log('WOOOOOOO')
+          )
           
-          console.log(user.display_name);
-          console.log(user.picture);
+          // console.log(user.display_name);
+          // console.log(user.picture);
           //console.log(body.images[0].url);
         });
  
@@ -586,26 +599,40 @@ app.post('/music', (req, res) => {
   });
 
   app.post('/addsnippet', (req, res) => {
-    const song_minutes = req.body.minutes;
-    const song_seconds = req.body.seconds;
+
+    const song_minutes = 0;
+    const song_seconds = 0;
+
+    if(req.body.minutes){
+      song_minutes = req.body.minutes;
+    }
+    if(req.body.minutes){
+      song_seconds = req.body.seconds;
+    }
     const song_totalTime = song_minutes * 60000 + song_seconds * 1000;
     const song_name = req.body.chosenSong;
     const song_artist = req.body.chosenArtist;
     const song_image = req.body.chosenImage;
     const song_id = req.body.song;
     const user_comment = req.body.userComment;
-    const user_username = user.username;
+    const user_username = user.display_name;
 
-    const snippetsquery = "INSERT INTO snippets(track_id, song_name, start_time) VALUES ($1, $2, $3) RETURNING *;";
-    const postquery = "INSERT INTO posts(username, user_action, user_comment, song_name, song_artist, song_image) VALUES ($1,'updated a snippet!',$2,$3,$4,$5) RETURNING *;";
+    const snippetsquery = `INSERT INTO snippets(track_id, song_name, start_time) VALUES ($1, $2, $3) RETURNING *;` 
+    const users_to_snip_query = `INSERT INTO users_to_snippets(user_id) SELECT user_id FROM users WHERE users.username = $1 RETURNING *;`;
+    const postquery = `INSERT INTO posts(username, user_action, user_comment, song_name, song_artist, song_image) VALUES ($1,'updated a snippet!',$2,$3,$4,$5) RETURNING *;`
+    const users_to_posts_query = `INSERT INTO users_to_posts(user_id) SELECT user_id FROM users WHERE users.username = $1 RETURNING *;`;
 
     axios.all([
-      db.one(snippetsquery, [song_id, song_name, song_totalTime]),
-      db.one(postquery, [user_username, user_comment, song_name, song_artist, song_image])
+      db.one(snippetsquery, [song_id, song_name, song_totalTime, user_username]),
+      db.one(postquery, [user_username, user_comment, song_name, song_artist, song_image]),
+      db.one(users_to_snip_query, [user_username]),
+      db.one(users_to_posts_query, [user_username])
     ])
-    .then(axios.spread((snippets, posts) => {
+    .then(axios.spread((snippets, posts, usersnip, userposts) => {
       console.log(snippets);
       console.log(posts);
+      console.log(usersnip);
+      console.log(userposts);
       res.redirect('/music');
     })
     )
