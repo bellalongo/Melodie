@@ -600,13 +600,13 @@ app.post('/music', (req, res) => {
 
   app.post('/addsnippet', (req, res) => {
 
-    const song_minutes = 0;
-    const song_seconds = 0;
+    var song_minutes = 0;
+    var song_seconds = 0;
 
     if(req.body.minutes){
       song_minutes = req.body.minutes;
     }
-    if(req.body.minutes){
+    if(req.body.seconds){
       song_seconds = req.body.seconds;
     }
     const song_totalTime = song_minutes * 60000 + song_seconds * 1000;
