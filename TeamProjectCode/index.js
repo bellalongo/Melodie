@@ -431,20 +431,17 @@ app.get('/search', (req,res) =>
     return console.log(err);
   });
 });
-app.post('/addfriend', async (req, res) => {
-  const query = 'insert into friends (username,name,display_image) where username = $1, name = $2, display_image = $3;'
-  db.any(query, 
+app.post('/addfriend', (req, res) => {
+  const sql = 'insert into friends (username,name,display_image) VALUES ($1,$2,$3);'
+  db.any(sql, 
     [
-      req.session.username,
-      req.session.name,
-      req.session.display_image
+      req.body.u,
+      req.body.n,
+      req.body.i
     ])
     .then(function (data) {
-      res.status(201).json({
-        status: 'success',
-        data: data,
-        message: 'friend added successfully',
-      });
+      console.log(data);
+      res.redirect('/home');
     })
     .catch(function (err) {
       return console.log(err);
@@ -476,8 +473,8 @@ app.get('/home', (req, res) => {
   var playlistURL = 'https://api.spotify.com/v1/playlists/37i9dQZEVXbLRQDuF5jeBp/tracks?limit=5';
   var newSongsURL = 'https://api.spotify.com/v1/playlists/37i9dQZF1DX4JAvHpjipBk/tracks?limit=5';
   const query = "SELECT * FROM posts WHERE username IN (SELECT username FROM friends JOIN users_to_friends ON users_to_friends.friend_id = friends.friend_id WHERE users_to_friends.user_id = 1);";
-  const query3 = 'select * from friends LIMIT 5';
-  const query2 = 'select * from users LIMIT 5';
+  const query3 = 'select * from friends';
+  const query2 = 'select * from users WHERE user_id BETWEEN 6 AND 11 ';
   axios.all([
     axios.get(playlistURL, {
       headers: {
@@ -538,7 +535,7 @@ app.get('/friends', (req,res) =>
          });
     };
 */const query = 'select * from friends';
-    const query2 = 'select * from users';
+    const query2 = 'select * from users order by user_id desc';
   db.any(query)
     .then(friends =>{
       db.any(query2)

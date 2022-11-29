@@ -25,24 +25,29 @@
       
       <!--List of Artists to follow-->
       <div class = "home_column_big">
-        <form method = 'get' action = '/addfriend'>
+        
           <div class = "row row-cols-1 row -cols-md-2 g-4">
             <% users.forEach(user => { %>
+              <form method = 'post' action = '/addfriend'>
                 <div class = "col" style="background-color:rgb(30,30,30)">
                   <div class="card" >
-                      <img src = <%=user.display_image%> class = "card-img-top">
+                      <img src = <%=user.display_image%> class = "card-img-top" name = "artist_image">
 
                     <div class = "card-body">
-                      <p class = "artist_name" style = "overflow:hidden; height:25px;"> <%=user.name%></p>
-                      <p class = "home_trendingNow_artist"><%=user.username%></p>
+                      <p class = "artist_name" style = "overflow:hidden; height:25px;" name = "artist_name"> <%=user.name%></p>
+                      <p class = "home_trendingNow_artist" name = artist_username><%=user.username%></p>
                     </div>
                     <div>
-                      <button type="submit" width = "100px" height = "60px" style ="background-color: blue;" data-bs-dismiss="follow" name = 'follow' ><span style = "color: white">Add Friend</span></button>
+                      <input type = "hidden" name = "u" value = "<%=user.username%>" />
+                      <input type = "hidden" name = "i" value = "<%=user.display_image%>" />
+                      <input type = "hidden" name = "n" value = "<%=user.name%>" /> 
+                      <button type="submit" width = "100px" height = "60px" style ="background-color: blue;" onclick="this.style.display='none'" name = 'follow' ><span style = "color: white">Add Friend</span></button>
                     </div>
                   </div>
                 </div>
+              </form>
             <% }) %>
           </div>
-        </form>
+       
       </div>    
  </body>

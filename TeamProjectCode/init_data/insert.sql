@@ -1,8 +1,8 @@
-INSERT INTO users (username,password,name,display_image) VALUES ('thejadensnell', 'pass1','Jaden Snell', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png');
-INSERT INTO users (username,password,name,display_image) VALUES ('bellalongo','pass1', 'Bella Longo', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png');
-INSERT INTO users (username,password,name,display_image) VALUES ('alexbrimhall','pass1','Alex Brimhall', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png');
+INSERT INTO users (username,password,name,display_image) VALUES ('thejadensnell', 'pass1','Jaden Snell', 'https://i.scdn.co/image/ab6775700000ee8573b7336d816fe320ee315643');
+INSERT INTO users (username,password,name,display_image) VALUES ('bellalongo','pass1', 'Bella Longo', 'https://www.shutterstock.com/image-photo/abstract-science-circle-global-network-connection-428771419');
+INSERT INTO users (username,password,name,display_image) VALUES ('alexbrim','pass1','Alex Brimhall', 'https://www.shutterstock.com/image-photo/coming-together-form-one-cropped-shot-2137445457');
 INSERT INTO users (username,password,name,display_image) VALUES ('gabosambo','pass1','Gabo Sambo', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png');
-INSERT INTO users (username,password,name,display_image) VALUES ('caseyrudski','pass1','Casey Rudski', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png');
+INSERT INTO users (username,password,name,display_image) VALUES ('caseyrudzski','pass1','Casey Rudzski', 'https://play-lh.googleusercontent.com/eN0IexSzxpUDMfFtm-OyM-nNs44Y74Q3k51bxAMhTvrTnuA4OGnTi_fodN4cl-XxDQc');
 INSERT INTO users (username,password,name,display_image) VALUES ('daniilgarusov','pass1','Daniil Garusov', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png');
 
 INSERT INTO users (username,password, name,display_image, artist) VALUES ('drizzy', 'ovo', 'Drake','https://cdn.britannica.com/37/231937-050-9228ECA1/Drake-rapper-2019.jpg?w=400&h=300&c=crop', True);
@@ -18,27 +18,19 @@ INSERT INTO users (username,password, name,display_image, artist) VALUES ('zay',
 
 
 
-INSERT INTO friends (username,name,display_image) VALUES ('thejadensnell', 'Jaden Snell', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png');
-INSERT INTO friends (username,name,display_image) VALUES ('bellalongo', 'Bella Longo', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png');
-INSERT INTO friends (username,name,display_image) VALUES ('alexbrimhall','Alex Brimhall', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png');
+INSERT INTO friends (username,name,display_image) VALUES ('thejadensnell', 'Jaden Snell', 'https://i.scdn.co/image/ab6775700000ee8573b7336d816fe320ee315643');
+INSERT INTO friends (username,name,display_image) VALUES ('bellalongo', 'Bella Longo', 'https://www.shutterstock.com/image-photo/abstract-science-circle-global-network-connection-428771419');
+INSERT INTO friends (username,name,display_image) VALUES ('alexbrim','Alex Brimhall', 'https://www.shutterstock.com/image-photo/coming-together-form-one-cropped-shot-2137445457');
 INSERT INTO friends (username,name,display_image) VALUES ('gabosambo','Gabo Sambo', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png');
-INSERT INTO friends (username,name,display_image) VALUES ('caseyrudski','Casey Rudski', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png');
+INSERT INTO friends (username,name,display_image) VALUES ('caseyrudzki','Casey Rudski', 'https://play-lh.googleusercontent.com/eN0IexSzxpUDMfFtm-OyM-nNs44Y74Q3k51bxAMhTvrTnuA4OGnTi_fodN4cl-XxDQc');
 INSERT INTO friends (username,name,display_image) VALUES ('daniilgarusov','Daniil Garusov', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png');
 
 
-INSERT INTO users (username, name, password,display_image) VALUES ('bellaa', 'Bella', 'wwokw', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png'); /* ui: 1 */
-INSERT INTO users (username, name, password, display_image) VALUES ('bella', 'Bella', 'eokfoekf', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png'); /* ui: 2 */
-INSERT INTO users (username, name, password, display_image) VALUES ('amy', 'Amy', 'wkwodkwod', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png'); /* ui: 3 */
-INSERT INTO users (username, name, password, display_image) VALUES ('frankIsCool', 'Frank', 'ekfjek', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png'); /* ui: 4 */
 
-INSERT INTO posts (username, user_action, user_comment, song_name, song_artist, song_image) VALUES ('bella', 'updated a snippet!','20/10 song','Charcoal Baby', 'Blood Orange', 'https://media.pitchfork.com/photos/5b7735baf60a9e325d3f01d5/1:1/w_600/blood%20orange_negro%20swan.jpg'); /* pi: 1*/
-INSERT INTO posts (username, user_action, user_comment, song_name, song_artist, song_image) VALUES ('amy', 'updated a snippet!','wowowowowow','Dazed and Confused', 'Led Zeppelin', 'https://upload.wikimedia.org/wikipedia/en/e/ef/Led_Zeppelin_-_Led_Zeppelin_%281969%29_front_cover.png'); /* pi: 2*/
-INSERT INTO posts (username, user_action, user_comment, song_name, song_artist, song_image) VALUES ('amy', 'updated a snippet!','good stuff','Love Yourz', 'J. Cole', 'https://m.media-amazon.com/images/I/41m7-eV+k-L._SY580_.jpg'); /* pi: 3*/
+INSERT INTO posts (username, user_action, user_comment, song_name, song_artist, song_image) VALUES ('thejadensnell', 'updated a snippet!','20/10 song','Charcoal Baby', 'Blood Orange', 'https://media.pitchfork.com/photos/5b7735baf60a9e325d3f01d5/1:1/w_600/blood%20orange_negro%20swan.jpg'); /* pi: 1*/
+INSERT INTO posts (username, user_action, user_comment, song_name, song_artist, song_image) VALUES ('bellalongo', 'updated a snippet!','wowowowowow','Dazed and Confused', 'Led Zeppelin', 'https://upload.wikimedia.org/wikipedia/en/e/ef/Led_Zeppelin_-_Led_Zeppelin_%281969%29_front_cover.png'); /* pi: 2*/
+INSERT INTO posts (username, user_action, user_comment, song_name, song_artist, song_image) VALUES ('bellalongo', 'updated a snippet!','good stuff','Love Yourz', 'J. Cole', 'https://m.media-amazon.com/images/I/41m7-eV+k-L._SY580_.jpg'); /* pi: 3*/
 INSERT INTO posts (username, user_action, user_comment, song_name, song_artist, song_image) VALUES ('frankIsCool', 'updated a snippet!','cryin in the club','Self Control', 'Frank Ocean', 'https://upload.wikimedia.org/wikipedia/en/a/a0/Blonde_-_Frank_Ocean.jpeg'); /* pi: 4*/
-
-INSERT INTO friends (username, name,display_image) VALUES ('bella', 'eokfoekf','https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png'); /* fi: 1 */
-INSERT INTO friends (username, name,display_image) VALUES ('amy', 'eokfoekf','https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png'); /* fi: 2 */
-INSERT INTO friends (username, name,display_image) VALUES ('frankIsCool', 'eokfoekf','https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png'); /* fi: 3 */
 
 INSERT INTO users_to_posts(user_id, post_id) VALUES ('2', '1');
 INSERT INTO users_to_posts(user_id, post_id) VALUES ('2', '2');
