@@ -73,10 +73,47 @@ app.get('/register', (req, res) => {
   res.render('pages/register');
 });
 
+const g_snippets = {
+  snippets : undefined
+};
+
 app.get('/profile', (req, res) => {
-  res.render('pages/profile', {
-    user,
-  });
+  const access_token = tokens.access;
+  const token = "Bearer " + access_token;
+  var playlistURL = 'https://api.spotify.com/v1/playlists/37i9dQZEVXbLRQDuF5jeBp/tracks?limit=5';
+  var newSongsURL = 'https://api.spotify.com/v1/playlists/37i9dQZF1DX4JAvHpjipBk/tracks?limit=5';
+  const query = "SELECT * FROM snippets WHERE snippet_id = (SELECT snippet_id FROM users_to_snippets WHERE user_id = (SELECT user_id FROM users WHERE username = $1));";
+  axios.all([
+    axios.get(playlistURL, {
+      headers: {
+        'Authorization': token,
+      }
+    }),
+    axios.get(newSongsURL, {
+      headers: {
+        'Authorization': token,
+      }
+    }),
+    db.query(query, [user.username])
+  ])
+  .then(axios.spread((topsongs, newsongs, allsnippets) => {
+    console.log(allsnippets);
+    g_snippets.snippets = allsnippets;
+    res.render('pages/profile', {
+      user,
+      tokens : access_token,
+      snippets : allsnippets
+    });
+  })
+  )
+  .catch((error) => {
+    console.error(error)
+  })
+
+  // res.render('pages/profile', {
+  //   user, 
+  //   tokens : access_token
+  // });
 }); 
 
   // Register submission
@@ -288,7 +325,8 @@ app.get('/callback', function(req, res) {
 });
 
 app.get('/', (req, res) => {
-  res.render('pages/profile', {user});
+  res.render('pages/profile', {user, tokens : access_token, snippets : g_snippets.snippets});
+  // res.render('pages/login');
 
 });
  
