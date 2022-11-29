@@ -104,9 +104,6 @@
               // console.log('Position in Song', position);
               // console.log('Duration of Song', duration);
               // console.log(current_track.album.images[0].url);
-              document.querySelector('now-playing__cover').src = current_track.album.images[0].url;
-              document.querySelector('now-playing__name').innerText = current_track.name;
-              document.querySelector('now-playing__artist').innerText = current_track.artists[0].name;
           });
 
           player.resume().then(() => {
@@ -121,8 +118,9 @@
   <script>
       function PlayMusic(song, start_pos){
           let nostring_song = song.replace(/['"]+/g, '')
-
+          console.log(tokens)
           const device_id = document.getElementById('device').value
+          console.log("device_id:", device_id)
           var searchUrl = "https://api.spotify.com/v1/me/player/play?device_id=" + device_id;
 
           let info = {
@@ -167,12 +165,14 @@
                 <img src=<%= user.picture %> width="250 px">
               </td>
               <div>
-              <% if(snippets !== undefined){ %>
+              <% if(snippets !== undefined && Array.isArray(snippets)){ %>
+                <div><%= snippets %></div>
                 <% snippets.forEach(snippet => { %>
                   <div class = "row">
                     <div class = "snippets">
+                        <input type="hidden" name="device" id="device">
                         <%= snippet.song_name %>
-                            <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PlayMusic('<%= el.uri %>','<%= snippet.start_time %>')"
+                            <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PlayMusic('<%= snippet.track_id %>','<%= snippet.start_time %>')"
                               style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Play</button>
                     </div>
                   </div>

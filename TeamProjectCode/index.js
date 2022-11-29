@@ -85,26 +85,45 @@ const g_snippets = {
 };
 
 app.get('/profile', (req, res) => {
+
+  // const song = req.body.songName;
+  // //console.log(song);
+  // const access_token = tokens.access;
+  // const token = "Bearer " + access_token;
+  // var searchUrl = "https://api.spotify.com/v1/search?q=" + song + "&type=track&limit=4";
+
+  // axios.get(searchUrl, {
+  //   headers: {
+  //     'Authorization': token,
+  //   }
+  // })
+  // .then((resAxios) => {
+  //     //console.log(resAxios.data)
+  //     //spotifyResult = resAxios.data;
+
+  //     //console.log(resAxios.data.tracks.items);
+      
+  //     res.render('pages/music', {
+  //       results : resAxios.data.tracks.items,
+  //       tokens : access_token
+  //     });
+
+
+  const song = req.body.songName;
+
   const access_token = tokens.access;
-  const token = "Bearer " + access_token;
-  var playlistURL = 'https://api.spotify.com/v1/playlists/37i9dQZEVXbLRQDuF5jeBp/tracks?limit=5';
-  var newSongsURL = 'https://api.spotify.com/v1/playlists/37i9dQZF1DX4JAvHpjipBk/tracks?limit=5';
-  const query = "SELECT * FROM snippets WHERE snippet_id = (SELECT snippet_id FROM users_to_snippets WHERE user_id = (SELECT user_id FROM users WHERE username = $1));";
-  axios.all([
-    axios.get(playlistURL, {
-      headers: {
-        'Authorization': token,
-      }
-    }),
-    axios.get(newSongsURL, {
-      headers: {
-        'Authorization': token,
-      }
-    }),
-    db.query(query, [user.username])
-  ])
-  .then(axios.spread((topsongs, newsongs, allsnippets) => {
-    console.log(allsnippets);
+  // const token = "Bearer " + access_token;
+  // var searchUrl = "https://api.spotify.com/v1/search?q=" + song + "&type=track&limit=4";
+  const query = "SELECT * FROM snippets";
+  // axios.all([
+    // axios.get(searchUrl, {
+    //   headers: {
+    //     'Authorization': token,
+    //   }
+    // }),
+    db.query(query) // ])
+  .then(axios.spread((allsnippets) => {
+    console.log("snippets pleae work:", allsnippets);
     g_snippets.snippets = allsnippets;
     res.render('pages/profile', {
       user,
@@ -609,6 +628,7 @@ app.post('/music', (req, res) => {
     if(req.body.seconds){
       song_seconds = req.body.seconds;
     }
+
     const song_totalTime = song_minutes * 60000 + song_seconds * 1000;
     const song_name = req.body.chosenSong;
     const song_artist = req.body.chosenArtist;
@@ -629,10 +649,10 @@ app.post('/music', (req, res) => {
       db.one(users_to_posts_query, [user_username])
     ])
     .then(axios.spread((snippets, posts, usersnip, userposts) => {
-      console.log(snippets);
-      console.log(posts);
-      console.log(usersnip);
-      console.log(userposts);
+      console.log("snippets", snippets);
+      // console.log(posts);
+      // console.log(usersnip);
+      // console.log(userposts);
       res.redirect('/music');
     })
     )

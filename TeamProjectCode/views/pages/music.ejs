@@ -18,114 +18,111 @@
 
     <script type="text/JavaScript" src="http://code.jquery.com/jquery-1.11.2.js"></script>
     <script type="text/JavaScript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js"></script>
-
+    
     <% if(tokens !== 'undefined'){ %> 
-    <script>
+        <script>
 
 
-        var track = {
-            name: "",
-            album: {
-                images: [
-                    { url: "" }
+            var track = {
+                name: "",
+                album: {
+                    images: [
+                        { url: "" }
+                    ]
+                },
+                artists: [
+                    { name: "" }
                 ]
-            },
-            artists: [
-                { name: "" }
-            ]
-        }
+            }
 
-        var is_paused  = false;
-        var is_active = false;
-        // const player = undefined;
-        var current_track = undefined;
+            var is_paused  = false;
+            var is_active = false;
+            // const player = undefined;
+            var current_track = undefined;
 
-        window.onSpotifyWebPlaybackSDKReady = () => {
-            console.log("Hello?")
-            // console.log(tokens.access)
-            
-
-            const token = '<%= tokens %>';
-            console.log(token);
-            const player = new Spotify.Player({
-                name: 'Web Playback SDK Quick Start Player',
-                getOAuthToken: cb => { cb(token); },
-                volume: 0.5
-            });
-
-            // Ready
-            player.addListener('ready', ({ device_id }) => {
-                console.log('Ready with Device ID', device_id);
-                document.getElementById('device').value = device_id;
-                 var s = "curl --request PUT \\\n" +
-                    "  --url https://api.spotify.com/v1/me/player \\\n" + 
-                    "  --header 'Authorization: Bearer " +  '<%= tokens %>' + "'\\\n" +
-                    "  --header 'Content-Type: application/json' \\\n" +  
-                    "  --data '{" + "\"device_ids\""+ ": " + "[" + "\"";
-
-                console.log(s + device_id + "\"" + "]}\'"); 
-            });
-
-            // Not Ready
-            player.addListener('not_ready', ({ device_id }) => {
-                console.log('Device ID has gone offline', device_id);
-            });
-
-            player.addListener('initialization_error', ({ message }) => {
-                console.error(message);
-            });
-
-            player.addListener('authentication_error', ({ message }) => {
-                console.error(message);
-            });
-
-            player.addListener('account_error', ({ message }) => {
-                console.error(message);
-            });
-
-            // document.getElementById('togglePlay').onclick = function() {
-            //   player.togglePlay();
-            // };
-
-            player.addListener('player_state_changed', ( state => {
-
-                console.log('state', state);
-                if (!state) {
-                    return;
-                }
+            window.onSpotifyWebPlaybackSDKReady = () => {
+                console.log("Hello?")
+                // console.log(tokens.access)
                 
-                track = state.track_window.current_track;
-                is_paused = state.paused;
 
-                player.getCurrentState().then( state => { 
-                    (!state)? is_active = false : is_active = true 
+                const token = '<%= tokens %>';
+                console.log(token);
+                const player = new Spotify.Player({
+                    name: 'Web Playback SDK Quick Start Player',
+                    getOAuthToken: cb => { cb(token); },
+                    volume: 0.5
                 });
 
-            }));
+                // Ready
+                player.addListener('ready', ({ device_id }) => {
+                    console.log('Ready with Device ID', device_id);
+                    document.getElementById('device').value = device_id;
+                    var s = "curl --request PUT \\\n" +
+                        "  --url https://api.spotify.com/v1/me/player \\\n" + 
+                        "  --header 'Authorization: Bearer " +  '<%= tokens %>' + "'\\\n" +
+                        "  --header 'Content-Type: application/json' \\\n" +  
+                        "  --data '{" + "\"device_ids\""+ ": " + "[" + "\"";
 
-            player.addListener('player_state_changed', ({
-                position,
-                duration,
-                track_window: { current_track }
-            }) => {
-                console.log('Currently Playing', current_track.name);
-                // console.log('Position in Song', position);
-                // console.log('Duration of Song', duration);
-                // console.log(current_track.album.images[0].url);
-                document.querySelector('now-playing__cover').src = current_track.album.images[0].url;
-                document.querySelector('now-playing__name').innerText = current_track.name;
-                document.querySelector('now-playing__artist').innerText = current_track.artists[0].name;
-            });
+                    console.log(s + device_id + "\"" + "]}\'"); 
+                });
 
-            player.resume().then(() => {
-                console.log('Resumed!');
-            });
+                // Not Ready
+                player.addListener('not_ready', ({ device_id }) => {
+                    console.log('Device ID has gone offline', device_id);
+                });
 
-            player.connect();
-        
+                player.addListener('initialization_error', ({ message }) => {
+                    console.error(message);
+                });
+
+                player.addListener('authentication_error', ({ message }) => {
+                    console.error(message);
+                });
+
+                player.addListener('account_error', ({ message }) => {
+                    console.error(message);
+                });
+
+                // document.getElementById('togglePlay').onclick = function() {
+                //   player.togglePlay();
+                // };
+
+                player.addListener('player_state_changed', ( state => {
+
+                    console.log('state', state);
+                    if (!state) {
+                        return;
+                    }
+                    
+                    track = state.track_window.current_track;
+                    is_paused = state.paused;
+
+                    player.getCurrentState().then( state => { 
+                        (!state)? is_active = false : is_active = true 
+                    });
+
+                }));
+
+                player.addListener('player_state_changed', ({
+                    position,
+                    duration,
+                    track_window: { current_track }
+                }) => {
+                    console.log('Currently Playing', current_track.name);
+                    // console.log('Position in Song', position);
+                    // console.log('Duration of Song', duration);
+                    // console.log(current_track.album.images[0].url);
+                });
+
+                player.resume().then(() => {
+                    console.log('Resumed!');
+                });
+
+                player.connect();
             
-        }
-    </script>
+                
+            }
+        </script>
 
     <% } %> 
 
