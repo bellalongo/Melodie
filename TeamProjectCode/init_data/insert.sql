@@ -1,3 +1,10 @@
+INSERT INTO users (username,password,name,display_image) VALUES ('thejadensnell', 'pass1','Jaden Snell', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png');
+INSERT INTO users (username,password,name,display_image) VALUES ('bellalongo','pass1', 'Bella Longo', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png');
+INSERT INTO users (username,password,name,display_image) VALUES ('alexbrimhall','pass1','Alex Brimhall', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png');
+INSERT INTO users (username,password,name,display_image) VALUES ('gabosambo','pass1','Gabo Sambo', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png');
+INSERT INTO users (username,password,name,display_image) VALUES ('caseyrudski','pass1','Casey Rudski', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png');
+INSERT INTO users (username,password,name,display_image) VALUES ('daniilgarusov','pass1','Daniil Garusov', 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460__480.png');
+
 INSERT INTO users (username,password, name,display_image, artist) VALUES ('drizzy', 'ovo', 'Drake','https://cdn.britannica.com/37/231937-050-9228ECA1/Drake-rapper-2019.jpg?w=400&h=300&c=crop', True);
 INSERT INTO users (username,password, name,display_image, artist) VALUES ('lennox', 'dreamville', 'Ari Lennox', 'https://i.scdn.co/image/ab6761610000e5eb53c7c434d28939a0a966bc9f',True);
 INSERT INTO users (username,password, name,display_image, artist) VALUES ('tswift', 'lovestory', 'Taylor Swift','https://i.scdn.co/image/ab6761610000e5eb5a00969a4698c3132a15fbb0', True);

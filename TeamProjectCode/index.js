@@ -417,10 +417,11 @@ app.post('/editprofile', (req,res) =>
 */
 app.get('/search', (req,res) =>
 {
-  const query = 'select * from users where username = $1;'
-  db.any(query, [req.body.username])
+ 
+  const sql = 'select * from users where username = $1;'
+  db.any(sql,[req.query.search])
   .then(users=> {
-    console.log(users);
+  
     res.render('pages/friends', 
     {
       users
