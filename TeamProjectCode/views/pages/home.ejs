@@ -4,6 +4,7 @@
     3. General social media style feed where people that you follow show up in your feed?
  -->
 
+
 <%- include ('../partials/header') %>
 <%- include ('../partials/menu') %>
 
@@ -125,6 +126,25 @@
       </div>
     </div> 
   </div>
+    <div>
+    <h4 class = "home_billboard_title">Blast from the Past</h4>
+         <h6 class = "home_billboard_comment">Billboard hits from 2019</h6>
+         <% Object.keys(billboard).forEach(el=> { %>
+            <div class="col">
+            <div class = "home_billboard_div">
+                <div class ="card">
+                    <img src="<%= billboard[el].image %> " class="card-img-top" style = "height:125px;" alt="...">
+                    <div class="card-body">
+                        <p class = "home_trendingNow_song" style = "overflow: hidden; height:25px;"><%= billboard[el].title %></p>
+                        <p class = "home_trendingNow_artist">Current Ranking: <%= billboard[el].rank %></p> 
+                        <p class = "home_trendingNow_artist">Peak Position: <%= billboard[el]['peak position']%></p>
+                        <p>Weeks on Chart:  <%= billboard[el]['weeks on chart']%></p>
+                    </div>
+                </div>
+              </div>
+            </div>
+        <% }); %>
+     </div>
 </body>
 
 <%- include ('../partials/footer') %>

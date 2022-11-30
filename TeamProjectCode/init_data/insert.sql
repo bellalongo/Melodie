@@ -32,8 +32,10 @@ INSERT INTO posts (username, user_action, user_comment, song_name, song_artist, 
 INSERT INTO posts (username, user_action, user_comment, song_name, song_artist, song_image) VALUES ('bellalongo', 'updated a snippet!','good stuff','Love Yourz', 'J. Cole', 'https://m.media-amazon.com/images/I/41m7-eV+k-L._SY580_.jpg'); /* pi: 3*/
 INSERT INTO posts (username, user_action, user_comment, song_name, song_artist, song_image) VALUES ('frankIsCool', 'updated a snippet!','cryin in the club','Self Control', 'Frank Ocean', 'https://upload.wikimedia.org/wikipedia/en/a/a0/Blonde_-_Frank_Ocean.jpeg'); /* pi: 4*/
 
-INSERT INTO users_to_posts(user_id, post_id) VALUES ('2', '1');
-INSERT INTO users_to_posts(user_id, post_id) VALUES ('2', '2');
+INSERT INTO users_to_posts(user_id) VALUES ('2');
+INSERT INTO users_to_posts(user_id) VALUES ('2');
+INSERT INTO users_to_posts(user_id) VALUES ('2');
+INSERT INTO users_to_posts(user_id) VALUES ('2');
 
 INSERT INTO users_to_friends(user_id, friend_id) VALUES ('1', '1'); 
 INSERT INTO users_to_friends(user_id, friend_id) VALUES ('1', '2');
