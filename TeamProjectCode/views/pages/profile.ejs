@@ -12,7 +12,7 @@
   <script type="text/JavaScript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js"></script>
 
   <% if(tokens !== 'undefined'){ %> 
-  <script>
+    <script>
 
 
       var track = {
@@ -111,14 +111,16 @@
           });
 
           player.connect();
-  </script>
+      }
+    </script>
 
   <% } %> 
 
   <script>
       function PlayMusic(song, start_pos){
+          console.log(song);
           let nostring_song = song.replace(/['"]+/g, '')
-          console.log(tokens)
+          // console.log(tokens)
           const device_id = document.getElementById('device').value
           console.log("device_id:", device_id)
           var searchUrl = "https://api.spotify.com/v1/me/player/play?device_id=" + device_id;
@@ -165,12 +167,13 @@
                 <img src=<%= user.picture %> width="250 px">
               </td>
               <div>
+                <form>
+                  <input type="hidden" name="device" id="device">
+                </form>
               <% if(snippets !== undefined && Array.isArray(snippets)){ %>
-                <div><%= snippets %></div>
                 <% snippets.forEach(snippet => { %>
                   <div class = "row">
                     <div class = "snippets">
-                        <input type="hidden" name="device" id="device">
                         <%= snippet.song_name %>
                             <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PlayMusic('<%= snippet.track_id %>','<%= snippet.start_time %>')"
                               style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Play</button>
@@ -181,7 +184,7 @@
               </div>
 
 
-
+<!-- 
 
                 
                 <td><audio controls>
@@ -229,7 +232,7 @@
                 </td>
             </tr>
     </table>
-    </div>
+    </div> -->
     <div class="container">
       <p>user can add a bio here. </p>
     </div>

@@ -295,7 +295,7 @@
                                     <!-- <form action="/music" method="PUT"> -->
                                     <h6>Duration of Song: <%= parseInt(el.duration_ms/60000) %> Minutes <%= parseInt((el.duration_ms % 60000)/1000) %> Seconds </h6>
                                     <form action = "/addsnippet"  method = "post" id = "addsnippetform" name = "addsnippetform">
-                                        <input type="hidden" name="song" id="song" value="<%= el.uri %>">
+                                        <!-- <input type="hidden" name="song" id="song" value="<%= el.uri %>"> -->
                                         <input type="hidden" name="device" id="device">
                                         <H5>Snippet Start Position:</H5>
                                         <label for="minutes">Min</label>

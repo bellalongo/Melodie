@@ -114,7 +114,7 @@ app.get('/profile', (req, res) => {
   const access_token = tokens.access;
   // const token = "Bearer " + access_token;
   // var searchUrl = "https://api.spotify.com/v1/search?q=" + song + "&type=track&limit=4";
-  const query = "SELECT * FROM snippets";
+  const query = "SELECT * FROM snippets;";
   // axios.all([
     // axios.get(searchUrl, {
     //   headers: {
@@ -122,8 +122,9 @@ app.get('/profile', (req, res) => {
     //   }
     // }),
     db.query(query) // ])
-  .then(axios.spread((allsnippets) => {
+  .then(((allsnippets) => {
     console.log("snippets pleae work:", allsnippets);
+    console.log("token", access_token);
     g_snippets.snippets = allsnippets;
     res.render('pages/profile', {
       user,
@@ -629,17 +630,18 @@ app.post('/music', (req, res) => {
       song_seconds = req.body.seconds;
     }
 
-    const song_totalTime = song_minutes * 60000 + song_seconds * 1000;
-    const song_name = req.body.chosenSong;
-    const song_artist = req.body.chosenArtist;
-    const song_image = req.body.chosenImage;
-    const song_id = req.body.song;
-    const user_comment = req.body.userComment;
-    const user_username = user.display_name;
+    var song_totalTime = song_minutes * 60000 + song_seconds * 1000;
+    var song_name = req.body.chosenSong;
+    var song_artist = req.body.chosenArtist;
+    var song_image = req.body.chosenImage;
+    var song_id = req.body.song;
+    console.log("song test",song_id);
+    var user_comment = req.body.userComment;
+    var user_username = user.display_name;
 
-    const snippetsquery = `INSERT INTO snippets(track_id, song_name, start_time) VALUES ($1, $2, $3) RETURNING *;` 
+    const snippetsquery = `INSERT INTO snippets(track_id, song_name, start_time) VALUES ($1, $2, $3) RETURNING *;` ;
     const users_to_snip_query = `INSERT INTO users_to_snippets(user_id) SELECT user_id FROM users WHERE users.username = $1 RETURNING *;`;
-    const postquery = `INSERT INTO posts(username, user_action, user_comment, song_name, song_artist, song_image) VALUES ($1,'updated a snippet!',$2,$3,$4,$5) RETURNING *;`
+    const postquery = `INSERT INTO posts(username, user_action, user_comment, song_name, song_artist, song_image) VALUES ($1,'updated a snippet!',$2,$3,$4,$5) RETURNING *;`;
     const users_to_posts_query = `INSERT INTO users_to_posts(user_id) SELECT user_id FROM users WHERE users.username = $1 RETURNING *;`;
 
     axios.all([
@@ -648,11 +650,11 @@ app.post('/music', (req, res) => {
       db.one(users_to_snip_query, [user_username]),
       db.one(users_to_posts_query, [user_username])
     ])
-    .then(axios.spread((snippets, posts, usersnip, userposts) => {
+    .then(((snippets, posts, usersnip, userposts) => {
       console.log("snippets", snippets);
-      // console.log(posts);
-      // console.log(usersnip);
-      // console.log(userposts);
+      console.log(posts);
+      console.log(usersnip);
+      console.log(userposts);
       res.redirect('/music');
     })
     )
