@@ -103,20 +103,19 @@
               <div class = "home_trendingNow_image">
                 <img src = <%=user.display_image%> width = "50px">
               </div>   
-
               <div class = "home_trendingNow_text">
                 <p class = "artist_name" style = "overflow:hidden; height:25px;"> <%=user.name%></p>
-                <p class = "home_trendingNow_artist"><%=user.username%></p>
-                <input type = "hidden" name = "u" value = "<%=user.username%>" />
-                <input type = "hidden" name = "i" value = "<%=user.display_image%>" />
-                <input type = "hidden" name = "n" value = "<%=user.name%>" />
-                <button type="submit" class = "follow_button" onclick="this.style.display='none'"  name = 'follow' >Follow</button>
-                <!--<% friends.forEach(friend => { %>
-                  <%if(user.username == friend.username){ %>
+                <div class = "row" style = "background-color: rgb(30,30,30);">
+                  <div class = "home_follow_name">
+                    <p class = "home_trendingNow_artist"><%=user.username%></p>
+                  </div>
+                  <input type = "hidden" name = "u" value = "<%=user.username%>" />
+                  <input type = "hidden" name = "i" value = "<%=user.display_image%>" />
+                  <input type = "hidden" name = "n" value = "<%=user.name%>" />
+                  <div class = "home_followButton">
                     <button type="submit" class = "follow_button" onclick="this.style.display='none'"  name = 'follow' >Follow</button>
-                 <% }%>
-               <% }) %> -->
-             
+                  </div>
+                </div>
               </div>
             </div>
             </form>
