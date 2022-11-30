@@ -36,26 +36,17 @@
                       </audio> <br>
                 </td>
                 <td>
-                    <audio controls>
-                        <source src="sample-3s.mp3" type="audio/mpeg">
-                      Your browser does not support the audio element.
-                      </audio> <br>
-                      <audio controls>
-                        <source src="sample-3s.mp3" type="audio/mpeg">
-                      Your browser does not support the audio element.
-                      </audio> <br>
-                      <audio controls>
-                        <source src="sample-3s.mp3" type="audio/mpeg">
-                      Your browser does not support the audio element.
-                      </audio> <br>
-                      <audio controls>
-                        <source src="sample-3s.mp3" type="audio/mpeg">
-                      Your browser does not support the audio element.
-                      </audio> <br>
-                      <audio controls>
-                        <source src="sample-3s.mp3" type="audio/mpeg">
-                      Your browser does not support the audio element.
-                      </audio> <br>
+                  <% results.forEach(results => { %>
+                    <div class = "row" style="background-color:rgb(30,30,30)">
+                      <div class = "home_trendingNow_image">
+                        <img src = <%=results.track.album.images[0].url %> width="50px">
+                      </div>
+                      <div class = "home_trendingNow_text">
+                        <p class = "home_trendingNow_song"><%= results.track.name %></p>
+                        <p class = "home_trendingNow_artist"><%= results.track.artists[0].name %></p> 
+                      </div>
+                    </div>
+                  <% }) %> 
                 </td>
             </tr>
     </table>

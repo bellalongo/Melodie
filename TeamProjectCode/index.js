@@ -9,7 +9,6 @@ const { use } = require('bcrypt/promises');
 const { query } = require('express');
 const { minify } = require('pg-promise');
 
-
 // database configuration
 const dbConfig = {
     host: 'db',
@@ -20,6 +19,24 @@ const dbConfig = {
 };
  
 const db = pgp(dbConfig);
+
+const user = {
+  username:undefined,
+  password:undefined,
+  display_name: undefined,
+  picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
+};
+ 
+ 
+const images = {
+  image_url : undefined
+};
+ 
+const tokens = {
+  access:undefined,
+  refresh:undefined
+}
+ 
 
 // test your database
 db.connect()
@@ -48,20 +65,8 @@ app.use(
   })
 );
 
-const user = {
-  username:undefined,
-  password:undefined,
-  display_name: undefined,
-  picture: "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png",
-};
-const tokens = {
-  access:undefined,
-  refresh:undefined
-}
-  
-const images = {
-  image_url : undefined
-};
+app.use(express.static(__dirname + '/public'));
+ 
 
 app.use(express.static(__dirname + '/public'));
 // app.get('/', (req, res) =>{
@@ -72,13 +77,33 @@ app.use(express.static(__dirname + '/public'));
 app.get('/register', (req, res) => {
   res.render('pages/register');
 });
-
+ 
 app.get('/profile', (req, res) => {
-  res.render('pages/profile', {
-    user,
-  });
-}); 
+  const access_token = tokens.access;
+  const token = "Bearer " + access_token;
+  var newSongsURL = 'https://api.spotify.com/v1/me/tracks?offset=0&limit=5&locale=en-US,en;q=0.9';
+  axios.all([
+    axios.get(newSongsURL, {
+      headers: {
+        'Authorization': token,
+      }
+    })
+  ])
+  .then(axios.spread((topsongs) => {
+    console.log(topsongs.data.items);
+    res.render('pages/profile', {
+      results : topsongs.data.items,
+      user
+    });
+  })
+  )
+  .catch((error) => {
+    console.error(error)
+  })
+});
 
+
+ 
   // Register submission
 app.post('/register', async (req, res) => {
     //the logic goes here
@@ -193,7 +218,9 @@ app.get('/login_spotify', function(req, res) {
   res.cookie(stateKey, state);
  
   // your application requests authorization
-  var scope = 'streaming user-read-private user-read-email';
+
+  var scope = 'streaming user-read-private user-read-email user-library-read';
+
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
@@ -238,14 +265,14 @@ app.get('/callback', function(req, res) {
  
         var access_token = body.access_token,
             refresh_token = body.refresh_token;
-        
+
           tokens.access = access_token;
           tokens.refresh = refresh_token;
-
-        
+ 
+       
           tokens.access = access_token;
           tokens.refresh = refresh_token;
-
+ 
         var options = {
           url: 'https://api.spotify.com/v1/me',
           headers: { 'Authorization': 'Bearer ' + access_token },
@@ -283,7 +310,8 @@ app.get('/callback', function(req, res) {
 });
 
 app.get('/', (req, res) => {
-  res.render('pages/profile', {user});
+
+  res.render('pages/login');
 
 });
  
@@ -389,7 +417,7 @@ app.post('/editprofile', (req,res) =>
       });
     }
 })
-
+ 
 app.post('/addfriend', async (req, res) => {
   const query = 'insert into friends where username = $1;'
   db.any(query, [req.body.username])
@@ -404,7 +432,7 @@ app.post('/addfriend', async (req, res) => {
       return console.log(err);
     });
 });
-
+ 
 app.delete('/delete_user/:user_id', async (req, res) => {
   const user_id = parseInt(req.params.user_id);
   const query = 'delete from reviews where review_id = $1;';
@@ -423,7 +451,7 @@ app.delete('/delete_user/:user_id', async (req, res) => {
         return console.log(err);
       });
 });
-
+ 
 app.get('/home', (req, res) => {
   const access_token = tokens.access;
   const token = "Bearer " + access_token;
@@ -457,7 +485,6 @@ app.get('/home', (req, res) => {
   })
 });
 
-
 app.get('/friends', (res,req) =>
   axios.get(
     'https://api.spotify.com/v1/me/',
@@ -476,13 +503,12 @@ app.get('/friends', (res,req) =>
          });
       }
     })
+
     .catch(error => 
       {
         console.log(error);
       })
 )
-
-
 
 app.get('/logout', (req, res) => {
   req.session.destroy();
@@ -490,7 +516,6 @@ app.get('/logout', (req, res) => {
     message : 'Logged out successfully',
   });
 });
-
 
 app.get('/music', (req, res) => {
   res.render('pages/music', {
@@ -514,6 +539,7 @@ app.post('/music', (req, res) => {
   .then((resAxios) => {
       //console.log(resAxios.data)
       //spotifyResult = resAxios.data;
+
 
       //console.log(resAxios.data.tracks.items);
       
@@ -542,11 +568,11 @@ app.post('/music', (req, res) => {
     })
   });
 
-
 // const express = require('express')
 // const request = require('request');
 const dotenv = require('dotenv');
 const { access } = require('fs');
+
 
 const port = 5000
 
@@ -569,12 +595,14 @@ var generateRandomString = function (length) {
   return text;
 };
 
+ 
 // var app = express();
-
+ 
 app.get('/auth/login', (req, res) => {
-
-  var scope = "streaming user-read-email user-read-private"
+ 
+  var scope = "streaming user-read-email user-read-private user-library-read"
   var state = generateRandomString(16);
+ 
 
   var auth_query_parameters = new URLSearchParams({
     response_type: "code",
@@ -583,6 +611,7 @@ app.get('/auth/login', (req, res) => {
     redirect_uri: spotify_redirect_uri,
     state: state
   })
+
 
   res.redirect('https://accounts.spotify.com/authorize/?' + auth_query_parameters.toString());
 })
@@ -612,6 +641,7 @@ app.get('/auth/callback', (req, res) => {
     }
   });
 
+
 })
 
 app.get('/auth/token', (req, res) => {
@@ -621,4 +651,8 @@ app.get('/auth/token', (req, res) => {
 app.listen(3000);
 console.log('Server is listening on port 3000');
  
+ 
+ 
+
+
 
