@@ -1,8 +1,8 @@
 DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
-    username VARCHAR(50) NOT NULL,
-    password CHAR(60) NOT NULL,
+    username VARCHAR(50) UNIQUE NOT NULL,
+    password CHAR(60) ,
     name VARCHAR(50)
 );
 
@@ -11,7 +11,7 @@ CREATE TABLE snippets (
     snippet_id SERIAL PRIMARY KEY,
     track_id TEXT,
     song_name TEXT,
-    start_time TIME
+    start_time INT
 );
 
 DROP TABLE IF EXISTS friends CASCADE;
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS images (
 DROP TABLE IF EXISTS users_to_posts CASCADE;
 CREATE TABLE users_to_posts (
   user_id INT NOT NULL,
-  post_id INT NOT NULL,
+  post_id SERIAL NOT NULL,
   FOREIGN KEY(user_id) REFERENCES users(user_id),
   FOREIGN KEY(post_id) REFERENCES posts(post_id)
 );
@@ -50,7 +50,7 @@ CREATE TABLE users_to_posts (
 DROP TABLE IF EXISTS users_to_snippets CASCADE;
 CREATE TABLE users_to_snippets (
   user_id INT NOT NULL,
-  snippet_id INT NOT NULL,
+  snippet_id SERIAL NOT NULL,
   FOREIGN KEY (user_id) REFERENCES users (user_id),
   FOREIGN KEY (snippet_id) REFERENCES snippets (snippet_id)
 );

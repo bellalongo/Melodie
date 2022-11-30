@@ -3,6 +3,158 @@
 <%- include ('../partials/message') %>
 
 <main>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script src="https://sdk.scdn.co/spotify-player.js"></script>
+
+  <script type="text/JavaScript" src="http://code.jquery.com/jquery-1.11.2.js"></script>
+  <script type="text/JavaScript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js"></script>
+
+  <% if(tokens !== 'undefined'){ %> 
+    <script>
+
+
+      var track = {
+          name: "",
+          album: {
+              images: [
+                  { url: "" }
+              ]
+          },
+          artists: [
+              { name: "" }
+          ]
+      }
+
+      var is_paused  = false;
+      var is_active = false;
+      // const player = undefined;
+      var current_track = undefined;
+
+      window.onSpotifyWebPlaybackSDKReady = () => {
+          console.log("Hello?")
+          // console.log(tokens.access)
+          
+
+          const token = '<%= tokens %>';
+          console.log(token);
+          const player = new Spotify.Player({
+              name: 'Web Playback SDK Quick Start Player',
+              getOAuthToken: cb => { cb(token); },
+              volume: 0.5
+          });
+
+          // Ready
+          player.addListener('ready', ({ device_id }) => {
+              console.log('Ready with Device ID', device_id);
+              document.getElementById('device').value = device_id;
+                var s = "curl --request PUT \\\n" +
+                  "  --url https://api.spotify.com/v1/me/player \\\n" + 
+                  "  --header 'Authorization: Bearer " +  '<%= tokens %>' + "'\\\n" +
+                  "  --header 'Content-Type: application/json' \\\n" +  
+                  "  --data '{" + "\"device_ids\""+ ": " + "[" + "\"";
+
+              console.log(s + device_id + "\"" + "]}\'"); 
+          });
+
+          // Not Ready
+          player.addListener('not_ready', ({ device_id }) => {
+              console.log('Device ID has gone offline', device_id);
+          });
+
+          player.addListener('initialization_error', ({ message }) => {
+              console.error(message);
+          });
+
+          player.addListener('authentication_error', ({ message }) => {
+              console.error(message);
+          });
+
+          player.addListener('account_error', ({ message }) => {
+              console.error(message);
+          });
+
+          // document.getElementById('togglePlay').onclick = function() {
+          //   player.togglePlay();
+          // };
+
+          player.addListener('player_state_changed', ( state => {
+
+              console.log('state', state);
+              if (!state) {
+                  return;
+              }
+              
+              track = state.track_window.current_track;
+              is_paused = state.paused;
+
+              player.getCurrentState().then( state => { 
+                  (!state)? is_active = false : is_active = true 
+              });
+
+          }));
+
+          player.addListener('player_state_changed', ({
+              position,
+              duration,
+              track_window: { current_track }
+          }) => {
+              console.log('Currently Playing', current_track.name);
+              // console.log('Position in Song', position);
+              // console.log('Duration of Song', duration);
+              // console.log(current_track.album.images[0].url);
+          });
+
+          player.resume().then(() => {
+              console.log('Resumed!');
+          });
+
+          player.connect();
+      }
+    </script>
+
+  <% } %> 
+
+  <script>
+      function PlayMusic(song, start_pos){
+          console.log(song);
+          let nostring_song = song.replace(/['"]+/g, '')
+          // console.log(tokens)
+          const device_id = document.getElementById('device').value
+          console.log("device_id:", device_id)
+          var searchUrl = "https://api.spotify.com/v1/me/player/play?device_id=" + device_id;
+
+          let info = {
+              uris: [nostring_song],
+              position_ms: start_pos
+          };
+          //info.uris[0] = document.getElementById('song').value;
+          let body = JSON.stringify(info);
+          console.log(body)
+
+          let xhr = new XMLHttpRequest();
+          xhr.open("PUT", searchUrl, true);
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.setRequestHeader('Authorization', 'Bearer <%= tokens %>');
+          xhr.send(body);
+          xhr.onload = handleApiResponse;
+      }
+
+      function handleApiResponse(){
+          if ( this.status == 200){
+              console.log(this.responseText);
+              setTimeout(currentlyPlaying, 2000);
+          }
+          else if ( this.status == 204 ){
+              setTimeout(currentlyPlaying, 2000);
+          }
+          else if ( this.status == 401 ){
+              refreshAccessToken()
+          }
+      }
+  </script>
+
     <div class="container">
         <table class="table table-dark">
             <tr>
@@ -11,9 +163,30 @@
                 <th>Top Tracks</th>
             </tr>
             <tr>
-                <td>
+              <td>
                 <img src=<%= user.picture %> width="250 px">
-                </td>
+              </td>
+              <div>
+                <form>
+                  <input type="hidden" name="device" id="device">
+                </form>
+              <% if(snippets !== undefined && Array.isArray(snippets)){ %>
+                <% snippets.forEach(snippet => { %>
+                  <div class = "row">
+                    <div class = "snippets">
+                        <%= snippet.song_name %>
+                            <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PlayMusic('<%= snippet.track_id %>','<%= snippet.start_time %>')"
+                              style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Play</button>
+                    </div>
+                  </div>
+                <% }); %>
+              <% } %>
+              </div>
+
+
+<!-- 
+
+                
                 <td><audio controls>
                         <source src="sample-3s.mp3" type="audio/mpeg">
                       Your browser does not support the audio element.
@@ -50,7 +223,7 @@
                 </td>
             </tr>
     </table>
-    </div>
+    </div> -->
     <div class="container">
       <p>user can add a bio here. </p>
     </div>

@@ -68,6 +68,13 @@ app.use(
 app.use(express.static(__dirname + '/public'));
  
 
+var page;
+
+const add_user = 
+`INSERT INTO users(username) VALUES ($1)
+ ON CONFLICT (username) DO NOTHING;`;
+const find_user = `SELECT username FROM users WHERE users.username = $1`;
+
 app.use(express.static(__dirname + '/public'));
 // app.get('/', (req, res) =>{
 //   res.redirect('/login'); //this will call the /anotherRoute route in the API
@@ -77,8 +84,14 @@ app.use(express.static(__dirname + '/public'));
 app.get('/register', (req, res) => {
   res.render('pages/register');
 });
- 
+
+
+const g_snippets = {
+  snippets : undefined
+};
+
 app.get('/profile', (req, res) => {
+  
   const access_token = tokens.access;
   const token = "Bearer " + access_token;
   var newSongsURL = 'https://api.spotify.com/v1/me/tracks?offset=0&limit=5&locale=en-US,en;q=0.9';
@@ -94,6 +107,37 @@ app.get('/profile', (req, res) => {
     res.render('pages/profile', {
       results : topsongs.data.items,
       user
+  
+  
+  const song = req.body.songName;
+
+  const query = "SELECT * FROM snippets;";
+  db.query(query)
+  .then(((allsnippets) => {
+    console.log("snippets pleae work:", allsnippets);
+    console.log("token", access_token);
+    g_snippets.snippets = allsnippets;
+    res.render('pages/profile', {
+      user,
+      tokens : access_token,
+      snippets : allsnippets
+
+//app.get('/profile', (req, res) => {
+//  const access_token = tokens.access;
+//  const token = "Bearer " + access_token;
+//  var newSongsURL = 'https://api.spotify.com/v1/me/tracks?offset=0&limit=5&locale=en-US,en;q=0.9';
+//  axios.all([
+//    axios.get(newSongsURL, {
+//      headers: {
+//        'Authorization': token,
+//      }
+//    })
+//  ])
+//  .then(axios.spread((topsongs) => {
+//    console.log(topsongs.data.items);
+//    res.render('pages/profile', {
+//      results : topsongs.data.items,
+//      user
     });
   })
   )
@@ -106,34 +150,34 @@ app.get('/profile', (req, res) => {
  
   // Register submission
 app.post('/register', async (req, res) => {
-    //the logic goes here
-    if(req.body.password.length >= 8 && req.body.password.length <= 60){ //checks that password satifies length requirement
-    const hash = await bcrypt.hash(req.body.password, 10);
-    const query = 'insert into users (username, password) values ($1,$2);';
-    db.none(query, [
-        req.body.username,
-        hash
-      ])
-        .then(function(data) {
-            res.redirect('/login');
-         })
-        .catch(function(err) {
-          res.render('pages/register', {
-            user: [],
-            error: true,
-            message: `Error Registering Account. Try again.`,
-          });
-            return console.log(err);
-        });
-  }
-  else{
-    //gives error if password too short/long
-    res.render('pages/register', {
-      user: [],
-      error: true,
-      message: `Make sure your password is the correct length`,
-    });
-  }
+  //   //the logic goes here
+  //   if(req.body.password.length >= 8 && req.body.password.length <= 60){ //checks that password satifies length requirement
+  //   const hash = await bcrypt.hash(req.body.password, 10);
+  //   const query = 'insert into users (username, password) values ($1,$2);';
+  //   db.none(query, [
+  //       req.body.username,
+  //       hash
+  //     ])
+  //       .then(function(data) {
+  //           res.redirect('/login');
+  //        })
+  //       .catch(function(err) {
+  //         res.render('pages/register', {
+  //           user: [],
+  //           error: true,
+  //           message: `Error Registering Account. Try again.`,
+  //         });
+  //           return console.log(err);
+  //       });
+  // }
+  // else{
+  //   //gives error if password too short/long
+  //   res.render('pages/register', {
+  //     user: [],
+  //     error: true,
+  //     message: `Make sure your password is the correct length`,
+  //   });
+  // }
 });
  
  
@@ -214,6 +258,8 @@ app.use(express.static(__dirname + '/public'))
  
 app.get('/login_spotify', function(req, res) {
  
+  // page = req.body.page;
+  // console.log(req.body.page);
   var state = generateRandomString(16);
   res.cookie(stateKey, state);
  
@@ -281,12 +327,21 @@ app.get('/callback', function(req, res) {
  
         // use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
-          user.display_name = body.display_name;
-          user.picture=body.images[0].url;
           console.log(body);
-          console.log(user.display_name);
-          console.log(user.picture);
-          console.log(body.images[0].url);
+          user.display_name = body.display_name;
+          user.username = body.id;
+          if(body.images[0]){
+            user.picture=body.images[0].url;
+          }
+
+          db.any(add_user, [body.display_name, body.id])
+          .then(
+            console.log('WOOOOOOO')
+          )
+          
+          // console.log(user.display_name);
+          // console.log(user.picture);
+          //console.log(body.images[0].url);
         });
  
         // we can also pass the token to the browser to make requests from there
@@ -310,9 +365,8 @@ app.get('/callback', function(req, res) {
 });
 
 app.get('/', (req, res) => {
-
+//  res.render('pages/profile', {user, tokens : access_token, snippets : g_snippets.snippets});
   res.render('pages/login');
-
 });
  
 app.get('/refresh_token', function(req, res) {
@@ -574,6 +628,71 @@ app.post('/music', (req, res) => {
       console.error(error)
     })
   });
+
+
+  app.post('/addsnippet', (req, res) => {
+
+    var song_minutes = 0;
+    var song_seconds = 0;
+
+    if(req.body.minutes){
+      song_minutes = req.body.minutes;
+    }
+    if(req.body.seconds){
+      song_seconds = req.body.seconds;
+    }
+
+    var song_totalTime = song_minutes * 60000 + song_seconds * 1000;
+    var song_name = req.body.chosenSong;
+    var song_artist = req.body.chosenArtist;
+    var song_image = req.body.chosenImage;
+    var song_id = req.body.song;
+    console.log("song test",song_id);
+    var user_comment = req.body.userComment;
+    var user_username = user.display_name;
+
+    const snippetsquery = `INSERT INTO snippets(track_id, song_name, start_time) VALUES ($1, $2, $3) RETURNING *;` ;
+    const users_to_snip_query = `INSERT INTO users_to_snippets(user_id) SELECT user_id FROM users WHERE users.username = $1 RETURNING *;`;
+    const postquery = `INSERT INTO posts(username, user_action, user_comment, song_name, song_artist, song_image) VALUES ($1,'updated a snippet!',$2,$3,$4,$5) RETURNING *;`;
+    const users_to_posts_query = `INSERT INTO users_to_posts(user_id) SELECT user_id FROM users WHERE users.username = $1 RETURNING *;`;
+
+    axios.all([
+      db.one(snippetsquery, [song_id, song_name, song_totalTime, user_username]),
+      db.one(postquery, [user_username, user_comment, song_name, song_artist, song_image]),
+      db.one(users_to_snip_query, [user_username]),
+      db.one(users_to_posts_query, [user_username])
+    ])
+    .then(((snippets, posts, usersnip, userposts) => {
+      console.log("snippets", snippets);
+      console.log(posts);
+      console.log(usersnip);
+      console.log(userposts);
+      res.redirect('/music');
+    })
+    )
+    .catch((error) => {
+      console.error(error)
+    });
+  });
+
+  // THIS DOES NOTHING
+  // app.put('/music', (req, res) => {
+  //   console.log(req.body.device)
+  //   const access_token = tokens.access;
+  //   const token = "Bearer " + access_token;
+  //   const device_id = req.body.device;
+  //   var searchUrl = "https://api.spotify.com/v1/me/player/play?device_id=" + device_id;
+
+  //   //"{\"context_uri\":\"spotify:album:5ht7ItJgpBH7W6vJ5BqpPr\",\"offset\":{\"position\":5},\"position_ms\":0}" -H "Accept: application/json" -H "Content-Type: application/json" -H "Authorization: Bearer BQAcfgh96EGQF_HZ0o6hVhn_CoKP81zV_O17Y6EKKUCU1tYLZfkb9MS5hW7RJLePLX994muribDjcGBtenncuc59PTouhll09zXcRt8ckmOkmsXcZAehftF46W6QJ9Ppw8IQKELLHA5vhhO5fZhh8iZqdBaAw6vJOm-CEErpEaatRlvJMKP5rIKR5hc-SL23UOBBxC4"
+
+  //   axios.put(searchUrl, {
+  //     context_uri: req.body.song,
+  //     //position_ms: req.body.position,
+  //     headers:{
+  //       'Authorization': token,
+  //     }
+  //   })
+  // });
 
 // const express = require('express')
 // const request = require('request');
