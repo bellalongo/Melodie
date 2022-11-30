@@ -10,113 +10,44 @@
 <%- include ('../partials/header') %>
 <%- include ('../partials/menu') %>
 
-<head>
-  <!-- jQuery library -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <!-- Popper JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <!-- Latest compiled JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</head>
-
 <body>
-  <style>   
-  html,
-body,
-.view {
-  height: 100%;
-}
+  <h1>Add Friends!</h1>
 
-#mobile-box {
-  width: 360px;
-}
+<!-- Search for friends to Add-->
+<div class="search-bar">
+  <form action= "/search" method = "get">
+      <input type="text" placeholder="Search Username" name="search" id = "mySearch" >
+      <button type="submit">Submit</button>
+  </form>
+</div>
 
-.card {
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
-}
+<!--List of Current Friends-->
+      
+      <!--List of Artists to follow-->
+      <div class = "home_column_big">
+        
+          <div class = "row row-cols-1 row -cols-md-2 g-4">
+            <% users.forEach(user => { %>
+              <form method = 'post' action = '/addfriend'>
+                <div class = "col" style="background-color:rgb(30,30,30)">
+                  <div class="card" >
+                      <img src = <%=user.display_image%> class = "card-img-top" name = "artist_image">
 
-.card .view {
-  -webkit-border-top-left-radius: 10px;
-  border-top-left-radius: 10px;
-  -webkit-border-top-right-radius: 10px;
-  border-top-right-radius: 10px;
-}
-
-.card h5 a {
-  color: #0d47a1;
-}
-
-.card h5 a:hover {
-  color: #072f6b;
-}
-
-#pButton {
-  float: left;
-}
-
-#timeline {
-  width: 90%;
-  height: 2px;
-  margin-top: 20px;
-  margin-left: 10px;
-  float: left;
-  -webkit-border-radius: 15px;
-  border-radius: 15px;
-  background: rgba(0, 0, 0, 0.3);
-}
-
-#pButton {
-  margin-top: 12px;
-  cursor: pointer;
-}
-
-#playhead {
-  width: 8px;
-  height: 8px;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
-  margin-top: -3px;
-  background: black;
-  cursor: pointer;
-}
-</style>
-
-<body>
-  <h1>Friends</h1>
-<!-- Music from friends  -->
-<div class="container d-flex justify-content-center my-4 mb-5">
-    <% songs.forEach(song => { %>
-    <div id="mobile-box">
-  
-      <!-- Card -->
-      <div class="card">
-        <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-            <img src = "<%= song.images && song.images.length ? song.images[0].url : '/blank.jpg' %>" class = "card-img-top"> 
-          <a href="#!">
-            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-          </a>
-        </div>
-        <div class="card-body text-center">
-  
-          <h5 class="h5 font-weight-bold"><a href="#" target="_blank"><%= song.display_name %></a></h5>
-          <p class="mb-0"><%= song.email %></p>
-          <audio id="music" preload="true">
-            <source src="#">
-          </audio>
-          <div id="audioplayer">
-            <i id="pButton" class="fas fa-play"></i>
-            <div id="timeline">
-              <div id="playhead"></div>
-            </div>
+                    <div class = "card-body">
+                      <p class = "artist_name" style = "overflow:hidden; height:25px;" name = "artist_name"> <%=user.name%></p>
+                      <p class = "home_trendingNow_artist" name = artist_username><%=user.username%></p>
+                    </div>
+                    <div>
+                      <input type = "hidden" name = "u" value = "<%=user.username%>" />
+                      <input type = "hidden" name = "i" value = "<%=user.display_image%>" />
+                      <input type = "hidden" name = "n" value = "<%=user.name%>" /> 
+                      <button type="submit" width = "100px" height = "60px" style ="background-color: blue;" onclick="this.style.display='none'" name = 'follow' ><span style = "color: white">Add Friend</span></button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            <% }) %>
           </div>
-  
-        </div>
-      </div>
-      <!-- Card -->
-    </div>
-    <% }) %>
-  </div>
-  <!-- Content -->
-</body>
-  
+       
+      </div>    
+ </body>

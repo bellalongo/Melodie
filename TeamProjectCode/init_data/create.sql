@@ -1,9 +1,12 @@
 DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    password CHAR(60) ,
-    name VARCHAR(50)
+
+    username VARCHAR(50) NOT NULL,
+    password CHAR(60) NOT NULL,
+    name VARCHAR(50), 
+    display_image TEXT ,
+    artist boolean 
 );
 
 DROP TABLE IF EXISTS snippets CASCADE;
@@ -18,8 +21,17 @@ DROP TABLE IF EXISTS friends CASCADE;
 CREATE TABLE friends (
     friend_id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
-    password CHAR(60) NOT NULL,
-    name VARCHAR(50)
+    name VARCHAR(50),
+    display_image TEXT NOT NULL
+);
+
+
+CREATE TABLE users_to_snippets (
+  user_id INT NOT NULL,
+  snippet_id INT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users (user_id),
+  FOREIGN KEY (snippet_id) REFERENCES snippets (snippet_id)
+
 );
 
 DROP TABLE IF EXISTS posts CASCADE;
@@ -33,11 +45,12 @@ CREATE TABLE posts (
   song_image TEXT
 );
 
-DROP TABLE IF EXISTS images CASCADE;
-CREATE TABLE IF NOT EXISTS images (
+
+CREATE TABLE images (
   image_id SERIAL PRIMARY KEY NOT NULL,
   image_url VARCHAR(300) NOT NULL
 );
+
 
 DROP TABLE IF EXISTS users_to_posts CASCADE;
 CREATE TABLE users_to_posts (

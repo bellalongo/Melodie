@@ -20,6 +20,7 @@ const dbConfig = {
  
 const db = pgp(dbConfig);
 
+
 const user = {
   username:undefined,
   password:undefined,
@@ -37,6 +38,7 @@ const tokens = {
   refresh:undefined
 }
  
+
 
 // test your database
 db.connect()
@@ -448,17 +450,40 @@ app.post('/editprofile', (req,res) =>
         return console.log(err);
       });
     }
-})
+    
+});
+
+
  
-app.post('/addfriend', async (req, res) => {
-  const query = 'insert into friends where username = $1;'
-  db.any(query, [req.body.username])
+
+
+app.get('/search', (req,res) =>
+{
+ 
+  const sql = 'select * from users where username = $1;'
+  db.any(sql,[req.query.search])
+  .then(users=> {
+  
+    res.render('pages/friends', 
+    {
+      users
+    })
+  })
+  .catch(function (err) {
+    return console.log(err);
+  });
+});
+app.post('/addfriend', (req, res) => {
+  const sql = 'insert into friends (username,name,display_image) VALUES ($1,$2,$3);'
+  db.any(sql, 
+    [
+      req.body.u,
+      req.body.n,
+      req.body.i
+    ])
     .then(function (data) {
-      res.status(201).json({
-        status: 'success',
-        data: data,
-        message: 'friend added successfully',
-      });
+      console.log(data);
+      res.redirect('/home');
     })
     .catch(function (err) {
       return console.log(err);
@@ -467,8 +492,8 @@ app.post('/addfriend', async (req, res) => {
  
 app.delete('/delete_user/:user_id', async (req, res) => {
   const user_id = parseInt(req.params.user_id);
-  const query = 'delete from reviews where review_id = $1;';
-    const query2 = 'delete from trails_to_reviews where review_id = $1;'
+  const query = 'delete from users where user_id = $1;';
+    const query2 = 'delete from users_to_snippets where users_id = $1;'
     console.log(query);
     db.any(query, [user_id])
       .then(function (data) {
@@ -498,6 +523,8 @@ app.get('/home', (req, res) => {
     }
   };
   const query = "SELECT * FROM posts WHERE username IN (SELECT username FROM friends JOIN users_to_friends ON users_to_friends.friend_id = friends.friend_id WHERE users_to_friends.user_id = 1);";
+  const query3 = 'select * from friends';
+  const query2 = 'select * from users WHERE user_id BETWEEN 6 AND 11 ';
   axios.all([
     axios.get(playlistURL, {
       headers: {
@@ -510,14 +537,20 @@ app.get('/home', (req, res) => {
       }
     }),
     db.query(query),
+
+    db.query(query2),
+    db.query(query3)
     axios.request(options)
-  ])
-  .then(axios.spread((topsongs, newsongs, allposts, billboardData) => {
+    ])
+    .then(axios.spread((topsongs, newsongs, allposts,cycleusers,cyclefriends,billboardData) => {
     console.log(allposts);
+    console.log(cycleusers);
     res.render('pages/home', {
       results : topsongs.data.items,
       newsongs: newsongs.data.items,
       posts : allposts,
+      users: cycleusers,
+      friends: cyclefriends,
       billboard : billboardData.data.content
     });
   })
@@ -527,16 +560,37 @@ app.get('/home', (req, res) => {
   })
 });
 
-app.get('/friends', (res,req) =>
-  axios.get(
-    'https://api.spotify.com/v1/me/',
-    {
-      headers: {
-        Accept: 'application/json',
-        Authorization: 'Bearer ' + tokens.access,
-        'Content-Type': 'application/json',
-    },
+
+
+
+app.get('/friends', (req,res) =>
+{
+  const query = 'select * from friends';
+  const query2 = 'select * from users order by user_id desc';
+  db.any(query)
+    .then(friends =>{
+      db.any(query2)
+        .then(users=>
+          {
+            res.render('pages/friends',
+            {
+              friends,
+              users
+            })
+          })
     })
+    .catch(error => 
+      {
+        console.log(error)
+        res.render('pages/friends',{
+        friends : [],
+        users : [],
+        error: true
+      });
+    });
+  });
+
+
     .then(results => {
       console.log(results.data);
       res.render('pages/friends', {
@@ -548,6 +602,7 @@ app.get('/friends', (res,req) =>
         console.log(error);
       })
 )
+
 
 app.get('/logout', (req, res) => {
   req.session.destroy();
