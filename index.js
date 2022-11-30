@@ -138,6 +138,7 @@ app.post('/register', async (req, res) => {
  
  
 app.get('/login', (req, res) => {
+  console.log("IN LOGIN")
   res.render('pages/login.ejs');
 });
  
@@ -458,6 +459,15 @@ app.get('/home', (req, res) => {
   var playlistURL = 'https://api.spotify.com/v1/playlists/37i9dQZEVXbLRQDuF5jeBp/tracks?limit=5';
   var newSongsURL = 'https://api.spotify.com/v1/playlists/37i9dQZF1DX4JAvHpjipBk/tracks?limit=5';
   const query = "SELECT * FROM posts WHERE username IN (SELECT username FROM friends JOIN users_to_friends ON users_to_friends.friend_id = friends.friend_id WHERE users_to_friends.user_id = 1);";
+  const options = {
+    method: 'GET',
+    url: 'https://billboard-api2.p.rapidapi.com/hot-100?range=1-10&date=2022-05-11',
+    params: {range: '1-10', date: '2019-05-11'},
+    headers: { 
+      'X-RapidAPI-Key': 'da3763635cmshbf8f63637b17f51p1c5d73jsn3527c834617e',
+      'X-RapidAPI-Host': 'billboard-api2.p.rapidapi.com'
+    }
+  };
   axios.all([
     axios.get(playlistURL, {
       headers: {
@@ -471,9 +481,10 @@ app.get('/home', (req, res) => {
     }),
     db.query(query)
   ])
-  .then(axios.spread((topsongs, newsongs, allposts) => {
+  .then(axios.spread((topsongs, newsongs, allposts,response) => {
     console.log(allposts);
     res.render('pages/home', {
+      resulto : response.data.content,
       results : topsongs.data.items,
       newsongs: newsongs.data.items,
       posts : allposts
@@ -517,12 +528,6 @@ app.get('/logout', (req, res) => {
   });
 });
 
-app.get('/music', (req, res) => {
-  res.render('pages/music', {
-    results : 'undefined',
-    tokens : 'undefined'
-  });
-})
 
 app.post('/music', (req, res) => {
   const song = req.body.songName;
@@ -644,21 +649,22 @@ app.get('/auth/callback', (req, res) => {
 
 })
 
-app.get('/home', (req, res) => {
+app.get('/music', (req, res) => {
+  console.log("IN MUSCI")
   const options = {
     method: 'GET',
     url: 'https://billboard-api2.p.rapidapi.com/hot-100?range=1-10&date=2022-05-11',
     params: {range: '1-10', date: '2019-05-11'},
-    headers: {
+    headers: { 
       'X-RapidAPI-Key': 'da3763635cmshbf8f63637b17f51p1c5d73jsn3527c834617e',
       'X-RapidAPI-Host': 'billboard-api2.p.rapidapi.com'
     }
   };
   
   axios.request(options).then(function (response) {
-    console.log(response.data.content);
-    res.render('/home', {
-      results : response.data.content
+    console.log(response.data);
+    res.render('pages/home', {
+      results : response.data.content,
       
     });
   
@@ -666,6 +672,7 @@ app.get('/home', (req, res) => {
     console.error(error);
   });
 });
+
 
 app.get('/auth/token', (req, res) => {
   res.json({ access_token: access_token})
