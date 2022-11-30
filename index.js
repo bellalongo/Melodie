@@ -527,7 +527,12 @@ app.get('/logout', (req, res) => {
     message : 'Logged out successfully',
   });
 });
-
+app.get('/music', (req, res) => {
+  res.render('pages/music', {
+    results : 'undefined',
+    tokens : 'undefined'
+  });
+})
 
 app.post('/music', (req, res) => {
   const song = req.body.songName;
@@ -649,29 +654,6 @@ app.get('/auth/callback', (req, res) => {
 
 })
 
-app.get('/music', (req, res) => {
-  console.log("IN MUSCI")
-  const options = {
-    method: 'GET',
-    url: 'https://billboard-api2.p.rapidapi.com/hot-100?range=1-10&date=2022-05-11',
-    params: {range: '1-10', date: '2019-05-11'},
-    headers: { 
-      'X-RapidAPI-Key': 'da3763635cmshbf8f63637b17f51p1c5d73jsn3527c834617e',
-      'X-RapidAPI-Host': 'billboard-api2.p.rapidapi.com'
-    }
-  };
-  
-  axios.request(options).then(function (response) {
-    console.log(response.data);
-    res.render('pages/home', {
-      results : response.data.content,
-      
-    });
-  
-  }).catch(function (error) {
-    console.error(error);
-  });
-});
 
 
 app.get('/auth/token', (req, res) => {
