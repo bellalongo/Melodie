@@ -78,24 +78,57 @@
         <% }) %> 
 
       </div>
-      <% Object.keys(results).forEach(el=> { %>
-                <div class="col">
-                    <div class ="card">
-                        <img src="<%= results[el].image %> " class="card-img-top" alt="...">
-                        
-                        <div class="card-body">
-                            <p class = "home_trendingNow_song" style = "overflow: hidden; height:25px;"><%= results[el].title %> : <%= results[el].artist %></p>
-                            <p class = "home_trendingNow_artist">Current Ranking: <%= results[el].rank %></p> 
-                            <p class = "home_trendingNow_artist">Peak Position: <%= results[el]['peak position']%></p>
-                            <p>Weeks on Chart:  <%= results[el]['weeks on chart']%></p>
-
-                            
-                        </div>
-                    </div>
-                </div>
-
-            <% }); %>
+     
     </div>
+    <% Object.keys(results).forEach(el=> { %>
+      <div class="col">
+          <div class ="card">
+              <img src="<%= results[el].image %> " class="card-img-top" alt="...">
+              
+              <div class="card-body">
+                  <p class = "home_trendingNow_song" style = "overflow: hidden; height:25px;"><%= results[el].title %> : <%= results[el].artist %></p>
+                  <p class = "home_trendingNow_artist">Current Ranking: <%= results[el].rank %></p> 
+                  <p class = "home_trendingNow_artist">Peak Position: <%= results[el]['peak position']%></p>
+                  <p>Weeks on Chart:  <%= results[el]['weeks on chart']%></p>
+
+                  
+              </div>
+          </div>
+          <div class = "home_column_small">
+            <h4>Billboard Top 100</h4>
+            
+              <div class = "row" style="background-color:rgb(30,30,30);">
+                <div class = "home_trendingNow_image">
+                    <% Object.keys(resulto).forEach(el=> { %>
+                       
+                            <div class ="card">
+                                <img src="<%= resulto[el].image %> " class="card-img-top" alt="...">
+                                
+                                <div class="card-body">
+                                    <h5 class = "card-title"> <%= resulto[el].title %> : <%= resulto[el].artist %></h5>
+                                    <h6>Current Ranking: <%= resulto[el].rank %></h6>
+                                    <h6>Peak Position: <%= resulto[el]['peak position']%></h6>
+                                    <h6>Weeks on Chart:  <%= resulto[el]['weeks on chart']%></h6>
+                                    
+                                </div>
+                            </div>
+                       
+        
+                    <% }); %>
+    
+    
+                </div>
+                <div class = "home_trendingNow_text">
+                  
+                </div>
+                
+              </div>
+            
+    
+          </div>
+      </div>
+
+  <% }); %>
   </div>
 </body>
 
