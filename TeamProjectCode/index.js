@@ -95,52 +95,30 @@ app.get('/profile', (req, res) => {
   const access_token = tokens.access;
   const token = "Bearer " + access_token;
   var newSongsURL = 'https://api.spotify.com/v1/me/tracks?offset=0&limit=5&locale=en-US,en;q=0.9';
+  // const song = req.body.songName;
+
+  const query = "SELECT * FROM snippets;";
+
+
   axios.all([
     axios.get(newSongsURL, {
       headers: {
         'Authorization': token,
       }
-    })
+    }),
+    db.query(query)
   ])
-  .then(axios.spread((topsongs) => {
-    console.log(topsongs.data.items);
-    res.render('pages/profile', {
-      results : topsongs.data.items,
-      user
-  
-  
-  const song = req.body.songName;
-
-  const query = "SELECT * FROM snippets;";
-  db.query(query)
-  .then(((allsnippets) => {
+  .then(axios.spread((topsongs, allsnippets) => {
     console.log("snippets pleae work:", allsnippets);
-    console.log("token", access_token);
+    console.log(topsongs.data.items);
     g_snippets.snippets = allsnippets;
     res.render('pages/profile', {
+      results : topsongs.data.items,
       user,
       tokens : access_token,
       snippets : allsnippets
-
-//app.get('/profile', (req, res) => {
-//  const access_token = tokens.access;
-//  const token = "Bearer " + access_token;
-//  var newSongsURL = 'https://api.spotify.com/v1/me/tracks?offset=0&limit=5&locale=en-US,en;q=0.9';
-//  axios.all([
-//    axios.get(newSongsURL, {
-//      headers: {
-//        'Authorization': token,
-//      }
-//    })
-//  ])
-//  .then(axios.spread((topsongs) => {
-//    console.log(topsongs.data.items);
-//    res.render('pages/profile', {
-//      results : topsongs.data.items,
-//      user
     });
-  })
-  )
+  }))
   .catch((error) => {
     console.error(error)
   })

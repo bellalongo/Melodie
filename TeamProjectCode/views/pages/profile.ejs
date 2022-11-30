@@ -160,28 +160,28 @@
             <tr>
                 <th>Welcome, <%= user.display_name %> </th>
                 <th>Favorite Snippets</th>
-                <th>Top Tracks</th>
+                <!-- <th>Top Tracks</th> -->
             </tr>
             <tr>
               <td>
                 <img src=<%= user.picture %> width="250 px">
               </td>
-              <div>
-                <form>
-                  <input type="hidden" name="device" id="device">
-                </form>
-              <% if(snippets !== undefined && Array.isArray(snippets)){ %>
-                <% snippets.forEach(snippet => { %>
-                  <div class = "row">
-                    <div class = "snippets">
-                        <%= snippet.song_name %>
-                            <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PlayMusic('<%= snippet.track_id %>','<%= snippet.start_time %>')"
-                              style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Play</button>
-                    </div>
-                  </div>
-                <% }); %>
-              <% } %>
-              </div>
+              <td>
+                  <form>
+                    <input type="hidden" name="device" id="device">
+                  </form>
+                  <% if(snippets !== undefined && Array.isArray(snippets)){ %>
+                    <% snippets.forEach(snippet => { %>
+                      <div class = "row">
+                        <div class = "snippets">
+                            <%= snippet.song_name %>
+                                <button type="submit"  class="btn btn-primary" id = "play-button" onclick="PlayMusic('<%= snippet.track_id %>','<%= snippet.start_time %>')"
+                                  style ="background-color:rgb(79, 124, 172); border-color: rgb(79, 124, 172); color:rgb(255, 255, 255); color:rgb(30, 30, 30);"n>Play</button>
+                        </div>
+                      </div>
+                    <% }); %>
+                  <% } %>
+              </td>
 
 
 <!-- 
