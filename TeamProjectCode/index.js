@@ -523,8 +523,8 @@ app.get('/home', (req, res) => {
     }
   };
   const query = "SELECT * FROM posts WHERE username IN (SELECT username FROM friends JOIN users_to_friends ON users_to_friends.friend_id = friends.friend_id WHERE users_to_friends.user_id = 1);";
-  const query3 = 'select * from friends';
-  const query2 = 'select * from users WHERE user_id BETWEEN 6 AND 11 ';
+  const query3 = 'select * from friends ORDER BY RANDOM() LIMIT 6';
+  const query2 = 'select * from users WHERE user_id BETWEEN 7 AND 16 ORDER BY RANDOM() LIMIT 5';
   axios.all([
     axios.get(playlistURL, {
       headers: {
@@ -563,7 +563,7 @@ app.get('/home', (req, res) => {
 app.get('/friends', (req,res) =>
 {
   const query = 'select * from friends';
-  const query2 = 'select * from users order by user_id desc';
+  const query2 = 'select * from users WHERE user_id BETWEEN 1 AND 16 order by random()';
   db.any(query)
     .then(friends =>{
       db.any(query2)
