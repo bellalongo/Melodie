@@ -536,23 +536,21 @@ app.get('/home', (req, res) => {
         'Authorization': token,
       }
     }),
-    db.query(query),
-
-    db.query(query2),
-    db.query(query3)
-    axios.request(options)
-    ])
-    .then(axios.spread((topsongs, newsongs, allposts,cycleusers,cyclefriends,billboardData) => {
-    console.log(allposts);
-    console.log(cycleusers);
-    res.render('pages/home', {
-      results : topsongs.data.items,
-      newsongs: newsongs.data.items,
-      posts : allposts,
-      users: cycleusers,
-      friends: cyclefriends,
-      billboard : billboardData.data.content
-    });
+      db.query(query),
+      db.query(query2),
+      db.query(query3),
+      axios.request(options)
+    ]).then(axios.spread((topsongs, newsongs, allposts,cycleusers,cyclefriends,billboardData) => {
+      console.log(allposts);
+      console.log(cycleusers);
+      res.render('pages/home', {
+        results : topsongs.data.items,
+        newsongs: newsongs.data.items,
+        posts : allposts,
+        users: cycleusers,
+        friends: cyclefriends,
+        billboard : billboardData.data.content
+      });
   })
   )
   .catch((error) => {
@@ -588,20 +586,8 @@ app.get('/friends', (req,res) =>
         error: true
       });
     });
-  });
+});
 
-
-    .then(results => {
-      console.log(results.data);
-      res.render('pages/friends', {
-        songs: results.body
-        });
-    })
-    .catch(error => 
-      {
-        console.log(error);
-      })
-)
 
 
 app.get('/logout', (req, res) => {
