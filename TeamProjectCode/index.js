@@ -96,7 +96,7 @@ app.get('/profile', (req, res) => {
   
   const access_token = tokens.access;
   const token = "Bearer " + access_token;
-  var newSongsURL = 'https://api.spotify.com/v1/me/tracks?offset=0&limit=5&locale=en-US,en;q=0.9';
+  var newSongsURL = 'https://api.spotify.com/v1/me/top/tracks?limit=5';
   // const song = req.body.songName;
 
   const query = "SELECT * FROM snippets;";
@@ -111,7 +111,7 @@ app.get('/profile', (req, res) => {
   ])
   .then(axios.spread((topsongs, allsnippets) => {
     console.log("snippets pleae work:", allsnippets);
-    console.log(topsongs.data.items);
+    console.log(topsongs.data.items[0].album.images[0]);
     g_snippets.snippets = allsnippets;
     res.render('pages/profile', {
       results : topsongs.data.items,
@@ -244,7 +244,7 @@ app.get('/login_spotify', function(req, res) {
  
   // your application requests authorization
 
-  var scope = 'streaming user-read-private user-read-email user-library-read';
+  var scope = 'streaming user-read-private user-read-email user-library-read user-top-read';
 
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
