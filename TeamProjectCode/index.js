@@ -560,7 +560,6 @@ app.get('/home', (req, res) => {
 
 
 
-
 app.get('/friends', (req,res) =>
 {
   const query = 'select * from friends';
@@ -587,7 +586,6 @@ app.get('/friends', (req,res) =>
       });
     });
 });
-
 
 
 app.get('/logout', (req, res) => {
