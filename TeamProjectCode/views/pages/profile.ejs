@@ -139,6 +139,18 @@
           xhr.setRequestHeader('Authorization', 'Bearer <%= tokens %>');
           xhr.send(body);
           xhr.onload = handleApiResponse;
+
+          setTimeout(PauseMusic, 30000);
+      }
+
+      function PauseMusic(){
+          const device_id = document.getElementById('device').value
+          var searchUrl = "https://api.spotify.com/v1/me/player/pause?device_id=" + device_id;
+          let xhr = new XMLHttpRequest();
+          xhr.open("PUT", searchUrl, true)
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.setRequestHeader('Authorization', 'Bearer <%= tokens %>');
+          xhr.send()
       }
 
       function handleApiResponse(){
