@@ -101,7 +101,6 @@ app.get('/profile', (req, res) => {
 
   const query = "SELECT * FROM snippets;";
 
-
   axios.all([
     axios.get(newSongsURL, {
       headers: {
