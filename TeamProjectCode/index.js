@@ -539,7 +539,7 @@ app.get('/home', (req, res) => {
     db.query(query),
 
     db.query(query2),
-    db.query(query3)
+    db.query(query3),
     axios.request(options)
     ])
     .then(axios.spread((topsongs, newsongs, allposts,cycleusers,cyclefriends,billboardData) => {
@@ -589,19 +589,6 @@ app.get('/friends', (req,res) =>
       });
     });
   });
-
-
-    .then(results => {
-      console.log(results.data);
-      res.render('pages/friends', {
-        songs: results.body
-        });
-    })
-    .catch(error => 
-      {
-        console.log(error);
-      })
-)
 
 
 app.get('/logout', (req, res) => {
